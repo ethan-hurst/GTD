@@ -48,12 +48,13 @@ Plans:
   3. User can process inbox items through guided workflow (actionable? 2-min rule? delegate? defer? trash?)
   4. User can search across all captured items by text
   5. Processed items are removed from inbox and moved to appropriate lists
-**Plans**: TBD
+**Plans**: 4 plans
 
 Plans:
-- [ ] 02-01: TBD
-- [ ] 02-02: TBD
-- [ ] 02-03: TBD
+- [ ] 02-01-PLAN.md — Data layer & utilities foundation (schema migration, search indexes, time formatting, inbox state)
+- [ ] 02-02-PLAN.md — Inbox capture & list view (capture input, FIFO list, sidebar badge, multi-select)
+- [ ] 02-03-PLAN.md — Search bar, keyboard shortcuts & toast (global search, Cmd+K/Cmd+I, notifications)
+- [ ] 02-04-PLAN.md — Processing workflow (GTD decision tree, inline expansion, sequential mode)
 
 ### Phase 3: Next Actions & Contexts
 **Goal**: User can view and complete next actions filtered by where/when/how work can be done
@@ -156,7 +157,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation & Storage | 2/2 | Complete | 2026-01-30 |
-| 2. Inbox Capture & Processing | 0/TBD | Not started | - |
+| 2. Inbox Capture & Processing | 0/4 | Planned | - |
 | 3. Next Actions & Contexts | 0/TBD | Not started | - |
 | 4. Projects Management | 0/TBD | Not started | - |
 | 5. Waiting For & Someday/Maybe | 0/TBD | Not started | - |
