@@ -1,11 +1,16 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import EventCalendar from '$lib/components/EventCalendar.svelte';
+	import IcsImport from '$lib/components/IcsImport.svelte';
 	import { calendarState } from '$lib/stores/calendar.svelte';
+	import { expandAllRecurrences } from '$lib/utils/recurrence';
 
 	onMount(async () => {
 		await calendarState.loadEvents();
 	});
+
+	// Import modal state
+	let showImport = $state(false);
 
 	// View switcher state - use derived from calendarState
 	const viewLabels = {
@@ -56,6 +61,46 @@
 			calendarState.setDate(newDate);
 		}
 	}
+
+	// Calculate visible date range based on current view
+	const visibleRange = $derived.by(() => {
+		const date = calendarState.currentDate;
+		const view = calendarState.currentView;
+
+		if (view === 'timeGridDay') {
+			// Start of day to end of day
+			const start = new Date(date);
+			start.setHours(0, 0, 0, 0);
+			const end = new Date(date);
+			end.setHours(23, 59, 59, 999);
+			return { start, end };
+		} else if (view === 'timeGridWeek') {
+			// Start of week (Monday) to end of week (Sunday)
+			const start = new Date(date);
+			const day = start.getDay();
+			const diff = day === 0 ? -6 : 1 - day; // Monday is 1, Sunday is 0
+			start.setDate(start.getDate() + diff);
+			start.setHours(0, 0, 0, 0);
+
+			const end = new Date(start);
+			end.setDate(start.getDate() + 6);
+			end.setHours(23, 59, 59, 999);
+			return { start, end };
+		} else {
+			// Month view: first day of month to last day of month
+			const start = new Date(date.getFullYear(), date.getMonth(), 1);
+			start.setHours(0, 0, 0, 0);
+			const end = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+			end.setHours(23, 59, 59, 999);
+			return { start, end };
+		}
+	});
+
+	// Expand recurring events for the visible range
+	const displayEvents = $derived.by(() => {
+		const range = visibleRange;
+		return expandAllRecurrences(calendarState.events, range.start, range.end);
+	});
 
 	// Format date label based on current view
 	const dateLabel = $derived.by(() => {
@@ -112,6 +157,20 @@
 			endTime: newEnd
 		});
 	}
+
+	function openImport() {
+		showImport = true;
+	}
+
+	function closeImport() {
+		showImport = false;
+	}
+
+	async function handleImported() {
+		// Reload events after import
+		await calendarState.loadEvents();
+		closeImport();
+	}
 </script>
 
 <div class="flex flex-col h-full">
@@ -148,32 +207,44 @@
 			</h1>
 		</div>
 
-		<!-- Right: View switcher -->
-		<div class="flex gap-1 bg-gray-100 dark:bg-gray-800 rounded-lg p-1">
+		<!-- Right: Import button + View switcher -->
+		<div class="flex items-center gap-3">
 			<button
-				onclick={() => calendarState.setView('timeGridDay')}
-				class="px-3 py-1.5 text-sm font-medium rounded transition-colors {calendarState.currentView === 'timeGridDay'
-					? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm'
-					: 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'}"
+				onclick={openImport}
+				class="px-3 py-1.5 text-sm font-medium rounded border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 flex items-center gap-2"
 			>
-				Day
+				<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+				</svg>
+				Import .ics
 			</button>
-			<button
-				onclick={() => calendarState.setView('timeGridWeek')}
-				class="px-3 py-1.5 text-sm font-medium rounded transition-colors {calendarState.currentView === 'timeGridWeek'
-					? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm'
-					: 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'}"
-			>
-				Week
-			</button>
-			<button
-				onclick={() => calendarState.setView('dayGridMonth')}
-				class="px-3 py-1.5 text-sm font-medium rounded transition-colors {calendarState.currentView === 'dayGridMonth'
-					? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm'
-					: 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'}"
-			>
-				Month
-			</button>
+
+			<div class="flex gap-1 bg-gray-100 dark:bg-gray-800 rounded-lg p-1">
+				<button
+					onclick={() => calendarState.setView('timeGridDay')}
+					class="px-3 py-1.5 text-sm font-medium rounded transition-colors {calendarState.currentView === 'timeGridDay'
+						? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm'
+						: 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'}"
+				>
+					Day
+				</button>
+				<button
+					onclick={() => calendarState.setView('timeGridWeek')}
+					class="px-3 py-1.5 text-sm font-medium rounded transition-colors {calendarState.currentView === 'timeGridWeek'
+						? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm'
+						: 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'}"
+				>
+					Week
+				</button>
+				<button
+					onclick={() => calendarState.setView('dayGridMonth')}
+					class="px-3 py-1.5 text-sm font-medium rounded transition-colors {calendarState.currentView === 'dayGridMonth'
+						? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm'
+						: 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'}"
+				>
+					Month
+				</button>
+			</div>
 		</div>
 	</div>
 
@@ -187,7 +258,7 @@
 			</div>
 		{/if}
 		<EventCalendar
-			events={calendarState.events}
+			events={displayEvents}
 			currentView={calendarState.currentView}
 			currentDate={calendarState.currentDate}
 			onEventClick={handleEventClick}
@@ -197,3 +268,8 @@
 		/>
 	</div>
 </div>
+
+<!-- Import Modal -->
+{#if showImport}
+	<IcsImport onClose={closeImport} onImported={handleImported} />
+{/if}
