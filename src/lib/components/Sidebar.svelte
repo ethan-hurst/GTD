@@ -4,9 +4,11 @@
 	import ThemeToggle from './ThemeToggle.svelte';
 	import ContextList from './ContextList.svelte';
 	import { inboxState } from '$lib/stores/inbox.svelte';
+	import { projectState } from '$lib/stores/projects.svelte';
 
 	onMount(async () => {
 		await inboxState.loadItems();
+		await projectState.loadProjects();
 	});
 </script>
 
@@ -51,6 +53,24 @@
 		<div class="pl-2">
 			<ContextList />
 		</div>
+
+		<!-- Separator -->
+		<div class="border-t border-gray-200 dark:border-gray-700 my-2"></div>
+
+		<a
+			href="/projects"
+			class="flex items-center justify-between px-4 py-2 rounded-md text-sm font-medium transition-colors
+				{$page.url.pathname.startsWith('/projects')
+					? 'bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-gray-100'
+					: 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800'}"
+		>
+			<span>Projects</span>
+			{#if projectState.stalledCount > 0}
+				<span class="bg-yellow-500 text-white text-xs font-medium px-2 py-0.5 rounded-full">
+					{projectState.stalledCount}
+				</span>
+			{/if}
+		</a>
 
 		<!-- Separator -->
 		<div class="border-t border-gray-200 dark:border-gray-700 my-2"></div>

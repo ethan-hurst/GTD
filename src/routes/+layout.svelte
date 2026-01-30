@@ -56,6 +56,13 @@
 			goto('/actions');
 			return;
 		}
+
+		// p: Navigate to Projects
+		if (event.key === 'p') {
+			event.preventDefault();
+			goto('/projects');
+			return;
+		}
 	}
 
 	onMount(() => {
