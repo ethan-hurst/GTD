@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-01-30)
 
 **Core value:** Nothing falls through the cracks — every commitment is captured, clarified, and surfaced at the right time so the user always knows what to do next.
-**Current focus:** Phase 7 complete — ready for Phase 8: Calendar View
+**Current focus:** All 8 phases complete — milestone ready for audit
 
 ## Current Position
 
-Phase: 8 of 8 (Calendar View) — IN PROGRESS
-Plan: 6 of 7 in current phase
-Status: In progress
-Last activity: 2026-01-30 — Completed 08-06-PLAN.md (Calendar Integration)
+Phase: 8 of 8 (Calendar View) — COMPLETE
+Plan: 7 of 7 in current phase
+Status: Complete
+Last activity: 2026-01-31 — Completed 08-07-PLAN.md (Human Verification)
 
-Progress: [██████████████████████████░░] 37/38 plans complete (7/8 phases)
+Progress: [████████████████████████████] 38/38 plans complete (8/8 phases)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 36
+- Total plans completed: 38
 - Average duration: ~2.2 min
-- Total execution time: ~1.40 hours
+- Total execution time: ~1.45 hours
 
 **By Phase:**
 
@@ -34,11 +34,11 @@ Progress: [███████████████████████
 | 05 - Waiting For & Someday/Maybe | 5/5 | ~11 min | 2.2 min |
 | 06 - Weekly Review | 4/4 | ~6 min | ~1.5 min |
 | 07 - GTD Onboarding | 5/5 | ~12 min | 2.4 min |
-| 08 - Calendar View | 6/7 | 20.4 min | 3.4 min |
+| 08 - Calendar View | 7/7 | 22.4 min | 3.2 min |
 
 **Recent Trend:**
-- Last 5 plans: 08-02 (3.4 min), 08-03 (3 min), 08-04 (4 min), 08-05 (5 min), 08-06 (3 min)
-- Phase 8 progress: Calendar integration complete, one plan remaining for final polish
+- Last 5 plans: 08-04 (4 min), 08-05 (5 min), 08-06 (3 min), 08-07 (2 min)
+- Phase 8 complete: All calendar features verified and working
 
 *Updated after each plan completion*
 
@@ -168,6 +168,7 @@ Recent decisions affecting current work:
 - Schedule it option in processing flow: Creates calendar event and processes inbox item in single action (08-06)
 - Default 1-hour event duration: When end time omitted, reduces friction in event creation (08-06)
 - Inline event creation form in ProcessingFlow: Keeps user in processing context without modal (08-06)
+- Import all @event-calendar plugins from core package: Core's Svelte entry re-exports all plugins as named exports, cleaner than separate package imports (08-07 bugfix)
 
 ### Pending Todos
 
@@ -179,10 +180,10 @@ None yet.
 
 [Issues that affect future work]
 
-None yet.
+None.
 
 ## Session Continuity
 
-Last session: 2026-01-30
-Stopped at: Completed 08-06-PLAN.md (Calendar Integration)
+Last session: 2026-01-31
+Stopped at: All phases complete — milestone ready for audit
 Resume file: None

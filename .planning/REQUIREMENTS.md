@@ -50,7 +50,7 @@
 
 ### Calendar
 
-- [ ] **CALV-01**: User can view a read-only calendar showing their schedule
+- [x] **CALV-01**: User can view a read-only calendar showing their schedule
 
 ### Data & Reliability
 
@@ -122,7 +122,7 @@
 | ONBR-01 | Phase 7 | Complete |
 | ONBR-02 | Phase 7 | Complete |
 | ONBR-03 | Phase 7 | Complete |
-| CALV-01 | Phase 8 | Pending |
+| CALV-01 | Phase 8 | Complete |
 
 **Coverage:**
 - v1 requirements: 26 total
