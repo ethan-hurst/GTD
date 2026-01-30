@@ -18,7 +18,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 4: Projects Management** - Multi-step outcomes with stalled project warnings (4/4 plans complete)
 - [x] **Phase 5: Waiting For & Someday/Maybe** - Delegated items and future ideas (5/5 plans complete)
 - [x] **Phase 6: Weekly Review** - Guided review workflow (critical GTD success factor) (4/4 plans complete)
-- [ ] **Phase 7: GTD Onboarding** - Progressive introduction for first-time users
+- [ ] **Phase 7: GTD Onboarding** - Progressive introduction for first-time users (0/5 plans complete)
 - [ ] **Phase 8: Calendar View** - Read-only calendar for hard landscape reference
 
 ## Phase Details
@@ -139,11 +139,14 @@ Plans:
   3. GTD concepts are explained contextually as user encounters each feature
   4. User can skip onboarding and jump directly to app if they already know GTD
   5. Onboarding adapts to show only unvisited features on subsequent sessions
-**Plans**: TBD
+**Plans**: 5 plans
 
 Plans:
-- [ ] 07-01: TBD
-- [ ] 07-02: TBD
+- [ ] 07-01-PLAN.md — Onboarding state machine, feature tracking utilities, svelte-pops install
+- [ ] 07-02-PLAN.md — Interactive walkthrough wizard with 5 GTD steps and real task capture
+- [ ] 07-03-PLAN.md — Contextual FeatureHint component, hint content (full/reduced), Settings reset
+- [ ] 07-04-PLAN.md — Integration: wire wizard into layout, route tracking, sidebar hints
+- [ ] 07-05-PLAN.md — Human verification of complete onboarding experience
 
 ### Phase 8: Calendar View
 **Goal**: User can view their schedule (hard landscape) for daily planning reference
@@ -171,5 +174,5 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8
 | 4. Projects Management | 4/4 | Complete | 2026-01-30 |
 | 5. Waiting For & Someday/Maybe | 5/5 | Complete | 2026-01-30 |
 | 6. Weekly Review | 4/4 | Complete | 2026-01-30 |
-| 7. GTD Onboarding | 0/TBD | Not started | - |
+| 7. GTD Onboarding | 0/5 | In progress | - |
 | 8. Calendar View | 0/TBD | Not started | - |
