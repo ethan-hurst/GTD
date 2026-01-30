@@ -5,6 +5,7 @@
 	import { actionState } from '$lib/stores/actions.svelte';
 	import { completeAction, reorderActions, bulkCompleteActions } from '$lib/db/operations';
 	import ActionItem from './ActionItem.svelte';
+	import ActionDetailPanel from './ActionDetailPanel.svelte';
 	import type { GTDItem } from '$lib/db/schema';
 
 	// Local state for drag-and-drop
@@ -176,14 +177,23 @@
 					</h3>
 					<div class="space-y-1">
 						{#each items as item (item.id)}
-							<ActionItem
-								{item}
-								onComplete={handleComplete}
-								onExpand={(id) => actionState.expandItem(id)}
-								isExpanded={actionState.expandedId === item.id}
-								isSelected={actionState.selectedIds.includes(item.id)}
-								onToggleSelect={(id) => actionState.toggleSelection(id)}
-							/>
+							<div>
+								<ActionItem
+									{item}
+									onComplete={handleComplete}
+									onExpand={(id) => actionState.expandItem(id)}
+									isExpanded={actionState.expandedId === item.id}
+									isSelected={actionState.selectedIds.includes(item.id)}
+									onToggleSelect={(id) => actionState.toggleSelection(id)}
+								/>
+								{#if actionState.expandedId === item.id}
+									<ActionDetailPanel
+										{item}
+										onSave={async () => { await actionState.loadActions(); }}
+										onClose={() => actionState.expandItem(item.id)}
+									/>
+								{/if}
+							</div>
 						{/each}
 					</div>
 				</div>
@@ -207,6 +217,13 @@
 						isSelected={actionState.selectedIds.includes(item.id)}
 						onToggleSelect={(id) => actionState.toggleSelection(id)}
 					/>
+					{#if actionState.expandedId === item.id}
+						<ActionDetailPanel
+							{item}
+							onSave={async () => { await actionState.loadActions(); }}
+							onClose={() => actionState.expandItem(item.id)}
+						/>
+					{/if}
 				</div>
 			{/each}
 		</section>

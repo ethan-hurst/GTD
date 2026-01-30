@@ -1,6 +1,7 @@
 <script lang="ts">
-	import type { GTDItem } from '../db/schema';
-	import { updateItem, deleteItem } from '../db/operations';
+	import { onMount } from 'svelte';
+	import type { GTDItem, Context } from '../db/schema';
+	import { updateItem, deleteItem, getAllContexts } from '../db/operations';
 	import { storageStatus } from '../stores/storage.svelte';
 	import { toast } from 'svelte-5-french-toast';
 
@@ -11,9 +12,11 @@
 
 	let { item, onProcessed }: ProcessingFlowProps = $props();
 
-	type Step = 'actionable' | 'two-minute' | 'not-actionable' | 'delegate-or-defer' | 'delegate-input';
+	type Step = 'actionable' | 'two-minute' | 'not-actionable' | 'delegate-or-defer' | 'delegate-input' | 'assign-context';
 	let step = $state<Step>('actionable');
 	let delegateName = $state('');
+	let contexts = $state<Context[]>([]);
+	let afterContext: 'nextAction' | 'project' | null = null;
 
 	// Step indicators
 	const stepIndicators = {
@@ -21,8 +24,13 @@
 		'two-minute': 'Step 2 of 3',
 		'not-actionable': 'Step 2 of 3',
 		'delegate-or-defer': 'Step 3 of 3',
-		'delegate-input': 'Step 3 of 3'
+		'delegate-input': 'Step 3 of 3',
+		'assign-context': 'Choose Context'
 	};
+
+	onMount(async () => {
+		contexts = await getAllContexts();
+	});
 
 	// Navigation
 	function goBack() {
@@ -31,6 +39,8 @@
 		} else if (step === 'delegate-or-defer') {
 			step = 'two-minute';
 		} else if (step === 'delegate-input') {
+			step = 'delegate-or-defer';
+		} else if (step === 'assign-context') {
 			step = 'delegate-or-defer';
 		}
 	}
@@ -65,19 +75,37 @@
 		onProcessed();
 	}
 
-	async function nextAction() {
-		await updateItem(item.id, { type: 'next-action' });
+	async function nextAction(context?: string) {
+		await updateItem(item.id, { type: 'next-action', context });
 		storageStatus.recordSave();
 		toast.success('Added to Next Actions.');
 		onProcessed();
 	}
 
-	async function project() {
+	async function project(context?: string) {
 		// Project assignment comes in Phase 4
-		await updateItem(item.id, { type: 'next-action' });
+		await updateItem(item.id, { type: 'next-action', context });
 		storageStatus.recordSave();
 		toast.success('Added to Next Actions.');
 		onProcessed();
+	}
+
+	function initiateNextAction() {
+		afterContext = 'nextAction';
+		step = 'assign-context';
+	}
+
+	function initiateProject() {
+		afterContext = 'project';
+		step = 'assign-context';
+	}
+
+	async function assignContextAndSave(contextName?: string) {
+		if (afterContext === 'nextAction') {
+			await nextAction(contextName);
+		} else if (afterContext === 'project') {
+			await project(contextName);
+		}
 	}
 
 	async function delegate() {
@@ -208,13 +236,13 @@
 					Delegate to someone
 				</button>
 				<button
-					onclick={nextAction}
+					onclick={initiateNextAction}
 					class="px-4 py-2.5 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 rounded-md transition-colors"
 				>
 					I'll do it next
 				</button>
 				<button
-					onclick={project}
+					onclick={initiateProject}
 					class="px-4 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 rounded-md transition-colors"
 				>
 					It's part of a project
@@ -251,6 +279,37 @@
 					Delegate
 				</button>
 			</form>
+		</div>
+		<button
+			onclick={goBack}
+			class="text-xs text-blue-600 dark:text-blue-400 hover:underline"
+		>
+			← Back
+		</button>
+	{/if}
+
+	<!-- Assign Context -->
+	{#if step === 'assign-context'}
+		<div class="mb-4">
+			<p class="text-base font-semibold text-gray-900 dark:text-gray-100 mb-3">
+				Which context?
+			</p>
+			<div class="flex flex-col gap-2">
+				{#each contexts as context (context.id)}
+					<button
+						onclick={() => assignContextAndSave(context.name)}
+						class="px-4 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 rounded-md transition-colors text-left"
+					>
+						{context.name}
+					</button>
+				{/each}
+				<button
+					onclick={() => assignContextAndSave()}
+					class="px-4 py-2.5 text-sm font-medium text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 rounded-md transition-colors"
+				>
+					Skip (no context)
+				</button>
+			</div>
 		</div>
 		<button
 			onclick={goBack}
