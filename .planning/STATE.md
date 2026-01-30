@@ -5,14 +5,14 @@
 See: .planning/PROJECT.md (updated 2026-01-30)
 
 **Core value:** Nothing falls through the cracks — every commitment is captured, clarified, and surfaced at the right time so the user always knows what to do next.
-**Current focus:** All 8 phases complete — milestone ready for audit
+**Current focus:** All 8 phases complete — tech debt cleaned up, milestone ready for completion
 
 ## Current Position
 
 Phase: 8 of 8 (Calendar View) — COMPLETE
 Plan: 7 of 7 in current phase
 Status: Complete
-Last activity: 2026-01-31 — Completed 08-07-PLAN.md (Human Verification)
+Last activity: 2026-01-31 — Completed quick task 001: Clean up v1 tech debt
 
 Progress: [████████████████████████████] 38/38 plans complete (8/8 phases)
 
@@ -175,6 +175,12 @@ Recent decisions affecting current work:
 [From .planning/todos/pending/ — ideas captured during sessions]
 
 None yet.
+
+### Quick Tasks Completed
+
+| # | Description | Date | Commit | Directory |
+|---|-------------|------|--------|-----------|
+| 001 | Clean up all 4 v1 tech debt items | 2026-01-31 | e17242d | [001-clean-up-v1-tech-debt](./quick/001-clean-up-v1-tech-debt/) |
 
 ### Blockers/Concerns
 
