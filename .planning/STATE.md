@@ -10,29 +10,29 @@ See: .planning/PROJECT.md (updated 2026-01-30)
 ## Current Position
 
 Phase: 2 of 8 (Inbox Capture & Processing)
-Plan: 2 of 4 in current phase
+Plan: 3 of 4 in current phase
 Status: In progress
-Last activity: 2026-01-30 — Completed 02-02-PLAN.md (Inbox Capture & List UI)
+Last activity: 2026-01-30 — Completed 02-03-PLAN.md (Global Search & Shortcuts)
 
-Progress: [███░░░░░░░] 25.00% (4/16 plans complete)
+Progress: [███░░░░░░░] 31.25% (5/16 plans complete)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 4
-- Average duration: 2.9 min
-- Total execution time: 0.19 hours
+- Total plans completed: 5
+- Average duration: 2.7 min
+- Total execution time: 0.22 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 01 - Foundation & Storage | 2 | 7.1 min | 3.6 min |
-| 02 - Inbox Capture & Processing | 2 | 4.3 min | 2.2 min |
+| 02 - Inbox Capture & Processing | 3 | 6.3 min | 2.1 min |
 
 **Recent Trend:**
-- Last 5 plans: 01-01 (3.1 min), 01-02 (4 min), 02-01 (2.6 min), 02-02 (1.7 min)
-- Trend: Accelerating velocity (1.7 min on latest plan)
+- Last 5 plans: 01-02 (4 min), 02-01 (2.6 min), 02-02 (1.7 min), 02-03 (2 min)
+- Trend: Accelerating velocity (2 min on latest plan)
 
 *Updated after each plan completion*
 
@@ -61,6 +61,10 @@ Recent decisions affecting current work:
 - Inline capture input (not modal): Fastest possible capture - input always visible, no click to open (02-02)
 - FIFO list rendering (oldest first): GTD methodology encourages processing in order of arrival (02-02)
 - Achievement-oriented empty state: "Your inbox is clear" feels like accomplishment (02-02)
+- Inline debounce helper instead of library: 8-line function, zero dependencies, avoids bundle bloat (02-03)
+- Cmd+K always works (even in inputs): Standard search pattern across modern apps (02-03)
+- Cmd+I respects input context: Prevents interference with typing, less standard shortcut (02-03)
+- Platform detection for keyboard shortcuts: Cmd on Mac, Ctrl elsewhere for native feel (02-03)
 
 ### Pending Todos
 
@@ -76,6 +80,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-01-30 12:59
-Stopped at: Completed 02-02-PLAN.md — Inbox capture and list UI ready for processing flow
+Last session: 2026-01-30 13:05
+Stopped at: Completed 02-03-PLAN.md — Global search and keyboard shortcuts ready for cross-app navigation
 Resume file: None
