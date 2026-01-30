@@ -7,10 +7,10 @@
 
 ### Inbox & Capture
 
-- [ ] **INBX-01**: User can capture a thought/task to inbox via keyboard shortcut with minimal friction
-- [ ] **INBX-02**: User can view all unprocessed inbox items in a single list
-- [ ] **INBX-03**: User can process inbox items through guided workflow (actionable? 2-min rule? delegate? defer? trash?)
-- [ ] **INBX-04**: User can search across all lists by text
+- [x] **INBX-01**: User can capture a thought/task to inbox via keyboard shortcut with minimal friction
+- [x] **INBX-02**: User can view all unprocessed inbox items in a single list
+- [x] **INBX-03**: User can process inbox items through guided workflow (actionable? 2-min rule? delegate? defer? trash?)
+- [x] **INBX-04**: User can search across all lists by text
 
 ### Next Actions & Contexts
 
@@ -21,10 +21,10 @@
 
 ### Projects
 
-- [ ] **PROJ-01**: User can create and view projects (multi-step outcomes)
-- [ ] **PROJ-02**: User can see which projects have no next action (stalled warning)
-- [ ] **PROJ-03**: User can mark a project as complete
-- [ ] **PROJ-04**: User can move a project to someday/maybe
+- [x] **PROJ-01**: User can create and view projects (multi-step outcomes)
+- [x] **PROJ-02**: User can see which projects have no next action (stalled warning)
+- [x] **PROJ-03**: User can mark a project as complete
+- [x] **PROJ-04**: User can move a project to someday/maybe
 
 ### Waiting For
 
@@ -100,18 +100,18 @@
 | DATA-01 | Phase 1 | Complete |
 | DATA-02 | Phase 1 | Complete |
 | DATA-03 | Phase 1 | Complete |
-| INBX-01 | Phase 2 | Pending |
-| INBX-02 | Phase 2 | Pending |
-| INBX-03 | Phase 2 | Pending |
-| INBX-04 | Phase 2 | Pending |
+| INBX-01 | Phase 2 | Complete |
+| INBX-02 | Phase 2 | Complete |
+| INBX-03 | Phase 2 | Complete |
+| INBX-04 | Phase 2 | Complete |
 | NACT-01 | Phase 3 | Complete |
 | NACT-02 | Phase 3 | Complete |
 | NACT-03 | Phase 3 | Complete |
 | NACT-04 | Phase 3 | Complete |
-| PROJ-01 | Phase 4 | Pending |
-| PROJ-02 | Phase 4 | Pending |
-| PROJ-03 | Phase 4 | Pending |
-| PROJ-04 | Phase 4 | Pending |
+| PROJ-01 | Phase 4 | Complete |
+| PROJ-02 | Phase 4 | Complete |
+| PROJ-03 | Phase 4 | Complete |
+| PROJ-04 | Phase 4 | Complete |
 | WAIT-01 | Phase 5 | Pending |
 | WAIT-02 | Phase 5 | Pending |
 | SMBY-01 | Phase 5 | Pending |
@@ -131,4 +131,4 @@
 
 ---
 *Requirements defined: 2026-01-30*
-*Last updated: 2026-01-30 after Phase 1 completion*
+*Last updated: 2026-01-30 after Phase 4 completion*

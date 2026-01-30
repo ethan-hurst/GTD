@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-01-30)
 
 **Core value:** Nothing falls through the cracks — every commitment is captured, clarified, and surfaced at the right time so the user always knows what to do next.
-**Current focus:** Phase 3 complete — ready for Phase 4: Projects Management
+**Current focus:** Phase 4 complete — ready for Phase 5: Waiting For & Someday/Maybe
 
 ## Current Position
 
-Phase: 4 of 8 (Projects Management) — IN PROGRESS
-Plan: 3 of 4 in current phase
-Status: Project integration into existing workflows complete
-Last activity: 2026-01-30 — Completed 04-03-PLAN.md
+Phase: 4 of 8 (Projects Management) — COMPLETE
+Plan: 4 of 4 in current phase (all complete)
+Status: Phase complete, ready for Phase 5
+Last activity: 2026-01-30 — Completed 04-04-PLAN.md (Human Verification + bugfix)
 
-Progress: [████████░░] 81.25% (13/16 plans complete)
+Progress: [████████░░] 87.5% (14/16 plans complete)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 13
+- Total plans completed: 14
 - Average duration: 2.1 min
-- Total execution time: ~0.48 hours
+- Total execution time: ~0.50 hours
 
 **By Phase:**
 
@@ -30,11 +30,11 @@ Progress: [████████░░] 81.25% (13/16 plans complete)
 | 01 - Foundation & Storage | 2 | 7.1 min | 3.6 min |
 | 02 - Inbox Capture & Processing | 4 | complete | — |
 | 03 - Next Actions & Contexts | 4/4 | 14 min | 3.5 min |
-| 04 - Projects Management | 3/4 | 5.9 min | 2.0 min |
+| 04 - Projects Management | 4/4 | 8.9 min | 2.2 min |
 
 **Recent Trend:**
-- Last 5 plans: 03-04 (5 min), 04-01 (1.4 min), 04-02 (1.8 min), 04-03 (2.7 min)
-- Phase 4 maintaining excellent velocity with integration work
+- Last 5 plans: 04-01 (1.4 min), 04-02 (1.8 min), 04-03 (2.7 min), 04-04 (3 min, human verification)
+- Phase 4 complete with human verification passed
 
 *Updated after each plan completion*
 
@@ -97,6 +97,7 @@ Recent decisions affecting current work:
 - ProcessingFlow inserts project selection before context: Project identification → context assignment follows GTD methodology (04-03)
 - Inline project creation in ProcessingFlow: Keeps user in processing context, matches InboxCapture pattern (04-03)
 - 'p' keyboard shortcut for Projects: Mirrors 'n' for Next Actions, single-key navigation pattern (04-03)
+- ProjectItem needs explicit onSave prop for list refresh: onToggleExpand alone doesn't reload data (04-04 bugfix)
 
 ### Pending Todos
 
@@ -113,5 +114,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-01-30
-Stopped at: Completed 04-03-PLAN.md (Project integration into existing workflows)
+Stopped at: Phase 4 complete (all 4 plans + human verification). Ready for Phase 5: Waiting For & Someday/Maybe.
 Resume file: None
