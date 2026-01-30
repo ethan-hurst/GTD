@@ -41,21 +41,34 @@
 		return new Date(date).toLocaleDateString();
 	}
 
+	let undoFn: (() => Promise<void>) | null = $state(null);
+
 	async function handleResolve() {
 		isResolving = true;
 
 		// Call resolveWaitingFor and get undo function
 		const undo = await resolveWaitingFor(item.id);
+		undoFn = undo;
 
-		// Show toast with undo action
-		toast.success(`"${item.title}" resolved`, {
-			duration: 5000,
+		// Show toast with undo action — use custom toast with longer duration
+		const toastId = toast.success(`"${item.title}" resolved`, {
+			duration: 8000,
 		});
 
-		// Wait 1 second for animation, then reload
+		// Reload list after brief animation delay
 		setTimeout(async () => {
 			onResolved();
-		}, 1000);
+		}, 500);
+	}
+
+	async function handleUndo() {
+		if (!undoFn) return;
+		await undoFn();
+		undoFn = null;
+		isResolving = false;
+		toast.dismiss();
+		toast.success('Restored');
+		onResolved();
 	}
 
 	async function handleNotesBlur() {
@@ -220,12 +233,18 @@
 		{/if}
 	</div>
 {:else}
-	<!-- Resolving animation: fade out -->
+	<!-- Resolving state: show undo option -->
 	<div
-		class="px-4 py-3 rounded-lg bg-gray-50 dark:bg-gray-800/50 opacity-50 line-through"
+		class="px-4 py-3 rounded-lg bg-gray-50 dark:bg-gray-800/50 flex items-center justify-between"
 	>
-		<h3 class="font-bold text-gray-500 dark:text-gray-400">
+		<h3 class="font-bold text-gray-400 dark:text-gray-500 line-through">
 			{item.title}
 		</h3>
+		<button
+			onclick={handleUndo}
+			class="ml-4 px-3 py-1.5 text-sm font-medium text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-md transition-colors"
+		>
+			Undo
+		</button>
 	</div>
 {/if}
