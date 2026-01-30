@@ -17,7 +17,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 3: Next Actions & Contexts** - Context-based task filtering and completion (4/4 plans complete)
 - [x] **Phase 4: Projects Management** - Multi-step outcomes with stalled project warnings (4/4 plans complete)
 - [x] **Phase 5: Waiting For & Someday/Maybe** - Delegated items and future ideas (5/5 plans complete)
-- [ ] **Phase 6: Weekly Review** - Guided review workflow (critical GTD success factor)
+- [x] **Phase 6: Weekly Review** - Guided review workflow (critical GTD success factor) (4/4 plans complete)
 - [ ] **Phase 7: GTD Onboarding** - Progressive introduction for first-time users
 - [ ] **Phase 8: Calendar View** - Read-only calendar for hard landscape reference
 
@@ -124,10 +124,10 @@ Plans:
 **Plans**: 4 plans
 
 Plans:
-- [ ] 06-01-PLAN.md — Data layer: schema v5 settings table, settings CRUD, WeeklyReviewState store, time-since utility
-- [ ] 06-02-PLAN.md — Review wizard UI: WeeklyReviewWizard component with 8-step checklist, progress bar, step navigation, /review route
-- [ ] 06-03-PLAN.md — Integration: sidebar nav with overdue badge, 'r' keyboard shortcut, canvas-confetti celebration, toast notification
-- [ ] 06-04-PLAN.md — Human verification of complete weekly review feature
+- [x] 06-01-PLAN.md — Data layer: schema v5 settings table, settings CRUD, WeeklyReviewState store, time-since utility (completed 2026-01-30)
+- [x] 06-02-PLAN.md — Review wizard UI: WeeklyReviewWizard component with 8-step checklist, progress bar, step navigation, /review route (completed 2026-01-30)
+- [x] 06-03-PLAN.md — Integration: sidebar nav with overdue badge, 'r' keyboard shortcut, canvas-confetti celebration, toast notification (completed 2026-01-30)
+- [x] 06-04-PLAN.md — Human verification of complete weekly review feature (completed 2026-01-30)
 
 ### Phase 7: GTD Onboarding
 **Goal**: First-time user understands GTD concepts and captures first task within 60 seconds
@@ -170,6 +170,6 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8
 | 3. Next Actions & Contexts | 4/4 | Complete | 2026-01-30 |
 | 4. Projects Management | 4/4 | Complete | 2026-01-30 |
 | 5. Waiting For & Someday/Maybe | 5/5 | Complete | 2026-01-30 |
-| 6. Weekly Review | 0/4 | Not started | - |
+| 6. Weekly Review | 4/4 | Complete | 2026-01-30 |
 | 7. GTD Onboarding | 0/TBD | Not started | - |
 | 8. Calendar View | 0/TBD | Not started | - |
