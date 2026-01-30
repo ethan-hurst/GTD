@@ -4,13 +4,18 @@
 	import Sidebar from '$lib/components/Sidebar.svelte';
 	import SearchBar from '$lib/components/SearchBar.svelte';
 	import StatusBar from '$lib/components/StatusBar.svelte';
+	import OnboardingWizard from '$lib/components/OnboardingWizard.svelte';
 	import { Toaster } from 'svelte-5-french-toast';
 	import { goto } from '$app/navigation';
+	import { page } from '$app/stores';
 	import { theme } from '$lib/stores/theme.svelte';
 	import { storageStatus } from '$lib/stores/storage.svelte';
+	import { onboardingState } from '$lib/stores/onboarding.svelte';
+	import { getFeatureFromRoute, markFeatureVisited } from '$lib/utils/featureTracking';
 
 	const { children } = $props();
 	let searchBarRef: any;
+	let previousPath = $state('');
 
 	// Global keyboard shortcut handler
 	function handleKeydown(event: KeyboardEvent) {
@@ -21,6 +26,8 @@
 		if (modifierKey && event.key === 'k') {
 			event.preventDefault();
 			searchBarRef?.focus();
+			// Track search feature usage
+			markFeatureVisited('search').catch(() => {});
 			return;
 		}
 
@@ -47,6 +54,8 @@
 			goto('/').then(() => {
 				window.dispatchEvent(new CustomEvent('focus-inbox-capture'));
 			});
+			// Track keyboard shortcut usage
+			markFeatureVisited('keyboard-shortcuts').catch(() => {});
 			return;
 		}
 
@@ -54,6 +63,8 @@
 		if (event.key === 'n') {
 			event.preventDefault();
 			goto('/actions');
+			// Track keyboard shortcut usage
+			markFeatureVisited('keyboard-shortcuts').catch(() => {});
 			return;
 		}
 
@@ -61,6 +72,8 @@
 		if (event.key === 'p') {
 			event.preventDefault();
 			goto('/projects');
+			// Track keyboard shortcut usage
+			markFeatureVisited('keyboard-shortcuts').catch(() => {});
 			return;
 		}
 
@@ -68,6 +81,8 @@
 		if (event.key === 'w') {
 			event.preventDefault();
 			goto('/waiting');
+			// Track keyboard shortcut usage
+			markFeatureVisited('keyboard-shortcuts').catch(() => {});
 			return;
 		}
 
@@ -75,6 +90,8 @@
 		if (event.key === 's') {
 			event.preventDefault();
 			goto('/someday');
+			// Track keyboard shortcut usage
+			markFeatureVisited('keyboard-shortcuts').catch(() => {});
 			return;
 		}
 
@@ -82,9 +99,23 @@
 		if (event.key === 'r') {
 			event.preventDefault();
 			goto('/review');
+			// Track keyboard shortcut usage
+			markFeatureVisited('keyboard-shortcuts').catch(() => {});
 			return;
 		}
 	}
+
+	// Route-based feature tracking
+	$effect(() => {
+		const currentPath = $page.url.pathname;
+		if (currentPath !== previousPath && (onboardingState.hasCompleted || onboardingState.hasSkipped)) {
+			previousPath = currentPath;
+			const feature = getFeatureFromRoute(currentPath);
+			if (feature) {
+				markFeatureVisited(feature).catch(() => {});
+			}
+		}
+	});
 
 	onMount(() => {
 		// Set up theme listener for system preference changes
@@ -94,6 +125,15 @@
 		storageStatus.requestPersistence().catch(() => {
 			// Silently fail if not supported or denied
 		});
+
+		// Load onboarding state and show wizard if needed (non-blocking)
+		(async () => {
+			await onboardingState.loadState();
+			const shouldShow = await onboardingState.shouldShowOnboarding();
+			if (shouldShow) {
+				onboardingState.startOnboarding();
+			}
+		})();
 
 		return cleanup;
 	});
@@ -124,3 +164,8 @@
 		<StatusBar />
 	</div>
 </div>
+
+<!-- Onboarding Wizard Overlay -->
+{#if onboardingState.isActive}
+	<OnboardingWizard />
+{/if}
