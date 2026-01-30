@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-01-30)
 ## Current Position
 
 Phase: 7 of 8 (GTD Onboarding) — IN PROGRESS
-Plan: 1 of 5 in current phase
+Plan: 2 of 5 in current phase
 Status: In progress
-Last activity: 2026-01-30 — Completed 07-01-PLAN.md
+Last activity: 2026-01-30 — Completed 07-02-PLAN.md
 
-Progress: [███████████████████████░░░] 27/31 plans complete (87%)
+Progress: [███████████████████████░░░] 28/31 plans complete (90%)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 24
+- Total plans completed: 25
 - Average duration: ~2 min
-- Total execution time: ~0.85 hours
+- Total execution time: ~0.90 hours
 
 **By Phase:**
 
@@ -33,11 +33,11 @@ Progress: [███████████████████████
 | 04 - Projects Management | 4/4 | 8.9 min | 2.2 min |
 | 05 - Waiting For & Someday/Maybe | 5/5 | ~11 min | 2.2 min |
 | 06 - Weekly Review | 4/4 | ~6 min | ~1.5 min |
-| 07 - GTD Onboarding | 1/5 | 2 min | 2.0 min |
+| 07 - GTD Onboarding | 2/5 | 4 min | 2.0 min |
 
 **Recent Trend:**
-- Last 5 plans: 06-02 (2 min), 06-03 (2 min), 06-04 (0 min, user pre-approved), 07-01 (2 min)
-- Phase 7 in progress: 1/5 plans complete
+- Last 5 plans: 06-03 (2 min), 06-04 (0 min, user pre-approved), 07-01 (2 min), 07-02 (2 min)
+- Phase 7 in progress: 2/5 plans complete
 
 *Updated after each plan completion*
 
@@ -127,6 +127,11 @@ Recent decisions affecting current work:
 - Feature tracking via settings table: feature_visited_{feature} keys instead of separate table (07-01)
 - 5-step onboarding wizard: welcome, capture, process, organize, review-intro matching GTD methodology (07-01)
 - svelte-pops for tooltips: Wraps Floating UI for Svelte 5 with Tailwind v4 support (07-01)
+- Inline capture input in wizard instead of InboxCapture component: Controlled experience for onboarding, simple input with addItem() call (07-02)
+- Skip only on welcome screen: Per CONTEXT.md requirement, after welcome no skip option (07-02)
+- 50 particle confetti on first capture, 100 on completion: Differentiated celebrations create progression feel (07-02)
+- Disabled Next button until first capture: Ensures learning-by-doing, progressive enablement pattern (07-02)
+- Visual GTD decision tree as Tailwind layout: Simpler to maintain than SVG, accessible by default (07-02)
 
 ### Pending Todos
 
@@ -143,5 +148,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-01-30
-Stopped at: Completed 07-01-PLAN.md (Onboarding Foundation)
+Stopped at: Completed 07-02-PLAN.md (Onboarding Wizard)
 Resume file: None
