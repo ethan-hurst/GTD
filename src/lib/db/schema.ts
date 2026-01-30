@@ -34,10 +34,18 @@ export interface GTDList {
 	type: string;
 }
 
+export interface AppSettings {
+	id: number;
+	key: string;
+	value: any;
+	updatedAt: Date;
+}
+
 export const db = new Dexie("GTDDatabase") as Dexie & {
 	items: EntityTable<GTDItem, "id">;
 	lists: EntityTable<GTDList, "id">;
 	contexts: EntityTable<Context, "id">;
+	settings: EntityTable<AppSettings, "id">;
 };
 
 db.version(1).stores({
@@ -60,6 +68,13 @@ db.version(4).stores({
 	items: "++id, type, created, modified, *searchWords, context, projectId, sortOrder, completedAt, followUpDate, category",
 	lists: "++id, name, type",
 	contexts: "++id, name, sortOrder"
+});
+
+db.version(5).stores({
+	items: "++id, type, created, modified, *searchWords, context, projectId, sortOrder, completedAt, followUpDate, category",
+	lists: "++id, name, type",
+	contexts: "++id, name, sortOrder",
+	settings: "++id, &key, updatedAt"
 });
 
 // Hooks for automatic searchWords population

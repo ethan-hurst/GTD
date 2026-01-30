@@ -1,4 +1,4 @@
-import { db, type GTDItem, type Context } from './schema';
+import { db, type GTDItem, type Context, type AppSettings } from './schema';
 
 export async function addItem(item: Omit<GTDItem, 'id' | 'created' | 'modified'>): Promise<number> {
 	return await db.items.add({
@@ -367,4 +367,22 @@ export async function addSomedayItem(title: string, notes?: string, category?: s
 		created: new Date(),
 		modified: new Date()
 	} as GTDItem);
+}
+
+// ============================================================================
+// Settings Operations
+// ============================================================================
+
+export async function getSetting(key: string): Promise<any | null> {
+	const setting = await db.settings.where('key').equals(key).first();
+	return setting?.value ?? null;
+}
+
+export async function setSetting(key: string, value: any): Promise<void> {
+	const existing = await db.settings.where('key').equals(key).first();
+	if (existing) {
+		await db.settings.update(existing.id, { value, updatedAt: new Date() });
+	} else {
+		await db.settings.add({ key, value, updatedAt: new Date() } as AppSettings);
+	}
 }
