@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-01-30)
 ## Current Position
 
 Phase: 5 of 8 (Waiting For & Someday/Maybe) — IN PROGRESS
-Plan: 2 of 5 in current phase (05-02 complete)
+Plan: 4 of 5 in current phase (05-01, 05-02, 05-03, 05-04 complete)
 Status: In progress
-Last activity: 2026-01-30 — Completed 05-02-PLAN.md
+Last activity: 2026-01-30 — Completed 05-04-PLAN.md
 
-Progress: [█████████░] 94.12% (16/17 plans complete)
+Progress: [█████████░] 94.74% (18/19 plans complete)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 16
-- Average duration: 2.1 min
-- Total execution time: ~0.56 hours
+- Total plans completed: 18
+- Average duration: 2.12 min
+- Total execution time: ~0.64 hours
 
 **By Phase:**
 
@@ -31,11 +31,11 @@ Progress: [█████████░] 94.12% (16/17 plans complete)
 | 02 - Inbox Capture & Processing | 4/4 | complete | — |
 | 03 - Next Actions & Contexts | 4/4 | 14 min | 3.5 min |
 | 04 - Projects Management | 4/4 | 8.9 min | 2.2 min |
-| 05 - Waiting For & Someday/Maybe | 2/5 | 4.02 min | 2.01 min |
+| 05 - Waiting For & Someday/Maybe | 4/5 | 6.19 min | 1.55 min |
 
 **Recent Trend:**
-- Last 5 plans: 04-03 (2.7 min), 04-04 (3 min, human verification), 05-01 (1.95 min), 05-02 (2.07 min)
-- Phase 5 in progress: data layer and Waiting For UI complete
+- Last 5 plans: 04-04 (3 min, human verification), 05-01 (1.95 min), 05-02 (2.07 min), 05-03 (parallel with 05-02), 05-04 (2.17 min)
+- Phase 5 near complete: navigation integration done, ready for verification
 
 *Updated after each plan completion*
 
@@ -106,6 +106,9 @@ Recent decisions affecting current work:
 - Native date input for follow-up dates: HTML5 date input provides good UX without library dependencies (05-02)
 - Overdue red styling for waiting-for items: Strong visual indicator helps identify items needing follow-up (05-02)
 - "Resolve" terminology for waiting-for completion: More GTD-accurate than "complete" for delegation tracking (05-02)
+- No badges on Waiting For/Someday/Maybe sidebar links: Review-time concerns not action-now indicators like inbox count (05-04)
+- Single-key shortcuts 'w' and 's': Extends 'n'/'p' pattern for quick GTD list navigation (05-04)
+- Optional follow-up date in delegate step: GTD best practice to track when to check on delegated items (05-04)
 
 ### Pending Todos
 
@@ -122,5 +125,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-01-30
-Stopped at: Completed 05-02-PLAN.md (Waiting For UI). Ready for 05-03 (Someday/Maybe UI).
+Stopped at: Completed 05-04-PLAN.md (Navigation Integration). Ready for 05-05 (Human Verification).
 Resume file: None
