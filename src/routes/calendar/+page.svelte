@@ -2,8 +2,12 @@
 	import { onMount } from 'svelte';
 	import EventCalendar from '$lib/components/EventCalendar.svelte';
 	import IcsImport from '$lib/components/IcsImport.svelte';
+	import EventForm from '$lib/components/EventForm.svelte';
+	import CalendarSidePanel from '$lib/components/CalendarSidePanel.svelte';
 	import { calendarState } from '$lib/stores/calendar.svelte';
 	import { expandAllRecurrences } from '$lib/utils/recurrence';
+	import toast from 'svelte-5-french-toast';
+	import type { CalendarEvent } from '$lib/db/schema';
 
 	onMount(async () => {
 		await calendarState.loadEvents();
@@ -11,6 +15,14 @@
 
 	// Import modal state
 	let showImport = $state(false);
+
+	// Side panel state - default visible on desktop
+	let showSidePanel = $state(true);
+
+	// EventForm state
+	let showForm = $state(false);
+	let editingEvent = $state<CalendarEvent | undefined>(undefined);
+	let initialDate = $state<Date | undefined>(undefined);
 
 	// View switcher state - use derived from calendarState
 	const viewLabels = {
@@ -133,29 +145,57 @@
 		}
 	});
 
-	// Event handlers (for now, console.log - full EventForm comes in Plan 04)
-	function handleEventClick(event: any) {
-		console.log('Event clicked:', event);
+	// New Event button handler
+	function openNewEventForm() {
+		const now = new Date();
+		// Round to next hour
+		now.setMinutes(0, 0, 0);
+		now.setHours(now.getHours() + 1);
+
+		initialDate = now;
+		editingEvent = undefined;
+		showForm = true;
+	}
+
+	// Event handlers
+	function handleEventClick(event: CalendarEvent) {
+		editingEvent = event;
+		initialDate = undefined;
+		showForm = true;
 	}
 
 	function handleDateClick(date: Date) {
-		console.log('Date clicked:', date);
+		initialDate = date;
+		editingEvent = undefined;
+		showForm = true;
 	}
 
-	async function handleEventDrop(event: any, newStart: Date, newEnd: Date) {
-		console.log('Event dropped:', event, newStart, newEnd);
+	async function handleEventDrop(event: CalendarEvent, newStart: Date, newEnd: Date) {
 		await calendarState.updateEvent(event.id, {
 			startTime: newStart,
 			endTime: newEnd
 		});
+		toast.success('Event rescheduled');
 	}
 
-	async function handleEventResize(event: any, newStart: Date, newEnd: Date) {
-		console.log('Event resized:', event, newStart, newEnd);
+	async function handleEventResize(event: CalendarEvent, newStart: Date, newEnd: Date) {
 		await calendarState.updateEvent(event.id, {
 			startTime: newStart,
 			endTime: newEnd
 		});
+		toast.success('Event updated');
+	}
+
+	function handleFormSave() {
+		showForm = false;
+		editingEvent = undefined;
+		initialDate = undefined;
+	}
+
+	function handleFormClose() {
+		showForm = false;
+		editingEvent = undefined;
+		initialDate = undefined;
 	}
 
 	function openImport() {
@@ -173,52 +213,54 @@
 	}
 </script>
 
-<div class="flex flex-col h-full">
-	<!-- Toolbar -->
-	<div class="flex items-center justify-between px-6 py-4 border-b border-gray-200 dark:border-gray-800">
-		<!-- Left: Navigation -->
-		<div class="flex items-center gap-3">
-			<button
-				onclick={goBack}
-				class="p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300"
-				title="Previous"
-			>
-				<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-				</svg>
-			</button>
-			<button
-				onclick={goToToday}
-				class="px-3 py-1.5 text-sm font-medium rounded border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
-			>
-				Today
-			</button>
-			<button
-				onclick={goForward}
-				class="p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300"
-				title="Next"
-			>
-				<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-				</svg>
-			</button>
-			<h1 class="ml-4 text-lg font-semibold text-gray-900 dark:text-white">
-				{dateLabel}
-			</h1>
-		</div>
+<div class="flex h-full">
+	<!-- Main calendar area -->
+	<div class="flex-1 flex flex-col">
+		<!-- Toolbar -->
+		<div class="flex items-center justify-between px-6 py-4 border-b border-gray-200 dark:border-gray-800">
+			<!-- Left: New Event button + Navigation -->
+			<div class="flex items-center gap-3">
+				<button
+					onclick={openNewEventForm}
+					class="px-3 py-1.5 text-sm font-medium rounded bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white transition-colors flex items-center gap-1.5"
+					title="Create new event"
+				>
+					<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+					</svg>
+					New Event
+				</button>
+				<div class="w-px h-6 bg-gray-300 dark:bg-gray-700"></div>
+				<button
+					onclick={goBack}
+					class="p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300"
+					title="Previous"
+				>
+					<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+					</svg>
+				</button>
+				<button
+					onclick={goToToday}
+					class="px-3 py-1.5 text-sm font-medium rounded border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
+				>
+					Today
+				</button>
+				<button
+					onclick={goForward}
+					class="p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300"
+					title="Next"
+				>
+					<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+					</svg>
+				</button>
+				<h1 class="ml-4 text-lg font-semibold text-gray-900 dark:text-white">
+					{dateLabel}
+				</h1>
+			</div>
 
-		<!-- Right: Import button + View switcher -->
-		<div class="flex items-center gap-3">
-			<button
-				onclick={openImport}
-				class="px-3 py-1.5 text-sm font-medium rounded border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 flex items-center gap-2"
-			>
-				<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-				</svg>
-				Import .ics
-			</button>
-
+			<!-- Right: View switcher -->
 			<div class="flex gap-1 bg-gray-100 dark:bg-gray-800 rounded-lg p-1">
 				<button
 					onclick={() => calendarState.setView('timeGridDay')}
@@ -246,27 +288,37 @@
 				</button>
 			</div>
 		</div>
+
+		<!-- Calendar Container -->
+		<div class="flex-1 overflow-hidden relative">
+			{#if calendarState.events.length === 0 && !calendarState.isLoading}
+				<div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+					<p class="text-sm text-gray-500 dark:text-gray-400">
+						No events yet. Click a time slot to add one, or import from an .ics file.
+					</p>
+				</div>
+			{/if}
+			<EventCalendar
+				events={displayEvents}
+				currentView={calendarState.currentView}
+				currentDate={calendarState.currentDate}
+				onEventClick={handleEventClick}
+				onDateClick={handleDateClick}
+				onEventDrop={handleEventDrop}
+				onEventResize={handleEventResize}
+			/>
+		</div>
 	</div>
 
-	<!-- Calendar Container -->
-	<div class="flex-1 overflow-hidden relative">
-		{#if calendarState.events.length === 0 && !calendarState.isLoading}
-			<div class="absolute inset-0 flex items-center justify-center pointer-events-none">
-				<p class="text-sm text-gray-500 dark:text-gray-400">
-					No events yet. Click a time slot to add one, or import from an .ics file.
-				</p>
-			</div>
-		{/if}
-		<EventCalendar
-			events={displayEvents}
-			currentView={calendarState.currentView}
-			currentDate={calendarState.currentDate}
-			onEventClick={handleEventClick}
-			onDateClick={handleDateClick}
-			onEventDrop={handleEventDrop}
-			onEventResize={handleEventResize}
+	<!-- EventForm panel (right side) -->
+	{#if showForm}
+		<EventForm
+			event={editingEvent}
+			initialDate={initialDate}
+			onSave={handleFormSave}
+			onClose={handleFormClose}
 		/>
-	</div>
+	{/if}
 </div>
 
 <!-- Import Modal -->
