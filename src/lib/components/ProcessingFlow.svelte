@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import type { GTDItem, Context } from '../db/schema';
-	import { updateItem, deleteItem, getAllContexts } from '../db/operations';
+	import { updateItem, deleteItem, getAllContexts, getAllProjects, addProject } from '../db/operations';
 	import { storageStatus } from '../stores/storage.svelte';
 	import { toast } from 'svelte-5-french-toast';
 
@@ -12,10 +12,13 @@
 
 	let { item, onProcessed }: ProcessingFlowProps = $props();
 
-	type Step = 'actionable' | 'two-minute' | 'not-actionable' | 'delegate-or-defer' | 'delegate-input' | 'assign-context';
+	type Step = 'actionable' | 'two-minute' | 'not-actionable' | 'delegate-or-defer' | 'delegate-input' | 'assign-context' | 'select-project';
 	let step = $state<Step>('actionable');
 	let delegateName = $state('');
 	let contexts = $state<Context[]>([]);
+	let projects = $state<GTDItem[]>([]);
+	let selectedProjectId = $state<number | undefined>(undefined);
+	let newProjectTitle = $state('');
 	let afterContext: 'nextAction' | 'project' | null = null;
 
 	// Step indicators
@@ -25,6 +28,7 @@
 		'not-actionable': 'Step 2 of 3',
 		'delegate-or-defer': 'Step 3 of 3',
 		'delegate-input': 'Step 3 of 3',
+		'select-project': 'Select Project',
 		'assign-context': 'Choose Context'
 	};
 
@@ -40,8 +44,14 @@
 			step = 'two-minute';
 		} else if (step === 'delegate-input') {
 			step = 'delegate-or-defer';
-		} else if (step === 'assign-context') {
+		} else if (step === 'select-project') {
 			step = 'delegate-or-defer';
+		} else if (step === 'assign-context') {
+			if (afterContext === 'project') {
+				step = 'select-project';
+			} else {
+				step = 'delegate-or-defer';
+			}
 		}
 	}
 
@@ -83,10 +93,9 @@
 	}
 
 	async function project(context?: string) {
-		// Project assignment comes in Phase 4
-		await updateItem(item.id, { type: 'next-action', context });
+		await updateItem(item.id, { type: 'next-action', context, projectId: selectedProjectId });
 		storageStatus.recordSave();
-		toast.success('Added to Next Actions.');
+		toast.success(selectedProjectId ? 'Added to project as next action.' : 'Added to Next Actions.');
 		onProcessed();
 	}
 
@@ -95,9 +104,9 @@
 		step = 'assign-context';
 	}
 
-	function initiateProject() {
-		afterContext = 'project';
-		step = 'assign-context';
+	async function initiateProject() {
+		projects = await getAllProjects();
+		step = 'select-project';
 	}
 
 	async function assignContextAndSave(contextName?: string) {
@@ -279,6 +288,70 @@
 					Delegate
 				</button>
 			</form>
+		</div>
+		<button
+			onclick={goBack}
+			class="text-xs text-blue-600 dark:text-blue-400 hover:underline"
+		>
+			← Back
+		</button>
+	{/if}
+
+	<!-- Select Project -->
+	{#if step === 'select-project'}
+		<div class="mb-4">
+			<p class="text-base font-semibold text-gray-900 dark:text-gray-100 mb-3">
+				Which project does this belong to?
+			</p>
+			<div class="flex flex-col gap-2">
+				{#each projects as proj (proj.id)}
+					<button
+						onclick={() => { selectedProjectId = proj.id; afterContext = 'project'; step = 'assign-context'; }}
+						class="px-4 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 rounded-md transition-colors text-left"
+					>
+						{proj.title}
+					</button>
+				{/each}
+
+				{#if projects.length > 0}
+					<div class="border-t border-gray-200 dark:border-gray-700 my-2"></div>
+				{/if}
+
+				<div class="space-y-2">
+					<p class="text-sm font-medium text-gray-700 dark:text-gray-300">
+						Create new project:
+					</p>
+					<input
+						type="text"
+						bind:value={newProjectTitle}
+						placeholder="New project outcome..."
+						class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+					/>
+					<button
+						onclick={async () => {
+							if (!newProjectTitle.trim()) return;
+							const newId = await addProject(newProjectTitle.trim());
+							selectedProjectId = newId;
+							newProjectTitle = '';
+							afterContext = 'project';
+							step = 'assign-context';
+						}}
+						disabled={!newProjectTitle.trim()}
+						class="w-full px-4 py-2.5 text-sm font-medium text-white bg-green-600 hover:bg-green-700 dark:bg-green-500 dark:hover:bg-green-600 disabled:opacity-50 disabled:cursor-not-allowed rounded-md transition-colors"
+					>
+						Create & Link
+					</button>
+				</div>
+
+				<div class="border-t border-gray-200 dark:border-gray-700 my-2"></div>
+
+				<button
+					onclick={() => { selectedProjectId = undefined; afterContext = 'project'; step = 'assign-context'; }}
+					class="px-4 py-2.5 text-sm font-medium text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 rounded-md transition-colors"
+				>
+					Skip (no project)
+				</button>
+			</div>
 		</div>
 		<button
 			onclick={goBack}
