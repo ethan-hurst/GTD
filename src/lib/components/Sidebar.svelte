@@ -76,6 +76,29 @@
 		<div class="border-t border-gray-200 dark:border-gray-700 my-2"></div>
 
 		<a
+			href="/waiting"
+			class="block px-4 py-2 rounded-md text-sm font-medium transition-colors
+				{$page.url.pathname.startsWith('/waiting')
+					? 'bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-gray-100'
+					: 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800'}"
+		>
+			Waiting For
+		</a>
+
+		<a
+			href="/someday"
+			class="block px-4 py-2 rounded-md text-sm font-medium transition-colors
+				{$page.url.pathname.startsWith('/someday')
+					? 'bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-gray-100'
+					: 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800'}"
+		>
+			Someday/Maybe
+		</a>
+
+		<!-- Separator -->
+		<div class="border-t border-gray-200 dark:border-gray-700 my-2"></div>
+
+		<a
 			href="/settings"
 			class="block px-4 py-2 rounded-md text-sm font-medium transition-colors
 				{$page.url.pathname === '/settings'

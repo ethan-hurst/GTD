@@ -63,6 +63,20 @@
 			goto('/projects');
 			return;
 		}
+
+		// w: Navigate to Waiting For
+		if (event.key === 'w') {
+			event.preventDefault();
+			goto('/waiting');
+			return;
+		}
+
+		// s: Navigate to Someday/Maybe
+		if (event.key === 's') {
+			event.preventDefault();
+			goto('/someday');
+			return;
+		}
 	}
 
 	onMount(() => {
