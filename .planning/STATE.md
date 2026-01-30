@@ -9,19 +9,19 @@ See: .planning/PROJECT.md (updated 2026-01-30)
 
 ## Current Position
 
-Phase: 7 of 8 (GTD Onboarding) — NOT STARTED
-Plan: 0 of TBD in current phase
-Status: Ready to plan
-Last activity: 2026-01-30 — Completed Phase 6 (Weekly Review)
+Phase: 7 of 8 (GTD Onboarding) — IN PROGRESS
+Plan: 1 of 5 in current phase
+Status: In progress
+Last activity: 2026-01-30 — Completed 07-01-PLAN.md
 
-Progress: [██████████████████████░░░░] 26/26+ plans complete (6/8 phases)
+Progress: [███████████████████████░░░] 27/31 plans complete (87%)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 23
+- Total plans completed: 24
 - Average duration: ~2 min
-- Total execution time: ~0.8 hours
+- Total execution time: ~0.85 hours
 
 **By Phase:**
 
@@ -33,10 +33,11 @@ Progress: [██████████████████████░
 | 04 - Projects Management | 4/4 | 8.9 min | 2.2 min |
 | 05 - Waiting For & Someday/Maybe | 5/5 | ~11 min | 2.2 min |
 | 06 - Weekly Review | 4/4 | ~6 min | ~1.5 min |
+| 07 - GTD Onboarding | 1/5 | 2 min | 2.0 min |
 
 **Recent Trend:**
-- Last 5 plans: 06-01 (2 min), 06-02 (2 min), 06-03 (2 min), 06-04 (0 min, user pre-approved)
-- Phase 6 complete: all 5 success criteria verified
+- Last 5 plans: 06-02 (2 min), 06-03 (2 min), 06-04 (0 min, user pre-approved), 07-01 (2 min)
+- Phase 7 in progress: 1/5 plans complete
 
 *Updated after each plan completion*
 
@@ -121,6 +122,11 @@ Recent decisions affecting current work:
 - Red overdue badge for weekly review: >7 days or never completed triggers red urgency indicator (06-03)
 - 'r' keyboard shortcut for review: Extends single-key navigation pattern (n/p/w/s/r) (06-03)
 - disableForReducedMotion in confetti: Respects prefers-reduced-motion accessibility setting (06-03)
+- OnboardingState mirrors WeeklyReviewState pattern: Consistency across app state machines with $state runes, derived values, new Set() reactivity (07-01)
+- Safari eviction fallback for onboarding: db.items.count() > 0 proxy for completed onboarding if flags lost (07-01)
+- Feature tracking via settings table: feature_visited_{feature} keys instead of separate table (07-01)
+- 5-step onboarding wizard: welcome, capture, process, organize, review-intro matching GTD methodology (07-01)
+- svelte-pops for tooltips: Wraps Floating UI for Svelte 5 with Tailwind v4 support (07-01)
 
 ### Pending Todos
 
@@ -137,5 +143,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-01-30
-Stopped at: Completed Phase 6 (Weekly Review) — all 4 plans executed, verified
+Stopped at: Completed 07-01-PLAN.md (Onboarding Foundation)
 Resume file: None
