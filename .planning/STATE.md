@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-01-30)
 ## Current Position
 
 Phase: 7 of 8 (GTD Onboarding) — IN PROGRESS
-Plan: 3 of 5 in current phase
+Plan: 4 of 5 in current phase
 Status: In progress
-Last activity: 2026-01-30 — Completed 07-03-PLAN.md
+Last activity: 2026-01-30 — Completed 07-04-PLAN.md
 
-Progress: [███████████████████████░░░] 29/31 plans complete (94%)
+Progress: [███████████████████████░░░] 30/31 plans complete (97%)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 26
+- Total plans completed: 30
 - Average duration: ~2 min
-- Total execution time: ~0.95 hours
+- Total execution time: ~1.0 hours
 
 **By Phase:**
 
@@ -33,11 +33,11 @@ Progress: [███████████████████████
 | 04 - Projects Management | 4/4 | 8.9 min | 2.2 min |
 | 05 - Waiting For & Someday/Maybe | 5/5 | ~11 min | 2.2 min |
 | 06 - Weekly Review | 4/4 | ~6 min | ~1.5 min |
-| 07 - GTD Onboarding | 3/5 | 7 min | 2.3 min |
+| 07 - GTD Onboarding | 4/5 | 10 min | 2.5 min |
 
 **Recent Trend:**
-- Last 5 plans: 06-04 (0 min, user pre-approved), 07-01 (2 min), 07-02 (2 min), 07-03 (3 min)
-- Phase 7 in progress: 3/5 plans complete
+- Last 5 plans: 07-01 (2 min), 07-02 (2 min), 07-03 (3 min), 07-04 (3 min)
+- Phase 7 in progress: 4/5 plans complete
 
 *Updated after each plan completion*
 
@@ -136,6 +136,9 @@ Recent decisions affecting current work:
 - Two content sets (full vs reduced): Full explains GTD concepts, reduced explains UI only for skip users (07-03)
 - Pulsing blue dot indicator: Non-intrusive visual cue for available hints (07-03)
 - Hints disappear only on feature use: Not dismissible via close button, ensures education happens (07-03)
+- Non-blocking onboarding load: IIFE async pattern in onMount to avoid blocking theme cleanup return (07-04)
+- Track only after onboarding complete: Prevent noise during wizard, only track post-completion/skip (07-04)
+- Position hints to the right: Hints appear in main content area, not overlapping sidebar (07-04)
 
 ### Pending Todos
 
@@ -152,5 +155,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-01-30
-Stopped at: Completed 07-03-PLAN.md (Contextual Hints)
+Stopped at: Completed 07-04-PLAN.md (Onboarding Integration)
 Resume file: None
