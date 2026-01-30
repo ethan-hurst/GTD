@@ -143,7 +143,7 @@
 					</span>
 				{/if}
 
-				<!-- Project badge (placeholder) -->
+				<!-- Project badge -->
 				{#if item.projectId}
 					<button
 						onclick={handleBadgeClick}

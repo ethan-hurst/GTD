@@ -84,7 +84,7 @@
 	}
 
 	async function reference() {
-		// TODO Phase 5+: implement reference material category
+		// Reference items stored as someday type
 		await updateItem(item.id, { type: 'someday' });
 		storageStatus.recordSave();
 		toast.success('Saved for reference.');
