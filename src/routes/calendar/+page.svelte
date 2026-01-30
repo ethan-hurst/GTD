@@ -260,32 +260,56 @@
 				</h1>
 			</div>
 
-			<!-- Right: View switcher -->
-			<div class="flex gap-1 bg-gray-100 dark:bg-gray-800 rounded-lg p-1">
+			<!-- Right: Import button, Actions toggle, View switcher -->
+			<div class="flex items-center gap-3">
 				<button
-					onclick={() => calendarState.setView('timeGridDay')}
-					class="px-3 py-1.5 text-sm font-medium rounded transition-colors {calendarState.currentView === 'timeGridDay'
-						? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm'
-						: 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'}"
+					onclick={openImport}
+					class="px-3 py-1.5 text-sm font-medium rounded border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 flex items-center gap-2"
+					title="Import .ics calendar file"
 				>
-					Day
+					<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+					</svg>
+					Import
 				</button>
+
 				<button
-					onclick={() => calendarState.setView('timeGridWeek')}
-					class="px-3 py-1.5 text-sm font-medium rounded transition-colors {calendarState.currentView === 'timeGridWeek'
-						? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm'
-						: 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'}"
+					onclick={() => showSidePanel = !showSidePanel}
+					class="px-3 py-1.5 text-sm font-medium rounded border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 flex items-center gap-2 {showSidePanel ? 'ring-2 ring-blue-500 ring-offset-2 dark:ring-offset-gray-900' : ''}"
+					title="Toggle next actions panel"
 				>
-					Week
+					<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+					</svg>
+					Actions
 				</button>
-				<button
-					onclick={() => calendarState.setView('dayGridMonth')}
-					class="px-3 py-1.5 text-sm font-medium rounded transition-colors {calendarState.currentView === 'dayGridMonth'
-						? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm'
-						: 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'}"
-				>
-					Month
-				</button>
+
+				<div class="flex gap-1 bg-gray-100 dark:bg-gray-800 rounded-lg p-1">
+					<button
+						onclick={() => calendarState.setView('timeGridDay')}
+						class="px-3 py-1.5 text-sm font-medium rounded transition-colors {calendarState.currentView === 'timeGridDay'
+							? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm'
+							: 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'}"
+					>
+						Day
+					</button>
+					<button
+						onclick={() => calendarState.setView('timeGridWeek')}
+						class="px-3 py-1.5 text-sm font-medium rounded transition-colors {calendarState.currentView === 'timeGridWeek'
+							? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm'
+							: 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'}"
+					>
+						Week
+					</button>
+					<button
+						onclick={() => calendarState.setView('dayGridMonth')}
+						class="px-3 py-1.5 text-sm font-medium rounded transition-colors {calendarState.currentView === 'dayGridMonth'
+							? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm'
+							: 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'}"
+					>
+						Month
+					</button>
+				</div>
 			</div>
 		</div>
 
@@ -310,13 +334,20 @@
 		</div>
 	</div>
 
-	<!-- EventForm panel (right side) -->
+	<!-- Right panels: EventForm OR CalendarSidePanel -->
 	{#if showForm}
+		<!-- EventForm takes priority when open -->
 		<EventForm
 			event={editingEvent}
 			initialDate={initialDate}
 			onSave={handleFormSave}
 			onClose={handleFormClose}
+		/>
+	{:else if showSidePanel}
+		<!-- CalendarSidePanel shows when EventForm is not open -->
+		<CalendarSidePanel
+			currentView={calendarState.currentView}
+			currentDate={calendarState.currentDate}
 		/>
 	{/if}
 </div>
