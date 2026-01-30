@@ -41,11 +41,30 @@ export interface AppSettings {
 	updatedAt: Date;
 }
 
+export interface CalendarEvent {
+	id: number;
+	title: string;
+	startTime: Date;
+	endTime: Date;
+	allDay?: boolean;
+	location?: string;
+	notes?: string;
+	color?: string;
+	projectId?: number;
+	source?: string;           // 'manual' | 'ics-import' | filename
+	rrule?: string;            // RFC 5545 RRULE string
+	recurrenceId?: number;     // Links to parent event for exceptions
+	exceptionDates?: string[]; // ISO date strings for excluded occurrences
+	created: Date;
+	modified: Date;
+}
+
 export const db = new Dexie("GTDDatabase") as Dexie & {
 	items: EntityTable<GTDItem, "id">;
 	lists: EntityTable<GTDList, "id">;
 	contexts: EntityTable<Context, "id">;
 	settings: EntityTable<AppSettings, "id">;
+	events: EntityTable<CalendarEvent, "id">;
 };
 
 db.version(1).stores({
@@ -75,6 +94,14 @@ db.version(5).stores({
 	lists: "++id, name, type",
 	contexts: "++id, name, sortOrder",
 	settings: "++id, &key, updatedAt"
+});
+
+db.version(6).stores({
+	items: "++id, type, created, modified, *searchWords, context, projectId, sortOrder, completedAt, followUpDate, category",
+	lists: "++id, name, type",
+	contexts: "++id, name, sortOrder",
+	settings: "++id, &key, updatedAt",
+	events: "++id, startTime, endTime, projectId, source, recurrenceId"
 });
 
 // Hooks for automatic searchWords population
