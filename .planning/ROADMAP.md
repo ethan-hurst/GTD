@@ -121,11 +121,13 @@ Plans:
   3. User can see when they last completed a review (time-since-last-review indicator)
   4. Review shows progress through steps with completion percentage
   5. User receives completion celebration when review finishes
-**Plans**: TBD
+**Plans**: 4 plans
 
 Plans:
-- [ ] 06-01: TBD
-- [ ] 06-02: TBD
+- [ ] 06-01-PLAN.md — Data layer: schema v5 settings table, settings CRUD, WeeklyReviewState store, time-since utility
+- [ ] 06-02-PLAN.md — Review wizard UI: WeeklyReviewWizard component with 8-step checklist, progress bar, step navigation, /review route
+- [ ] 06-03-PLAN.md — Integration: sidebar nav with overdue badge, 'r' keyboard shortcut, canvas-confetti celebration, toast notification
+- [ ] 06-04-PLAN.md — Human verification of complete weekly review feature
 
 ### Phase 7: GTD Onboarding
 **Goal**: First-time user understands GTD concepts and captures first task within 60 seconds
@@ -168,6 +170,6 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8
 | 3. Next Actions & Contexts | 4/4 | Complete | 2026-01-30 |
 | 4. Projects Management | 4/4 | Complete | 2026-01-30 |
 | 5. Waiting For & Someday/Maybe | 5/5 | Complete | 2026-01-30 |
-| 6. Weekly Review | 0/TBD | Not started | - |
+| 6. Weekly Review | 0/4 | Not started | - |
 | 7. GTD Onboarding | 0/TBD | Not started | - |
 | 8. Calendar View | 0/TBD | Not started | - |
