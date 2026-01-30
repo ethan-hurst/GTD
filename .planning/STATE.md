@@ -9,19 +9,19 @@ See: .planning/PROJECT.md (updated 2026-01-30)
 
 ## Current Position
 
-Phase: 8 of 8 (Calendar View) — NOT STARTED
-Plan: 0 of TBD in current phase
-Status: Ready to plan
-Last activity: 2026-01-30 — Completed Phase 7 (GTD Onboarding)
+Phase: 8 of 8 (Calendar View) — IN PROGRESS
+Plan: 1 of 7 in current phase
+Status: In progress
+Last activity: 2026-01-31 — Completed 08-01-PLAN.md (Calendar Data Foundation)
 
-Progress: [██████████████████████████░] 31/31+ plans complete (7/8 phases)
+Progress: [██████████████████████████░] 32/38 plans complete (7/8 phases)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 31
+- Total plans completed: 32
 - Average duration: ~2 min
-- Total execution time: ~1.05 hours
+- Total execution time: ~1.1 hours
 
 **By Phase:**
 
@@ -34,10 +34,11 @@ Progress: [███████████████████████
 | 05 - Waiting For & Someday/Maybe | 5/5 | ~11 min | 2.2 min |
 | 06 - Weekly Review | 4/4 | ~6 min | ~1.5 min |
 | 07 - GTD Onboarding | 5/5 | ~12 min | 2.4 min |
+| 08 - Calendar View | 1/7 | 2 min | 2 min |
 
 **Recent Trend:**
-- Last 5 plans: 07-01 (2 min), 07-02 (2 min), 07-03 (3 min), 07-04 (3 min), 07-05 (human verify)
-- Phase 7 complete: all 5 success criteria verified
+- Last 5 plans: 07-02 (2 min), 07-03 (3 min), 07-04 (3 min), 07-05 (human verify), 08-01 (2 min)
+- Phase 8 started: calendar data foundation complete
 
 *Updated after each plan completion*
 
@@ -139,6 +140,11 @@ Recent decisions affecting current work:
 - Non-blocking onboarding load: IIFE async pattern in onMount to avoid blocking theme cleanup return (07-04)
 - Track only after onboarding complete: Prevent noise during wizard, only track post-completion/skip (07-04)
 - Position hints to the right: Hints appear in main content area, not overlapping sidebar (07-04)
+- @event-calendar/core over FullCalendar: Smaller bundle (35KB vs 150KB+), zero dependencies, native Svelte 5 support (08-01)
+- exceptionDates as string array: Store ISO date strings to avoid IndexedDB Date serialization issues (08-01)
+- Store base event with RRULE, expand on-demand: Normalize recurring events, delegate expansion to rrule.js at render time (08-01)
+- CalendarState follows ActionState pattern: Class-based $state runes store for consistency across app (08-01)
+- Schema v6 indexes: startTime, endTime, projectId, source, recurrenceId optimize date range queries and project filtering (08-01)
 
 ### Pending Todos
 
@@ -154,6 +160,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-01-30
-Stopped at: Completed Phase 7 (GTD Onboarding) — all 5 plans executed, verified
+Last session: 2026-01-31
+Stopped at: Completed 08-01-PLAN.md (Calendar Data Foundation)
 Resume file: None
