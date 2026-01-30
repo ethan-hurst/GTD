@@ -27,9 +27,9 @@ export class InboxState {
 	toggleSelection(id: number) {
 		const index = this.selectedIds.indexOf(id);
 		if (index === -1) {
-			this.selectedIds.push(id);
+			this.selectedIds = [...this.selectedIds, id];
 		} else {
-			this.selectedIds.splice(index, 1);
+			this.selectedIds = this.selectedIds.filter(sid => sid !== id);
 		}
 	}
 

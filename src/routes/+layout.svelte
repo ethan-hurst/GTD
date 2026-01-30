@@ -38,6 +38,15 @@
 		if (modifierKey && event.key === 'i') {
 			event.preventDefault();
 			goto('/');
+			return;
+		}
+
+		// /: Focus inbox capture input
+		if (event.key === '/') {
+			event.preventDefault();
+			goto('/').then(() => {
+				window.dispatchEvent(new CustomEvent('focus-inbox-capture'));
+			});
 		}
 	}
 

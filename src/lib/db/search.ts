@@ -29,10 +29,21 @@ export async function searchItems(query: string): Promise<GTDItem[]> {
 	const firstWord = queryWords[0];
 
 	// Query using prefix matching on the multi-valued searchWords index
-	let results = await db.items
-		.where('searchWords')
-		.startsWithIgnoreCase(firstWord)
-		.toArray();
+	// Fall back to full scan if index query fails (e.g. corrupt records)
+	let results: GTDItem[];
+	try {
+		results = await db.items
+			.where('searchWords')
+			.startsWithIgnoreCase(firstWord)
+			.toArray();
+	} catch {
+		// Fallback: scan all items and match against title+notes
+		const allItems = await db.items.toArray();
+		results = allItems.filter(item => {
+			const text = `${item.title} ${item.notes}`.toLowerCase();
+			return text.includes(firstWord);
+		});
+	}
 
 	// Filter to active types only
 	const activeTypes: GTDItem['type'][] = ['inbox', 'next-action', 'project', 'waiting'];

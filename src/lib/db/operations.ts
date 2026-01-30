@@ -4,9 +4,8 @@ export async function addItem(item: Omit<GTDItem, 'id' | 'created' | 'modified'>
 	return await db.items.add({
 		...item,
 		created: new Date(),
-		modified: new Date(),
-		id: 0
-	});
+		modified: new Date()
+	} as GTDItem);
 }
 
 export async function updateItem(id: number, changes: Partial<GTDItem>): Promise<number> {

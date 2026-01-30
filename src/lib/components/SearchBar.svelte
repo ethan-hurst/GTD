@@ -8,15 +8,6 @@
 	let selectedIndex = $state(-1);
 	let searchEl: HTMLInputElement;
 
-	// Debounce helper
-	function debounce<T extends (...args: any[]) => any>(fn: T, delay: number) {
-		let timeoutId: ReturnType<typeof setTimeout>;
-		return (...args: Parameters<T>) => {
-			clearTimeout(timeoutId);
-			timeoutId = setTimeout(() => fn(...args), delay);
-		};
-	}
-
 	// Perform search and update results
 	async function performSearch(searchQuery: string) {
 		if (!searchQuery.trim()) {
@@ -25,19 +16,23 @@
 			return;
 		}
 
-		const items = await searchItems(searchQuery);
-		results = items;
-		isOpen = items.length > 0;
-		selectedIndex = -1;
+		try {
+			const items = await searchItems(searchQuery);
+			results = items;
+			isOpen = items.length > 0;
+			selectedIndex = -1;
+		} catch {
+			results = [];
+			isOpen = false;
+		}
 	}
-
-	// Create debounced search function
-	const debouncedSearch = debounce(performSearch, 300);
 
 	// Effect to trigger search when query changes
 	$effect(() => {
-		if (query.length > 0) {
-			debouncedSearch(query);
+		const q = query;
+		if (q.length > 0) {
+			const timeout = setTimeout(() => performSearch(q), 300);
+			return () => clearTimeout(timeout);
 		} else {
 			results = [];
 			isOpen = false;

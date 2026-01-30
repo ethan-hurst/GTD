@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { tick } from 'svelte';
+	import { tick, onMount } from 'svelte';
 	import toast from 'svelte-5-french-toast';
 	import { addItem } from '../db/operations';
 	import { inboxState } from '../stores/inbox.svelte';
@@ -8,30 +8,42 @@
 	let title = $state('');
 	let inputEl: HTMLInputElement;
 
+	onMount(() => {
+		function handleFocusCapture() {
+			inputEl?.focus();
+		}
+		window.addEventListener('focus-inbox-capture', handleFocusCapture);
+		return () => window.removeEventListener('focus-inbox-capture', handleFocusCapture);
+	});
+
 	async function handleSubmit(event: Event) {
 		event.preventDefault();
 
 		const trimmedTitle = title.trim();
 		if (!trimmedTitle) return;
 
-		// Add item to database
-		await addItem({
-			title: trimmedTitle,
-			type: 'inbox',
-			notes: ''
-		});
+		try {
+			// Add item to database
+			await addItem({
+				title: trimmedTitle,
+				type: 'inbox',
+				notes: ''
+			});
 
-		// Update storage status
-		storageStatus.recordSave();
+			// Update storage status
+			storageStatus.recordSave();
 
-		// Clear input and show toast
-		title = '';
-		toast.success('Captured', { duration: 1500 });
+			// Clear input and show toast
+			title = '';
+			toast.success('Captured', { duration: 1500 });
 
-		// Maintain focus and reload items
-		await tick();
-		inputEl.focus();
-		await inboxState.loadItems();
+			// Maintain focus and reload items
+			await tick();
+			inputEl.focus();
+			await inboxState.loadItems();
+		} catch {
+			toast.error('Failed to capture item. Please try again.');
+		}
 	}
 </script>
 
@@ -50,6 +62,6 @@
 		/>
 	</form>
 	<div class="mt-2">
-		<p class="text-xs text-gray-400">Press Enter to capture</p>
+		<p class="text-xs text-gray-400">Press Enter to capture · Press <kbd>/</kbd> from anywhere to focus</p>
 	</div>
 </div>
