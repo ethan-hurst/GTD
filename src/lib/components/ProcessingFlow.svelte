@@ -15,6 +15,7 @@
 	type Step = 'actionable' | 'two-minute' | 'not-actionable' | 'delegate-or-defer' | 'delegate-input' | 'assign-context' | 'select-project';
 	let step = $state<Step>('actionable');
 	let delegateName = $state('');
+	let followUpDateStr = $state('');
 	let contexts = $state<Context[]>([]);
 	let projects = $state<GTDItem[]>([]);
 	let selectedProjectId = $state<number | undefined>(undefined);
@@ -119,7 +120,12 @@
 
 	async function delegate() {
 		if (!delegateName.trim()) return;
-		await updateItem(item.id, { type: 'waiting', delegatedTo: delegateName.trim() });
+		const followUpDate = followUpDateStr ? new Date(followUpDateStr) : undefined;
+		await updateItem(item.id, {
+			type: 'waiting',
+			delegatedTo: delegateName.trim(),
+			followUpDate
+		});
 		storageStatus.recordSave();
 		toast.success('Moved to Waiting For.');
 		onProcessed();
@@ -280,6 +286,14 @@
 					class="px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
 					autofocus
 				/>
+				<div class="flex flex-col gap-1">
+					<input
+						type="date"
+						bind:value={followUpDateStr}
+						class="px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+					/>
+					<p class="text-xs text-gray-500 dark:text-gray-400">Optional: When to follow up</p>
+				</div>
 				<button
 					type="submit"
 					disabled={!delegateName.trim()}
