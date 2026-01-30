@@ -10,11 +10,11 @@ See: .planning/PROJECT.md (updated 2026-01-30)
 ## Current Position
 
 Phase: 8 of 8 (Calendar View) — IN PROGRESS
-Plan: 4 of 7 in current phase
+Plan: 5 of 7 in current phase
 Status: In progress
-Last activity: 2026-01-31 — Completed 08-04-PLAN.md (Event Form and Interactions)
+Last activity: 2026-01-31 — Completed 08-05-PLAN.md (ICS Import & Next Actions Panel)
 
-Progress: [██████████████████████████░] 35/38 plans complete (7/8 phases)
+Progress: [██████████████████████████░░] 36/38 plans complete (7/8 phases)
 
 ## Performance Metrics
 
@@ -34,11 +34,11 @@ Progress: [███████████████████████
 | 05 - Waiting For & Someday/Maybe | 5/5 | ~11 min | 2.2 min |
 | 06 - Weekly Review | 4/4 | ~6 min | ~1.5 min |
 | 07 - GTD Onboarding | 5/5 | ~12 min | 2.4 min |
-| 08 - Calendar View | 4/7 | 12.4 min | 3.1 min |
+| 08 - Calendar View | 5/7 | 17.4 min | 3.5 min |
 
 **Recent Trend:**
-- Last 5 plans: 07-05 (human verify), 08-01 (2 min), 08-02 (3.4 min), 08-03 (3 min), 08-04 (4 min)
-- Phase 8 progress: event form complete, ready for import/side panel features
+- Last 5 plans: 08-01 (2 min), 08-02 (3.4 min), 08-03 (3 min), 08-04 (4 min), 08-05 (5 min)
+- Phase 8 progress: ICS import and next actions panel complete, calendar view nearly feature-complete
 
 *Updated after each plan completion*
 
@@ -157,6 +157,12 @@ Recent decisions affecting current work:
 - Preset color swatches over color input: 8 colors with visual ring selection, simpler UX than free-form picker (08-04)
 - Basic recurrence only: Daily/weekly/monthly RRULE strings, advanced patterns deferred (08-04)
 - Toast notifications for drag operations: Immediate feedback for reschedule/resize actions (08-04)
+- Use expandAllRecurrences in derived computed value: Automatic recurrence expansion on view/date changes (08-05)
+- Side panel hides when EventForm is open: Prevents cramped dual-panel layout (08-05)
+- Import button and Actions toggle in toolbar: Easy access to key features (08-05)
+- Side panel defaults visible on desktop: Immediate GTD context for calendar-based planning (08-05)
+- Modal with file input and drag-and-drop for ICS uploads: Familiar pattern with preview before import (08-05)
+- Context-grouped action lists with completion and undo: Reusable pattern for GTD methodology (08-05)
 
 ### Pending Todos
 
@@ -173,5 +179,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-01-31
-Stopped at: Completed 08-04-PLAN.md (Event Form and Interactions)
+Stopped at: Completed 08-05-PLAN.md (ICS Import & Next Actions Panel)
 Resume file: None
