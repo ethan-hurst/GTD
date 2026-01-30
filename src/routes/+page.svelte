@@ -12,14 +12,46 @@
 <div class="max-w-4xl mx-auto p-8">
 	<!-- Header -->
 	<div class="flex items-center justify-between mb-6">
-		<h1 class="text-2xl font-bold text-gray-900 dark:text-gray-100">Inbox</h1>
+		<h1 class="text-2xl font-bold text-gray-900 dark:text-gray-100">
+			{#if inboxState.isProcessing}
+				Processing Inbox
+			{:else}
+				Inbox
+			{/if}
+		</h1>
 		<span class="text-sm text-gray-500 dark:text-gray-400">
 			{inboxState.itemCount} {inboxState.itemCount === 1 ? 'item' : 'items'}
 		</span>
 	</div>
 
-	<!-- Capture Input -->
-	<InboxCapture />
+	<!-- Process Inbox Button -->
+	{#if inboxState.itemCount > 0 && !inboxState.isProcessing}
+		<div class="mb-6">
+			<button
+				onclick={() => inboxState.startProcessing()}
+				class="w-full px-4 py-3 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 rounded-md transition-colors"
+			>
+				Process Inbox ({inboxState.itemCount})
+			</button>
+		</div>
+	{/if}
+
+	<!-- Stop Processing Button -->
+	{#if inboxState.isProcessing}
+		<div class="mb-6">
+			<button
+				onclick={() => { inboxState.isProcessing = false; inboxState.expandedId = null; }}
+				class="w-full px-4 py-3 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 rounded-md transition-colors"
+			>
+				Stop Processing
+			</button>
+		</div>
+	{/if}
+
+	<!-- Capture Input (hidden during processing) -->
+	{#if !inboxState.isProcessing}
+		<InboxCapture />
+	{/if}
 
 	<!-- Item List or Empty State -->
 	{#if inboxState.itemCount > 0}

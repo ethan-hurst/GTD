@@ -3,6 +3,8 @@
 	import { formatRelativeTime } from '../utils/time';
 	import { bulkDeleteItems } from '../db/operations';
 	import { storageStatus } from '../stores/storage.svelte';
+	import { slide } from 'svelte/transition';
+	import ProcessingFlow from './ProcessingFlow.svelte';
 
 	async function handleBulkDelete() {
 		if (inboxState.selectedIds.length === 0) return;
@@ -63,40 +65,57 @@
 	<!-- Items List -->
 	<div class="space-y-2">
 		{#each inboxState.items as item (item.id)}
-			<div
-				class="flex items-start gap-3 p-3 rounded-md hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors cursor-pointer
-					{inboxState.expandedId === item.id ? 'border-l-2 border-blue-500' : ''}"
-				onclick={(e) => {
-					// Don't expand if clicking checkbox
-					if ((e.target as HTMLElement).tagName !== 'INPUT') {
-						inboxState.expandItem(item.id);
-					}
-				}}
-			>
-				<!-- Checkbox -->
-				<input
-					type="checkbox"
-					checked={inboxState.selectedIds.includes(item.id)}
-					onchange={() => inboxState.toggleSelection(item.id)}
-					class="mt-1 w-4 h-4 rounded border-gray-300 dark:border-gray-600 text-blue-600 focus:ring-blue-500 focus:ring-offset-0 cursor-pointer"
-				/>
-
-				<!-- Content -->
-				<div class="flex-1 min-w-0">
-					<div class="flex items-start justify-between gap-2">
-						<h3 class="font-medium text-gray-900 dark:text-gray-100 break-words">
-							{item.title}
-						</h3>
-						<span class="text-xs text-gray-400 whitespace-nowrap flex-shrink-0">
-							{formatRelativeTime(item.created)}
-						</span>
-					</div>
-					{#if item.notes}
-						<p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
-							{getFirstLineOfNotes(item.notes)}
-						</p>
+			<div class="{inboxState.expandedId === item.id ? 'border-l-4 border-blue-500 rounded-md' : 'rounded-md'}">
+				<div
+					class="flex items-start gap-3 p-3 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors cursor-pointer"
+					onclick={(e) => {
+						// Don't expand if clicking checkbox
+						if ((e.target as HTMLElement).tagName !== 'INPUT') {
+							inboxState.expandItem(item.id);
+						}
+					}}
+				>
+					<!-- Checkbox (hidden when expanded or when processing) -->
+					{#if inboxState.expandedId !== item.id}
+						<input
+							type="checkbox"
+							checked={inboxState.selectedIds.includes(item.id)}
+							onchange={() => inboxState.toggleSelection(item.id)}
+							disabled={inboxState.isProcessing}
+							class="mt-1 w-4 h-4 rounded border-gray-300 dark:border-gray-600 text-blue-600 focus:ring-blue-500 focus:ring-offset-0 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+						/>
+					{:else}
+						<!-- Spacer to maintain alignment when checkbox is hidden -->
+						<div class="w-4"></div>
 					{/if}
+
+					<!-- Content -->
+					<div class="flex-1 min-w-0">
+						<div class="flex items-start justify-between gap-2">
+							<h3 class="font-medium text-gray-900 dark:text-gray-100 break-words">
+								{item.title}
+							</h3>
+							<span class="text-xs text-gray-400 whitespace-nowrap flex-shrink-0">
+								{formatRelativeTime(item.created)}
+							</span>
+						</div>
+						{#if item.notes}
+							<p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
+								{getFirstLineOfNotes(item.notes)}
+							</p>
+						{/if}
+					</div>
 				</div>
+
+				<!-- Processing Flow (inline expansion) -->
+				{#if inboxState.expandedId === item.id}
+					<div transition:slide={{ duration: 200 }} class="border-t border-gray-200 dark:border-gray-700">
+						<ProcessingFlow
+							{item}
+							onProcessed={() => inboxState.advanceToNext()}
+						/>
+					</div>
+				{/if}
 			</div>
 		{/each}
 	</div>
