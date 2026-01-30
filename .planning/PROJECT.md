@@ -27,14 +27,18 @@ Nothing falls through the cracks — every commitment is captured, clarified, an
 
 ### Active
 
-- [ ] Two-way Outlook/Teams calendar sync — tasks with dates appear on calendar, calendar events visible in planner
-- [ ] Defer dates (start dates) that hide tasks until they become relevant
-- [ ] Natural language parsing for quick capture ("buy milk tomorrow @errands")
-- [ ] Template projects for recurring workflows
-- [ ] Sequential vs parallel project types
-- [ ] Custom perspectives (saved filter combinations)
-- [ ] Energy/time estimates for filtering next actions
-- [ ] Review cycles per project (daily/weekly/monthly frequency)
+- [ ] Two-way Outlook/Teams calendar sync — OAuth via MSAL, read Outlook events into GTD, push GTD tasks as calendar events, Outlook wins conflicts
+- [ ] Microsoft Graph API authentication — OAuth 2.0 with user and admin consent flows, token management, offline-aware
+
+### Deferred (future milestones)
+
+- Defer dates (start dates) that hide tasks until they become relevant
+- Natural language parsing for quick capture ("buy milk tomorrow @errands")
+- Template projects for recurring workflows
+- Sequential vs parallel project types
+- Custom perspectives (saved filter combinations)
+- Energy/time estimates for filtering next actions
+- Review cycles per project (daily/weekly/monthly frequency)
 
 ### Out of Scope
 
@@ -46,13 +50,26 @@ Nothing falls through the cracks — every commitment is captured, clarified, an
 - Real-time push notifications — GTD is pull-based ("what should I do now?"); interrupts deep work
 - Nested projects > 2 levels — GTD keeps it simple: Areas of Focus -> Projects -> Next Actions
 
+## Current Milestone: v1.1 Outlook Calendar Sync
+
+**Goal:** Two-way calendar sync between GTD and Outlook so the user sees work commitments in GTD and GTD tasks appear on their Outlook calendar.
+
+**Target features:**
+- Read Outlook calendar events into GTD's calendar view (replace/enhance ICS import)
+- Push GTD tasks with scheduled times to Outlook as calendar events
+- OAuth 2.0 authentication via MSAL (user + admin consent flows)
+- Delta query sync for incremental updates
+- Outlook wins conflict resolution (changes in Outlook propagate to GTD)
+- Offline-aware sync queue (queues changes when disconnected)
+- Sync status indicators and manual sync trigger
+
 ## Context
 
 Shipped v1.0 MVP with 7,570 LOC TypeScript/Svelte/CSS across 167 files.
 Tech stack: SvelteKit 2, Svelte 5 ($state runes), Dexie 4.x (IndexedDB), Tailwind v4, @event-calendar/core.
 Built in 2 days (2026-01-30 → 2026-01-31), 8 phases, 35 plans, 138 commits.
 
-User is new to GTD methodology, recommended by manager to improve performance at work. Corporate Microsoft environment (Outlook calendar, Teams). Calendar integration with Microsoft Graph API is the primary v2 goal.
+User is new to GTD methodology, recommended by manager to improve performance at work. Corporate Microsoft environment (Outlook calendar, Teams). Calendar integration with Microsoft Graph API is the v1.1 focus.
 
 ## Constraints
 
@@ -77,4 +94,4 @@ User is new to GTD methodology, recommended by manager to improve performance at
 | ProcessingFlow as central routing hub | Single component handles all GTD decision paths | Good — routes to all 7 destinations cleanly |
 
 ---
-*Last updated: 2026-01-31 after v1.0 milestone*
+*Last updated: 2026-01-31 after v1.1 milestone started*

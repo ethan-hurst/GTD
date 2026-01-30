@@ -5,14 +5,14 @@
 See: .planning/PROJECT.md (updated 2026-01-31)
 
 **Core value:** Nothing falls through the cracks — every commitment is captured, clarified, and surfaced at the right time so the user always knows what to do next.
-**Current focus:** Planning next milestone
+**Current focus:** Milestone v1.1 — Outlook Calendar Sync
 
 ## Current Position
 
-Phase: v1.0 complete — no active phase
-Plan: Not started
-Status: Ready to plan next milestone
-Last activity: 2026-01-31 — v1.0 milestone complete
+Phase: Not started (defining requirements)
+Plan: —
+Status: Defining requirements
+Last activity: 2026-01-31 — Milestone v1.1 started
 
 Progress: v1.0 shipped (8 phases, 35 plans, 26 requirements)
 
@@ -38,10 +38,10 @@ None yet.
 
 ### Blockers/Concerns
 
-None.
+- Admin consent for M365 app access — user unsure if IT approval needed. Build for both user and admin consent flows.
 
 ## Session Continuity
 
 Last session: 2026-01-31
-Stopped at: v1.0 milestone archived — ready for next milestone
+Stopped at: Defining v1.1 milestone — research → requirements → roadmap
 Resume file: None
