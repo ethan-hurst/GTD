@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-01-30)
 ## Current Position
 
 Phase: 4 of 8 (Projects Management) — IN PROGRESS
-Plan: 2 of 4 in current phase
-Status: Projects UI complete with stalled detection
-Last activity: 2026-01-30 — Completed 04-02-PLAN.md
+Plan: 3 of 4 in current phase
+Status: Project integration into existing workflows complete
+Last activity: 2026-01-30 — Completed 04-03-PLAN.md
 
-Progress: [███████░░░] 75.00% (12/16 plans complete)
+Progress: [████████░░] 81.25% (13/16 plans complete)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 12
-- Average duration: 2.2 min
-- Total execution time: ~0.45 hours
+- Total plans completed: 13
+- Average duration: 2.1 min
+- Total execution time: ~0.48 hours
 
 **By Phase:**
 
@@ -30,11 +30,11 @@ Progress: [███████░░░] 75.00% (12/16 plans complete)
 | 01 - Foundation & Storage | 2 | 7.1 min | 3.6 min |
 | 02 - Inbox Capture & Processing | 4 | complete | — |
 | 03 - Next Actions & Contexts | 4/4 | 14 min | 3.5 min |
-| 04 - Projects Management | 2/4 | 3.2 min | 1.6 min |
+| 04 - Projects Management | 3/4 | 5.9 min | 2.0 min |
 
 **Recent Trend:**
-- Last 5 plans: 03-03 (4 min), 03-04 (5 min), 04-01 (1.4 min), 04-02 (1.8 min)
-- Phase 4 maintaining fast velocity with UI implementation
+- Last 5 plans: 03-04 (5 min), 04-01 (1.4 min), 04-02 (1.8 min), 04-03 (2.7 min)
+- Phase 4 maintaining excellent velocity with integration work
 
 *Updated after each plan completion*
 
@@ -94,6 +94,9 @@ Recent decisions affecting current work:
 - Inline create form for projects: Matches InboxCapture pattern, faster workflow than modal (04-02)
 - Yellow warning badge for stalled projects: Visual alert for projects needing next actions (04-02)
 - Detail panel shows linked action count: Project health indicator at a glance (04-02)
+- ProcessingFlow inserts project selection before context: Project identification → context assignment follows GTD methodology (04-03)
+- Inline project creation in ProcessingFlow: Keeps user in processing context, matches InboxCapture pattern (04-03)
+- 'p' keyboard shortcut for Projects: Mirrors 'n' for Next Actions, single-key navigation pattern (04-03)
 
 ### Pending Todos
 
@@ -110,5 +113,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-01-30
-Stopped at: Completed 04-02-PLAN.md (Projects UI with stalled detection)
+Stopped at: Completed 04-03-PLAN.md (Project integration into existing workflows)
 Resume file: None
