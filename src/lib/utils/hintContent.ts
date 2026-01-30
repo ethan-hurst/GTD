@@ -36,6 +36,11 @@ export const fullHints: Record<Feature, HintContent> = {
 		description:
 			'The secret to GTD success. Review everything weekly to keep your system current and trustworthy.'
 	},
+	calendar: {
+		title: 'Calendar',
+		description:
+			'Your hard landscape — see time-specific commitments alongside your next actions to plan your day.'
+	},
 	search: {
 		title: 'Search',
 		description: 'Find anything across all your lists. Use Cmd+K (Mac) or Ctrl+K to open quickly.'
@@ -43,7 +48,7 @@ export const fullHints: Record<Feature, HintContent> = {
 	'keyboard-shortcuts': {
 		title: 'Keyboard Shortcuts',
 		description:
-			'Navigate fast: n=Next Actions, p=Projects, w=Waiting, s=Someday, r=Review, /=Capture.'
+			'Navigate fast: n=Next Actions, p=Projects, w=Waiting, s=Someday, r=Review, c=Calendar, /=Capture.'
 	},
 	settings: {
 		title: 'Settings',
@@ -78,13 +83,17 @@ export const reducedHints: Record<Feature, HintContent> = {
 		title: 'Weekly Review',
 		description: '8-step guided checklist. Badge shows when overdue.'
 	},
+	calendar: {
+		title: 'Calendar',
+		description: 'View events by day/week/month. Import .ics files. Drag to reschedule.'
+	},
 	search: {
 		title: 'Search',
 		description: 'Cmd+K / Ctrl+K to focus. Searches all active items.'
 	},
 	'keyboard-shortcuts': {
 		title: 'Keyboard Shortcuts',
-		description: 'n/p/w/s/r for navigation, / for capture, Cmd+K for search.'
+		description: 'n/p/w/s/r/c for navigation, / for capture, Cmd+K for search.'
 	},
 	settings: {
 		title: 'Settings',

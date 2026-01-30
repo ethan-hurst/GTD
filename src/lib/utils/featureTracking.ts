@@ -8,6 +8,7 @@ export type Feature =
 	| 'waiting'
 	| 'someday'
 	| 'review'
+	| 'calendar'
 	| 'search'
 	| 'keyboard-shortcuts'
 	| 'settings';
@@ -19,6 +20,7 @@ const routeToFeature: Record<string, Feature> = {
 	'/waiting': 'waiting',
 	'/someday': 'someday',
 	'/review': 'review',
+	'/calendar': 'calendar',
 	'/settings': 'settings'
 };
 

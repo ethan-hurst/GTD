@@ -141,6 +141,18 @@
 			</a>
 		</FeatureHint>
 
+		<FeatureHint feature="calendar" position="right">
+			<a
+				href="/calendar"
+				class="block px-4 py-2 rounded-md text-sm font-medium transition-colors
+					{$page.url.pathname.startsWith('/calendar')
+						? 'bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-gray-100'
+						: 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800'}"
+			>
+				Calendar
+			</a>
+		</FeatureHint>
+
 		<!-- Separator -->
 		<div class="border-t border-gray-200 dark:border-gray-700 my-2"></div>
 

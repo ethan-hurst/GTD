@@ -103,6 +103,15 @@
 			markFeatureVisited('keyboard-shortcuts').catch(() => {});
 			return;
 		}
+
+		// c: Navigate to Calendar
+		if (event.key === 'c') {
+			event.preventDefault();
+			goto('/calendar');
+			// Track keyboard shortcut usage
+			markFeatureVisited('keyboard-shortcuts').catch(() => {});
+			return;
+		}
 	}
 
 	// Route-based feature tracking
