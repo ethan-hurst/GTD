@@ -32,11 +32,11 @@ Decimal phases appear between their surrounding integers in numeric order.
   2. User can export all their GTD data to a downloadable file
   3. App displays persistent storage status and requests permission to prevent data loss
   4. Basic app shell loads and displays empty state
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 01-01: TBD
-- [ ] 01-02: TBD
+- [ ] 01-01-PLAN.md — Project setup, data layer & state management
+- [ ] 01-02-PLAN.md — App shell, UI components & offline capability
 
 ### Phase 2: Inbox Capture & Processing
 **Goal**: User can capture thoughts quickly and process them through guided GTD workflow
@@ -155,7 +155,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation & Storage | 0/TBD | Not started | - |
+| 1. Foundation & Storage | 0/2 | Planned | - |
 | 2. Inbox Capture & Processing | 0/TBD | Not started | - |
 | 3. Next Actions & Contexts | 0/TBD | Not started | - |
 | 4. Projects Management | 0/TBD | Not started | - |
