@@ -26,6 +26,7 @@
     "dexie": "^4.2.1",
     "svelte-5-french-toast": "^2.0.6",
     "svelte-dnd-action": "^0.9.69",
+    "svelte-pops": "^0.1.5",
     "tailwindcss": "^4.1.18"
   }
 }
