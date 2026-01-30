@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-01-30)
 ## Current Position
 
 Phase: 8 of 8 (Calendar View) — IN PROGRESS
-Plan: 2 of 7 in current phase
+Plan: 3 of 7 in current phase
 Status: In progress
-Last activity: 2026-01-31 — Completed 08-02-PLAN.md (Calendar Utilities)
+Last activity: 2026-01-31 — Completed 08-03-PLAN.md (Calendar UI)
 
-Progress: [██████████████████████████░] 33/38 plans complete (7/8 phases)
+Progress: [██████████████████████████░] 34/38 plans complete (7/8 phases)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 33
+- Total plans completed: 34
 - Average duration: ~2 min
-- Total execution time: ~1.2 hours
+- Total execution time: ~1.25 hours
 
 **By Phase:**
 
@@ -34,11 +34,11 @@ Progress: [███████████████████████
 | 05 - Waiting For & Someday/Maybe | 5/5 | ~11 min | 2.2 min |
 | 06 - Weekly Review | 4/4 | ~6 min | ~1.5 min |
 | 07 - GTD Onboarding | 5/5 | ~12 min | 2.4 min |
-| 08 - Calendar View | 2/7 | 5.4 min | 2.7 min |
+| 08 - Calendar View | 3/7 | 8.4 min | 2.8 min |
 
 **Recent Trend:**
-- Last 5 plans: 07-03 (3 min), 07-04 (3 min), 07-05 (human verify), 08-01 (2 min), 08-02 (3.4 min)
-- Phase 8 progress: calendar utilities complete
+- Last 5 plans: 07-04 (3 min), 07-05 (human verify), 08-01 (2 min), 08-02 (3.4 min), 08-03 (3 min)
+- Phase 8 progress: calendar UI complete, event forms next
 
 *Updated after each plan completion*
 
@@ -149,6 +149,9 @@ Recent decisions affecting current work:
 - RRuleSet dtstart assignment: Set dtstart on RRuleSet instance for proper recurrence timing (08-02)
 - Strip RRULE prefix: Handle both 'RRULE:...' and raw RRULE strings for flexibility (08-02)
 - On-demand recurrence expansion: Pure functions, no database writes, expansion computed for visible date range only (08-02)
+- TypeScript declarations for @event-calendar packages: No official types exist, ambient module declarations satisfy compiler (08-03)
+- Dark mode via CSS custom properties: Override --ec-* variables in dark mode selector for calendar theming (08-03)
+- Empty state overlaid on calendar grid: Calendar grid always renders, empty state message provides guidance with pointer-events-none (08-03)
 
 ### Pending Todos
 
@@ -165,5 +168,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-01-31
-Stopped at: Completed 08-02-PLAN.md (Calendar Utilities)
+Stopped at: Completed 08-03-PLAN.md (Calendar UI)
 Resume file: None
