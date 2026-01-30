@@ -43,6 +43,8 @@
 
 	let undoFn: (() => Promise<void>) | null = $state(null);
 
+	let resolveTimeoutId: ReturnType<typeof setTimeout> | null = null;
+
 	async function handleResolve() {
 		isResolving = true;
 
@@ -50,19 +52,21 @@
 		const undo = await resolveWaitingFor(item.id);
 		undoFn = undo;
 
-		// Show toast with undo action — use custom toast with longer duration
-		const toastId = toast.success(`"${item.title}" resolved`, {
-			duration: 8000,
-		});
+		toast.success(`"${item.title}" resolved`);
 
-		// Reload list after brief animation delay
-		setTimeout(async () => {
+		// Delay list reload so the inline undo button stays visible
+		resolveTimeoutId = setTimeout(async () => {
+			resolveTimeoutId = null;
 			onResolved();
-		}, 500);
+		}, 7000);
 	}
 
 	async function handleUndo() {
 		if (!undoFn) return;
+		if (resolveTimeoutId) {
+			clearTimeout(resolveTimeoutId);
+			resolveTimeoutId = null;
+		}
 		await undoFn();
 		undoFn = null;
 		isResolving = false;
