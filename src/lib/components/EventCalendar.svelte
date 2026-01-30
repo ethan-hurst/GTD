@@ -1,8 +1,5 @@
 <script lang="ts">
-	import Calendar from '@event-calendar/core';
-	import TimeGrid from '@event-calendar/time-grid';
-	import DayGrid from '@event-calendar/day-grid';
-	import Interaction from '@event-calendar/interaction';
+	import { Calendar, TimeGrid, DayGrid, Interaction } from '@event-calendar/core';
 	import '@event-calendar/core/index.css';
 	import type { CalendarEvent } from '$lib/db/schema';
 
