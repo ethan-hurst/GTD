@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { goto } from '$app/navigation';
 	import { actionState } from '$lib/stores/actions.svelte';
 	import { addContext, updateContext, deleteContext } from '$lib/db/operations';
 	import toast from 'svelte-5-french-toast';
@@ -139,7 +140,7 @@
 
 	<!-- All view -->
 	<button
-		onclick={() => actionState.showAll()}
+		onclick={() => { actionState.showAll(); goto('/actions'); }}
 		class="w-full flex items-center justify-between px-4 py-2 rounded-md text-sm font-medium transition-colors
 			{actionState.isAllView
 				? 'bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-gray-100'
@@ -175,7 +176,7 @@
 			{:else}
 				<!-- Normal display mode -->
 				<button
-					onclick={() => actionState.toggleContext(context.name)}
+					onclick={() => { actionState.toggleContext(context.name); goto('/actions'); }}
 					class="flex-1 flex items-center justify-between px-4 py-2 rounded-md text-sm font-medium transition-colors
 						{isSelected
 							? 'bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-gray-100'

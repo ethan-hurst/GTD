@@ -9,11 +9,12 @@
 	import type { GTDItem } from '$lib/db/schema';
 
 	// Local state for drag-and-drop
+	// Must use $state.snapshot() to strip Svelte 5 proxies — svelte-dnd-action
+	// manipulates items internally and breaks on proxy objects.
 	let dragItems = $state<GTDItem[]>([]);
 
-	// Keep dragItems in sync with actionState.items
 	$effect(() => {
-		dragItems = [...actionState.items];
+		dragItems = $state.snapshot(actionState.items) as GTDItem[];
 	});
 
 	// Track undo functions for toasts
