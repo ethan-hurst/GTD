@@ -9,19 +9,19 @@ See: .planning/PROJECT.md (updated 2026-01-30)
 
 ## Current Position
 
-Phase: 5 of 8 (Waiting For & Someday/Maybe) — COMPLETE
-Plan: 5 of 5 in current phase (all complete)
-Status: Complete — ready for Phase 6
-Last activity: 2026-01-30 — Completed Phase 5 (human-verified)
+Phase: 6 of 8 (Weekly Review) — IN PROGRESS
+Plan: 1 of 3 in current phase (plan 06-01 complete)
+Status: In progress
+Last activity: 2026-01-30 — Completed 06-01-PLAN.md
 
-Progress: [██████████] 100% (19/19 plans complete)
+Progress: [██████████░] 95% (20/21 plans complete)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 19
-- Average duration: 2.12 min
-- Total execution time: ~0.64 hours
+- Total plans completed: 20
+- Average duration: 2.10 min
+- Total execution time: ~0.70 hours
 
 **By Phase:**
 
@@ -32,10 +32,11 @@ Progress: [██████████] 100% (19/19 plans complete)
 | 03 - Next Actions & Contexts | 4/4 | 14 min | 3.5 min |
 | 04 - Projects Management | 4/4 | 8.9 min | 2.2 min |
 | 05 - Waiting For & Someday/Maybe | 5/5 | ~11 min | 2.2 min |
+| 06 - Weekly Review | 1/3 | 2 min | 2.0 min |
 
 **Recent Trend:**
-- Last 5 plans: 05-01 (1.95 min), 05-02 (2.07 min), 05-03 (parallel with 05-02), 05-04 (2.17 min), 05-05 (~5 min, human verification)
-- Phase 5 complete: all features human-verified, ready for Phase 6
+- Last 5 plans: 05-02 (2.07 min), 05-03 (parallel), 05-04 (2.17 min), 05-05 (~5 min, verification), 06-01 (2 min)
+- Phase 6 in progress: data layer complete, UI build next
 
 *Updated after each plan completion*
 
@@ -109,6 +110,10 @@ Recent decisions affecting current work:
 - No badges on Waiting For/Someday/Maybe sidebar links: Review-time concerns not action-now indicators like inbox count (05-04)
 - Single-key shortcuts 'w' and 's': Extends 'n'/'p' pattern for quick GTD list navigation (05-04)
 - Optional follow-up date in delegate step: GTD best practice to track when to check on delegated items (05-04)
+- Settings table uses &key unique constraint: Ensures key-value integrity at database level (06-01)
+- Store lastReviewCompletedAt as ISO string: Avoids Date object serialization issues with IndexedDB (06-01)
+- Set reactivity pattern: new Set(this.completedSteps): Svelte 5 $state requires new object instances (06-01)
+- Progress as percentage: (completedSteps.size / 8) * 100: Derived state for UI progress bar (06-01)
 
 ### Pending Todos
 
@@ -124,6 +129,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-01-30
-Stopped at: Phase 5 complete. Ready for Phase 6 (Weekly Review).
+Last session: 2026-01-30 10:37 UTC
+Stopped at: Completed 06-01-PLAN.md (Weekly Review data layer)
 Resume file: None
