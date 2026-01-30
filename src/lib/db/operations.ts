@@ -1,4 +1,4 @@
-import { db, type GTDItem, type Context, type AppSettings } from './schema';
+import { db, type GTDItem, type Context, type AppSettings, type CalendarEvent } from './schema';
 
 export async function addItem(item: Omit<GTDItem, 'id' | 'created' | 'modified'>): Promise<number> {
 	return await db.items.add({
@@ -385,4 +385,62 @@ export async function setSetting(key: string, value: any): Promise<void> {
 	} else {
 		await db.settings.add({ key, value, updatedAt: new Date() } as AppSettings);
 	}
+}
+
+// ============================================================================
+// Calendar Event Operations
+// ============================================================================
+
+export async function addEvent(event: Omit<CalendarEvent, 'id' | 'created' | 'modified'>): Promise<number> {
+	return await db.events.add({
+		...event,
+		created: new Date(),
+		modified: new Date()
+	} as CalendarEvent);
+}
+
+export async function updateEvent(id: number, changes: Partial<CalendarEvent>): Promise<number> {
+	return await db.events.update(id, {
+		...changes,
+		modified: new Date()
+	});
+}
+
+export async function deleteEvent(id: number): Promise<void> {
+	await db.events.delete(id);
+}
+
+export async function getEvent(id: number): Promise<CalendarEvent | undefined> {
+	return await db.events.get(id);
+}
+
+export async function getEventsInRange(start: Date, end: Date): Promise<CalendarEvent[]> {
+	// Get events where startTime falls within range OR endTime falls within range
+	// Also include recurring events that might expand into the range
+	return await db.events
+		.where('startTime')
+		.between(start, end, true, true)
+		.or('endTime')
+		.between(start, end, true, true)
+		.toArray();
+}
+
+export async function getRecurringEvents(): Promise<CalendarEvent[]> {
+	return await db.events
+		.filter(event => !!event.rrule)
+		.toArray();
+}
+
+export async function bulkAddEvents(events: Omit<CalendarEvent, 'id' | 'created' | 'modified'>[]): Promise<number[]> {
+	const now = new Date();
+	const withTimestamps = events.map(e => ({
+		...e,
+		created: now,
+		modified: now
+	})) as CalendarEvent[];
+	return await db.events.bulkAdd(withTimestamps, { allKeys: true }) as number[];
+}
+
+export async function getAllEvents(): Promise<CalendarEvent[]> {
+	return await db.events.toArray();
 }
