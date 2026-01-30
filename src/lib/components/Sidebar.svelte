@@ -5,10 +5,21 @@
 	import ContextList from './ContextList.svelte';
 	import { inboxState } from '$lib/stores/inbox.svelte';
 	import { projectState } from '$lib/stores/projects.svelte';
+	import { weeklyReviewState } from '$lib/stores/review.svelte';
 
 	onMount(async () => {
 		await inboxState.loadItems();
 		await projectState.loadProjects();
+		await weeklyReviewState.loadLastReview();
+	});
+
+	// Derive overdue status
+	let isOverdue = $derived(() => {
+		if (!weeklyReviewState.lastReviewDate) return true; // Never completed = overdue
+		const daysSince = Math.floor(
+			(Date.now() - weeklyReviewState.lastReviewDate.getTime()) / (1000 * 60 * 60 * 24)
+		);
+		return daysSince > 7;
 	});
 </script>
 
@@ -93,6 +104,24 @@
 					: 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800'}"
 		>
 			Someday/Maybe
+		</a>
+
+		<!-- Separator -->
+		<div class="border-t border-gray-200 dark:border-gray-700 my-2"></div>
+
+		<a
+			href="/review"
+			class="flex items-center justify-between px-4 py-2 rounded-md text-sm font-medium transition-colors
+				{$page.url.pathname.startsWith('/review')
+					? 'bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-gray-100'
+					: 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800'}"
+		>
+			<span>Weekly Review</span>
+			{#if isOverdue()}
+				<span class="bg-red-500 text-white text-xs font-medium px-2 py-0.5 rounded-full">
+					Overdue
+				</span>
+			{/if}
 		</a>
 
 		<!-- Separator -->

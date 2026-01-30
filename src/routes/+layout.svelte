@@ -77,6 +77,13 @@
 			goto('/someday');
 			return;
 		}
+
+		// r: Navigate to Weekly Review
+		if (event.key === 'r') {
+			event.preventDefault();
+			goto('/review');
+			return;
+		}
 	}
 
 	onMount(() => {
