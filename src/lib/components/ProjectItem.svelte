@@ -8,9 +8,15 @@
 		isStalled: boolean;
 		isExpanded: boolean;
 		onToggleExpand: () => void;
+		onSave: () => void;
 	}
 
-	let { project, isStalled, isExpanded, onToggleExpand }: Props = $props();
+	let { project, isStalled, isExpanded, onToggleExpand, onSave }: Props = $props();
+
+	function handleSave() {
+		onSave();
+		onToggleExpand();
+	}
 
 	function formatDate(date: Date): string {
 		return new Intl.DateTimeFormat('en-US', {
@@ -64,7 +70,7 @@
 	{#if isExpanded}
 		<ProjectDetailPanel
 			item={project}
-			onSave={onToggleExpand}
+			onSave={handleSave}
 			onClose={onToggleExpand}
 		/>
 	{/if}

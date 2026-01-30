@@ -92,6 +92,7 @@
 					isStalled={projectState.isStalled(project.id)}
 					isExpanded={projectState.expandedId === project.id}
 					onToggleExpand={() => projectState.expandItem(project.id)}
+					onSave={() => projectState.loadProjects()}
 				/>
 			{/each}
 		</div>
