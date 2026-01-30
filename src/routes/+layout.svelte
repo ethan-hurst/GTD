@@ -47,6 +47,14 @@
 			goto('/').then(() => {
 				window.dispatchEvent(new CustomEvent('focus-inbox-capture'));
 			});
+			return;
+		}
+
+		// n: Navigate to Next Actions
+		if (event.key === 'n') {
+			event.preventDefault();
+			goto('/actions');
+			return;
 		}
 	}
 
