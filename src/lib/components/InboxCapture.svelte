@@ -1,12 +1,12 @@
 <script lang="ts">
 	import { tick } from 'svelte';
+	import toast from 'svelte-5-french-toast';
 	import { addItem } from '../db/operations';
 	import { inboxState } from '../stores/inbox.svelte';
 	import { storageStatus } from '../stores/storage.svelte';
 
 	let title = $state('');
 	let inputEl: HTMLInputElement;
-	let showFlash = $state(false);
 
 	async function handleSubmit(event: Event) {
 		event.preventDefault();
@@ -24,12 +24,9 @@
 		// Update storage status
 		storageStatus.recordSave();
 
-		// Clear input and show flash
+		// Clear input and show toast
 		title = '';
-		showFlash = true;
-		setTimeout(() => {
-			showFlash = false;
-		}, 1500);
+		toast.success('Captured', { duration: 1500 });
 
 		// Maintain focus and reload items
 		await tick();
@@ -52,10 +49,7 @@
 				transition-colors text-sm"
 		/>
 	</form>
-	<div class="mt-2 flex items-center justify-between">
+	<div class="mt-2">
 		<p class="text-xs text-gray-400">Press Enter to capture</p>
-		{#if showFlash}
-			<p class="text-xs text-green-500 font-medium animate-pulse">Captured!</p>
-		{/if}
 	</div>
 </div>
