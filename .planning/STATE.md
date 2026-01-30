@@ -5,34 +5,34 @@
 See: .planning/PROJECT.md (updated 2026-01-30)
 
 **Core value:** Nothing falls through the cracks — every commitment is captured, clarified, and surfaced at the right time so the user always knows what to do next.
-**Current focus:** Phase 2 - Inbox Capture & Processing
+**Current focus:** Phase 2 complete — ready for Phase 3: Next Actions & Contexts
 
 ## Current Position
 
-Phase: 2 of 8 (Inbox Capture & Processing)
-Plan: 3 of 4 in current phase
-Status: In progress
-Last activity: 2026-01-30 — Completed 02-03-PLAN.md (Global Search & Shortcuts)
+Phase: 2 of 8 (Inbox Capture & Processing) — COMPLETE
+Plan: 4 of 4 in current phase (all complete)
+Status: Phase complete, ready for Phase 3
+Last activity: 2026-01-30 — Completed 02-04-PLAN.md (Processing Workflow + bugfixes)
 
-Progress: [███░░░░░░░] 31.25% (5/16 plans complete)
+Progress: [████░░░░░░] 37.5% (6/16 plans complete)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 5
+- Total plans completed: 6
 - Average duration: 2.7 min
-- Total execution time: 0.22 hours
+- Total execution time: ~0.27 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 01 - Foundation & Storage | 2 | 7.1 min | 3.6 min |
-| 02 - Inbox Capture & Processing | 3 | 6.3 min | 2.1 min |
+| 02 - Inbox Capture & Processing | 4 | complete | — |
 
 **Recent Trend:**
-- Last 5 plans: 01-02 (4 min), 02-01 (2.6 min), 02-02 (1.7 min), 02-03 (2 min)
-- Trend: Accelerating velocity (2 min on latest plan)
+- Last 5 plans: 02-01 (2.6 min), 02-02 (1.7 min), 02-03 (2 min), 02-04 (includes bugfix session)
+- Phase 2 complete with human verification passed
 
 *Updated after each plan completion*
 
@@ -65,6 +65,11 @@ Recent decisions affecting current work:
 - Cmd+K always works (even in inputs): Standard search pattern across modern apps (02-03)
 - Cmd+I respects input context: Prevents interference with typing, less standard shortcut (02-03)
 - Platform detection for keyboard shortcuts: Cmd on Mac, Ctrl elsewhere for native feel (02-03)
+- Step-based state machine for GTD decision tree: 5 steps covering all GTD routing paths (02-04)
+- Inline expansion over modal for processing: Keeps user in list context (02-04)
+- @custom-variant dark for Tailwind v4: Required for class-based dark mode toggle (02-04 bugfix)
+- "/" global shortcut focuses capture input: Standard productivity app pattern (02-04)
+- $effect-native debounce with cleanup: Proper Svelte 5 reactive pattern (02-04 bugfix)
 
 ### Pending Todos
 
@@ -80,6 +85,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-01-30 13:05
-Stopped at: Completed 02-03-PLAN.md — Global search and keyboard shortcuts ready for cross-app navigation
+Last session: 2026-01-30
+Stopped at: Phase 2 complete (all 4 plans + human verification). Ready for Phase 3: Next Actions & Contexts.
 Resume file: None

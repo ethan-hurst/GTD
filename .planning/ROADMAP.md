@@ -160,7 +160,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8
 |-------|----------------|--------|-----------|
 | 1. Foundation & Storage | 2/2 | Complete | 2026-01-30 |
 | 2. Inbox Capture & Processing | 4/4 | Complete | 2026-01-30 |
-| 3. Next Actions & Contexts | 0/4 | In progress | - |
+| 3. Next Actions & Contexts | 0/4 | Planned | - |
 | 4. Projects Management | 0/TBD | Not started | - |
 | 5. Waiting For & Someday/Maybe | 0/TBD | Not started | - |
 | 6. Weekly Review | 0/TBD | Not started | - |
