@@ -54,9 +54,9 @@
 
 ### Data & Reliability
 
-- [ ] **DATA-01**: App works fully offline with local-first storage
-- [ ] **DATA-02**: User can export/backup all GTD data
-- [ ] **DATA-03**: App requests persistent storage to prevent browser eviction
+- [x] **DATA-01**: App works fully offline with local-first storage
+- [x] **DATA-02**: User can export/backup all GTD data
+- [x] **DATA-03**: App requests persistent storage to prevent browser eviction
 
 ## v2 Requirements
 
@@ -97,9 +97,9 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| DATA-01 | Phase 1 | Pending |
-| DATA-02 | Phase 1 | Pending |
-| DATA-03 | Phase 1 | Pending |
+| DATA-01 | Phase 1 | Complete |
+| DATA-02 | Phase 1 | Complete |
+| DATA-03 | Phase 1 | Complete |
 | INBX-01 | Phase 2 | Pending |
 | INBX-02 | Phase 2 | Pending |
 | INBX-03 | Phase 2 | Pending |
@@ -131,4 +131,4 @@
 
 ---
 *Requirements defined: 2026-01-30*
-*Last updated: 2026-01-30 after roadmap creation*
+*Last updated: 2026-01-30 after Phase 1 completion*
