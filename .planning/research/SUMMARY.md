@@ -1,417 +1,317 @@
 # Project Research Summary
 
-**Project:** GTD Personal Productivity Web App
-**Domain:** Personal Productivity / Getting Things Done (GTD) Methodology
-**Researched:** 2026-01-30
+**Project:** GTD Planner v1.1 — Outlook Calendar Sync
+**Domain:** Microsoft Graph Calendar Integration
+**Researched:** 2026-01-31
 **Confidence:** HIGH
 
 ## Executive Summary
 
-This is a web-based GTD (Getting Things Done) productivity application designed for corporate environments with Microsoft 365 integration. Experts build GTD apps with offline-first architecture using local storage (IndexedDB) as the primary database, progressive disclosure to avoid overwhelming beginners, and calendar integration as an enhancement rather than a core requirement. The recommended approach is to build a minimal capture-to-next-actions workflow first, validate user engagement with weekly review, then add Microsoft Graph integration for Outlook/Teams calendar sync.
+Adding two-way Outlook calendar sync to an existing offline-first GTD app requires minimal new dependencies (MSAL.js v4.28 for auth, Graph Client SDK for API calls) but introduces architectural complexity around delta sync, conflict resolution, and offline queue management. The recommended approach leverages Microsoft Graph API's delta query pattern for efficient incremental sync, paired with a Dexie-based offline queue that honors an "Outlook wins" conflict resolution strategy.
 
-The critical success factor is weekly review — 80% of GTD system failures stem from users abandoning weekly review due to poor tooling. The app must make review tractable, rewarding, and visible. The second major risk is over-complicating the initial experience; users new to GTD need scaffolding and progressive disclosure, not feature completeness. Browser storage eviction is the critical technical risk; requesting persistent storage and implementing automatic backups must happen in Phase 1.
+Research across productivity apps (Todoist, TickTick, OmniFocus) reveals table stakes features: viewing Outlook events in the app, syncing scheduled tasks to Outlook, and real-time updates via webhooks. True two-way sync (changes in Outlook update the GTD app) is rare and highly valued as a differentiator. The critical architectural insight is that offline support—already present in the GTD app's Dexie foundation—becomes both an advantage (queue-based retry) and a complexity amplifier (conflict detection, deduplication, stale data handling).
 
-The recommended stack (React 19 + TypeScript + Vite + Zustand + IndexedDB/Dexie + TanStack Query + Tailwind/shadcn/ui) enables sub-second response times, full offline capability, and seamless future integration with Microsoft Graph API. This is the 2025-2026 standard for local-first SPAs.
+Key risks center on Microsoft Graph API edge cases that appear in production but not testing: delta token expiry after 7 days, skip token expiry during pagination, recurring event exceptions invisible in `/events` endpoint, and corporate Conditional Access policies blocking unattended sync. These pitfalls are well-documented in Microsoft Q&A forums but easily overlooked in happy-path development. Mitigation requires explicit error handling, fallback strategies (full sync when delta expires), and using `/calendarView` instead of `/events` for recurring events.
 
 ## Key Findings
 
 ### Recommended Stack
 
-The research recommends a modern, local-first architecture optimized for instant response times and offline capability. The stack prioritizes developer experience (Vite's fast builds, Zustand's minimal boilerplate) while remaining enterprise-ready (TypeScript, comprehensive testing, Microsoft integration support).
+The existing SvelteKit 2 + Svelte 5 + Dexie 4.x stack requires only three additions for Outlook sync, with total bundle size impact of ~52 KB (3% of typical SPA). No changes to core stack needed.
 
 **Core technologies:**
-- **React 19 + TypeScript 5.8 + Vite 7.3**: Industry standard SPA framework with blazing-fast dev server and native ESM support. React 19 adds server components and async rendering. TypeScript provides compile-time safety essential for productivity apps.
-- **Zustand 5.0 + TanStack Query 5.90**: Hybrid state management — Zustand for UI state (minimal boilerplate), TanStack Query for future Microsoft Graph API caching and synchronization. This combination is the 2025 standard, avoiding Redux's complexity while remaining scalable.
-- **IndexedDB + Dexie.js 4.0**: Browser-native transactional database with 50MB-10GB storage capacity. Dexie provides Promise-based API and offline-first support. Essential for GTD apps needing instant response times and offline access.
-- **Tailwind CSS 3.4 + shadcn/ui + Radix UI**: Utility-first styling with accessible, copy-paste component primitives. This trio is the 2025 gold standard for React UIs — rapid development with built-in accessibility.
-- **MSAL React + Microsoft Graph SDK**: Official Microsoft libraries for OAuth 2.0 authentication and Graph API integration (Outlook/Teams calendar sync). Use v1.0 endpoint for production stability.
-- **Vitest + React Testing Library**: Modern test runner (10x faster than Jest) with industry-standard component testing. Native ESM support and zero-config Vite integration.
+- **@azure/msal-browser v4.28.1** — OAuth 2.0 authentication with PKCE flow; only library for Microsoft identity platform (v5.x exists but has undocumented breaking changes)
+- **@microsoft/microsoft-graph-client v3.0.7** — Microsoft Graph API HTTP client; official SDK with built-in pagination, batching, retry logic (saves 12 KB over raw fetch but worth it for reliability)
+- **@microsoft/microsoft-graph-types v2.x** — TypeScript definitions for Graph entities; dev dependency only, zero runtime cost, provides intellisense for Calendar/Event types
 
-**What NOT to use:**
-- Create React App (deprecated since 2022)
-- Moment.js (deprecated, use date-fns)
-- Microsoft Graph Toolkit (retiring Aug 2026)
-- localStorage for GTD data (5-10MB limit, synchronous API)
-- Redux without compelling reason (Zustand simpler for single-user app)
+**Critical version note:** MSAL.js v5.x (released Jan 2026) has peer dependency conflicts and lacks migration docs. Pin to v4.28.1 until v5 stabilizes (expected Q1/Q2 2026).
+
+**Integration patterns:**
+- MSAL must be initialized client-side only (SvelteKit SSR incompatible—`window.localStorage` unavailable on server)
+- Tokens stored in sessionStorage (more secure than localStorage, cleared on tab close)
+- Graph Client wraps fetch with automatic token injection via MSAL callback
+- Dexie schema extends with three new tables: `outlookEvents`, `syncMetadata` (delta links), `syncQueue` (offline mutations)
 
 ### Expected Features
 
-GTD methodology has clear table stakes. Missing core lists or weekly review makes the system incomplete and unusable.
+Research reveals clear tiers of user expectations based on competitor analysis (Todoist, TickTick, OmniFocus):
 
 **Must have (table stakes):**
-- **Quick Capture** — Frictionless task capture with keyboard shortcut. GTD lives or dies on low-friction capture.
-- **Inbox Processing Workflow** — Guided "What is it? Actionable? 2-min rule?" workflow teaching GTD thinking.
-- **Next Actions Lists** — Primary working view grouped by context (@home, @office, @computer, @phone).
-- **Context/Tag Filtering** — Filter tasks by where/when/how work can be done. Critical for "what can I do now?" workflow.
-- **Project Hierarchies** — Distinguish projects (multi-step outcomes) from next actions (single steps). Must show stalled projects (no next actions).
-- **Waiting For List** — Track delegated items with who/what/when structure. Reviewed during weekly review.
-- **Someday/Maybe List** — Park future ideas without cluttering active lists. Critical distinction: committed vs. not-yet-committed.
-- **Weekly Review Checklist** — Guided review of all lists and projects. David Allen calls this "critical success factor for GTD."
-- **Calendar View** — GTD separates "hard landscape" (time-specific) from "soft landscape" (context-based). Show appointments, not tasks.
-- **Search & Filtering** — Find items instantly across all lists. Full-text search across tasks, projects, notes.
-- **Offline-First** — Corporate networks unreliable. App must work fully offline with sync when connected.
+- Display Outlook calendar events in GTD calendar view (read-only) — standard since 2020s, users want unified view
+- Sync tasks-with-times to Outlook as calendar events — time-blocking is mainstream, scheduled tasks must block calendar
+- Real-time or near-real-time sync — users expect changes within 1 minute, Graph webhooks support this
+- OAuth authentication ("Connect to Outlook" button) — industry standard for calendar integrations
+- Manual sync trigger ("Sync now" button) — fallback for webhook failures, builds user confidence
+- Basic conflict detection — warn when creating task overlaps existing event
+- Offline sync queue — queue changes while offline, sync on reconnection
 
 **Should have (competitive advantage):**
-- **GTD Onboarding for Beginners** — Progressive disclosure of complexity. Show basic workflow first, add advanced features after habit formation.
-- **Microsoft Graph Integration** — Two-way Outlook/Teams calendar sync. Differentiation for corporate environments.
-- **Defer Dates (Start Dates)** — Hide tasks until "ready" date. Reduces list clutter and premature cognitive load.
-- **Sequential vs Parallel Projects** — OmniFocus distinction for power users. Sequential shows only first next action, parallel shows all.
-- **Custom Perspectives/Views** — Saved filters combining context + project + date. Example: "Home evening" = @home + energy:low + available:today.
-- **Energy/Time Estimates** — Filter by "I have 15 minutes and low energy" → show matching tasks. Beyond basic GTD but highly valued.
-- **Natural Language Parsing** — "buy milk tomorrow @errands !p1" → parsed into task with date, context, priority. Reduces capture friction.
-- **Template Projects** — Recurring workflows (Weekly Review, Monthly Budget) saved as templates. Huge time saver.
+- True two-way sync (Outlook changes update GTD app) — rare feature, most apps are one-way
+- Selective calendar filters (choose which Outlook calendars to display) — corporate users have 10+ shared calendars
+- "Outlook wins" conflict resolution with clear communication — explicit strategy builds trust
+- Reschedule detection (drag event in Outlook, task updates in GTD) — Todoist standout feature (2026)
 
-**Defer (v2+):**
-- Collaborative/team features (GTD is personal system)
-- Complex priority systems (GTD uses context/energy instead)
-- Calendar-based task scheduling (conflicts with GTD "hard landscape" principle)
-- Gamification/streaks (focuses on quantity over appropriate engagement)
-- Nested projects beyond 3 levels (violates GTD simplicity)
-- Mobile native apps (web responsive sufficient for MVP)
+**Defer (v2.0+):**
+- Auto-decline conflicting meetings — requires additional Graph permissions, complex logic
+- Multiple calendar support (sync different projects to different calendars) — valuable but adds UI complexity
+- Smart sync suggestions ("This task needs 2 hours, find calendar slot") — AI-driven, not essential for MVP
 
-**Anti-features (commonly requested but problematic):**
-- Mixing tasks and appointments in calendar (creates stress when tasks don't get done)
-- Automatic due dates (most tasks don't have real deadlines; fake deadlines create "boy who cried wolf")
-- Automatic task creation from email (creates noise; GTD clarify step is manual for reason)
-- Real-time notifications (interrupts deep work; GTD is pull-based, not push-based)
+**Anti-features (avoid):**
+- Sync all tasks to calendar (creates clutter) — only sync tasks with date+time+duration
+- Sync calendar events as editable tasks (ownership confusion) — display events read-only, offer "Create task from event" action
+- Automatic event-to-task conversion (creates duplicate work) — manual "Create task for this event" button instead
 
 ### Architecture Approach
 
-The recommended architecture is feature-slice organization with offline-first data persistence. Features are self-contained (inbox/, projects/, review/ directories) with components, hooks, and business logic colocated. IndexedDB serves as the single source of truth with hybrid state management: Zustand for global UI state, TanStack Query for future server state caching, local useState for ephemeral component state.
+The architecture extends the existing offline-first GTD app with three new service layers: Graph authentication (MSAL.js wrapper), Graph API client (HTTP with token injection), and Sync Engine (orchestrates bidirectional delta sync). The key pattern is delta query with deltaLink tokens for efficient incremental sync, paired with an offline queue that processes mutations when connectivity returns.
 
 **Major components:**
-1. **Presentation Layer** — Feature-based views (Inbox, Projects, Contexts, Review) using React components with Tailwind/shadcn styling. Each feature is self-contained in its directory.
-2. **State Management** — Hybrid approach: Zustand for settings/preferences, TanStack Query for Microsoft Graph caching, local state for forms/UI. Avoids Redux complexity while remaining scalable.
-3. **Persistence Layer** — IndexedDB via Dexie.js stores all GTD data locally (items, projects, contexts). Structured schema with compound indexes for fast filtering. Must request persistent storage to prevent eviction.
-4. **Integration Layer** — Microsoft Graph API connector for calendar sync (future phase). Delta queries for incremental sync, conflict resolution UI, offline queue for changes made while disconnected.
+1. **MSAL Auth Service** — OAuth 2.0 authorization code flow with PKCE, acquireTokenSilent for automatic refresh, handles 24-hour SPA token lifetime with graceful re-authentication
+2. **Graph Client Service** — Wrapper around fetch with automatic Bearer token injection, error handling for 429 throttling (Retry-After header), ETag-based conflict detection (412 Precondition Failed)
+3. **Sync Engine** — State machine (idle → syncing → success/error) that orchestrates: pull via delta query (/me/calendarView/delta), push via create/update/delete, conflict resolution ("Outlook wins" policy), offline queue replay
+4. **Delta Sync Manager** — Tracks deltaLink tokens in Dexie syncMetadata table, handles token expiry (falls back to full sync after 7 days), processes @removed annotations for deletions, paginates with @odata.nextLink
+5. **Offline Sync Queue** — Dexie table storing pending create/update/delete operations with retry count, processes FIFO with pre-execution conflict detection (fetches remote state before applying queued change), handles stale data overwrites
 
-**Key architectural patterns:**
-- **Feature-slice architecture**: Organize by user workflow (inbox/, projects/, review/), not technical layer. Reduces cognitive load.
-- **Offline-first with IndexedDB**: Local storage as primary data store, treating network as enhancement. Near-instant UI updates, works fully offline.
-- **Delta query sync**: For Microsoft Graph, use delta tokens to fetch only changes since last sync. Minimizes API calls and respects rate limits.
-- **Progressive disclosure**: Show basic GTD workflow first (capture/clarify/organize), reveal advanced features after 3+ months habit formation.
+**Data flow patterns:**
+- **Outlook → GTD (pull)**: Delta query → process @removed deletions → map Outlook events to Dexie CalendarEvent schema → save deltaLink for next sync
+- **GTD → Outlook (push)**: Map CalendarEvent to Outlook event schema → POST/PATCH with If-Match ETag → handle 412 conflicts (fetch current, overwrite local) → save outlookETag
+- **Offline queue replay**: Load all queued items → for each, check remote lastModifiedDateTime → if remote newer, treat as conflict (Outlook wins) → execute create/update/delete → remove from queue on success
 
-**Critical architectural decisions:**
-- Don't use global state for GTD data (IndexedDB is already shared storage). Query directly in components via hooks.
-- Don't create shared components prematurely. Keep in feature folders until actually reused in 2+ places.
-- Always handle IndexedDB asynchronously with optimistic UI updates. Never block main thread.
-- Track online/offline status and queue sync operations when disconnected. Resume sync when back online.
-- Model data exactly as GTD defines (inbox, next_action, project, waiting, someday). Enforce rules in code (every project needs ≥1 next action).
+**Schema changes (Dexie v7):**
+- Extend CalendarEvent: add `outlookId`, `outlookETag`, `syncSource` (local/outlook/both), `lastSyncedAt`
+- Add syncMetadata table: stores deltaLink URLs per calendar, keyed by 'outlook-calendar-deltaLink'
+- Add syncQueue table: stores operation type, entityId, payload, timestamp, retryCount
 
 ### Critical Pitfalls
 
-1. **Over-Complicated Initial Implementation** — Developers implement every GTD feature at once, overwhelming users new to methodology. **Avoid:** Start with minimal capture + process workflow, introduce contexts/projects only after basic habits established. Use progressive disclosure.
+The 15 pitfalls researched fall into four categories: authentication (MSAL + SSR), delta sync edge cases, recurring event complexity, and offline queue conflicts. These are the top 8 that must be addressed during implementation:
 
-2. **Weekly Review Becomes "Eventually Review"** — Users skip weekly review because app doesn't make it feel essential or tractable. Without review, system accumulates cruft and users feel it's "broken." **Avoid:** Make weekly review first-class workflow with dedicated UI, show time-since-last-review prominently, break into small chunks with progress indicators, celebrate completion.
+1. **Delta token expiry without fallback** — Delta tokens expire after 7 days; apps that don't detect `syncStateNotFound` errors and fall back to full sync break silently. Address in Phase 2 (Delta Sync).
 
-3. **Creating "Fake Work" Through Over-Organizing** — Task organization becomes so frictionless that users spend more time reorganizing than completing tasks. Productive procrastination. **Avoid:** Make task completion more visually rewarding than organization, show time-spent-organizing metrics, add intentional friction to reorganization.
+2. **MSAL token storage in SvelteKit SSR** — MSAL.js requires browser storage (`window.localStorage`); initializing in +page.server.ts causes runtime errors. Wrap MSAL in `if (browser)` guards. Address in Phase 1 (OAuth Setup).
 
-4. **Task List Becomes Guilt Monument** — Easy capture but no dismissal creates 50+ item lists that induce anxiety rather than clarity. Users abandon app to escape psychological weight. **Avoid:** Implement someday/maybe as first-class concept, surface only actionable items by default, add defer dates to hide irrelevant tasks, prompt "Still want to do X?" during weekly review.
+3. **Orphaned events after local deletion** — User deletes task offline, event modified in Outlook before reconnect, queue executes blind deletion canceling meeting for all attendees. Check remote `lastModifiedDateTime` before executing queued deletions. Address in Phase 4 (Offline Queue).
 
-5. **Browser Storage Eviction Destroys User Data** — App relies on IndexedDB without requesting persistent storage. Safari/mobile browsers silently evict all data. User opens app, entire GTD system gone. Trust permanently destroyed. **Avoid:** Call `navigator.storage.persist()` on first use, monitor storage quotas, implement automatic weekly backups, provide manual export, detect data loss and show recovery options.
+4. **Recurring event exception invisibility** — `/events` endpoint returns series masters only; exceptions require `/calendarView` with date ranges. Switch to calendarView for all queries. Address in Phase 3 (Recurring Events).
 
-6. **Microsoft Graph Calendar Sync Becomes Chaos** — Two-way sync creates duplicates, orphaned events, time zone mismatches, deletion conflicts. **Avoid:** Establish clear ownership model (GTD creates Outlook events initially), use delta queries properly, normalize to UTC, handle deleted events via @removed property, test with recurring events and multiple zones, start one-way before two-way.
+5. **Time zone conversion for all-day events** — All-day events return midnight UTC timestamps; naive conversion shifts events to wrong day in non-UTC zones. Check `isAllDay` property and ignore timezone field. Address in Phase 3.
 
-7. **Context Explosion Makes System Unusable** — Users create 10+ contexts (@email, @phone, @afternoon, @low-energy, @quick), making selection overwhelming. **Avoid:** Recommend 3-5 starter contexts, warn when creating 8+, show context usage analytics ("@afternoon used 0 times — archive it?"), make archive-context easy.
+6. **Skip token expiry during pagination** — Skip tokens expire in minutes; slow processing (30s per page) causes pagination failures on page 3+. Fetch all pages rapidly without UI updates between pages. Address in Phase 2.
 
-8. **Onboarding Overwhelms and Causes Immediate Abandonment** — First-time user faces account setup, methodology explanation, feature tour, permission requests before capturing single task. 80-90% abandon during onboarding. **Avoid:** User captures first task in under 60 seconds, defer everything except capture + process, no permission requests on launch, no feature tours, provide "Skip to app" button, measure time-to-first-task.
+7. **Infinite sync loops from local echo** — Event created offline syncs to Outlook, delta sync treats new Outlook event as separate incoming change, creates duplicate. Store correlation ID in event extensions or mark as "pending sync" to skip during delta. Address in Phase 4.
+
+8. **MSAL refresh token 24-hour expiry** — SPA refresh tokens expire after 24 hours (vs. 90 days for confidential clients); users forced to re-login daily. Implement graceful re-authentication on `interaction_required` errors. Address in Phase 1.
+
+**Common pattern:** Many pitfalls appear only in production environments (corporate Conditional Access policies, large calendars with 1000+ events, 7+ day sync gaps). Happy-path testing in dev misses these entirely.
 
 ## Implications for Roadmap
 
-Based on research, the roadmap should follow GTD methodology flow: capture → process → organize → review → engage. Start with minimal viable workflow, validate weekly review engagement, then add advanced features and Microsoft integration.
+Based on combined research, the architecture naturally suggests a four-phase implementation structure that builds complexity incrementally while validating each layer before proceeding.
 
-### Phase 1: Foundation (Core GTD Workflow)
+### Phase 1: OAuth Foundation
+**Rationale:** Authentication is prerequisite for all Graph API calls. MSAL + SvelteKit SSR compatibility must be resolved before building sync logic. Corporate environment concerns (admin consent, Conditional Access policies, 24-hour token lifetime) are blockers that won't surface in dev testing.
 
-**Rationale:** GTD requires complete capture-to-action workflow to be usable. Cannot skip any step. This phase delivers the atomic GTD system that validates the core value proposition.
+**Delivers:** "Connect to Outlook" button, login/logout flow, token acquisition with automatic refresh, graceful re-authentication after 24 hours
 
-**Delivers:**
-- Quick capture (keyboard shortcut + input form)
-- Inbox list with processing workflow
-- Next actions list with context filtering
-- Projects list with next action association
-- Waiting For and Someday/Maybe lists
-- Basic search and filtering
-- Offline-first IndexedDB storage with persistent storage request
-- Manual data export/backup
-
-**Features from research:**
-- Quick Capture (must-have)
-- Inbox Processing Workflow (must-have)
-- Next Actions Lists (must-have)
-- Context Tags (must-have)
-- Projects List (must-have)
-- Waiting For List (must-have)
-- Someday/Maybe List (must-have)
-- Offline Mode (must-have)
-- Search (must-have)
+**Addresses features:**
+- OAuth authentication (table stakes)
+- Corporate M365 environment compatibility
 
 **Avoids pitfalls:**
-- Over-complicated UI — ships with 3-5 recommended contexts, no advanced features
-- Task list guilt monument — someday/maybe built from day one
-- Browser storage eviction — persistent storage requested, manual export available
-- Onboarding abandonment — user captures first task in <60 seconds
-
-**Critical for Phase 1:**
-- Request `navigator.storage.persist()` immediately
-- Implement manual export clearly visible in settings
-- Build someday/maybe list simultaneously with next actions (prevents list bloat)
-- Keep onboarding to: name → capture first item → process first item (<2 min total)
-
-### Phase 2: Weekly Review & Engagement
-
-**Rationale:** Weekly review is the "critical success factor for GTD" per David Allen. Without it, 80% of GTD systems fail. Must be built after core lists exist (need data to review) but before adding complexity.
-
-**Delivers:**
-- Weekly review wizard with guided checklist
-- Review progress tracking ("5 of 12 projects reviewed")
-- Time-since-last-review indicator (creates positive pressure)
-- Project validation (flag projects without next actions)
-- Completion celebration ("5 stale projects archived")
-- Optional review reminders
-
-**Features from research:**
-- Weekly Review Checklist (should-have)
-- GTD Onboarding Guide (should-have) — can integrate review training here
-
-**Uses stack elements:**
-- React Hook Form for review step forms
-- date-fns for review scheduling and "last reviewed" calculations
-- Dexie compound queries for "projects without next actions"
-
-**Implements architecture:**
-- Review feature slice with ReviewWizard component
-- Storage of review history in IndexedDB
-- Zustand for review preferences (preferred day/time)
-
-**Avoids pitfalls:**
-- Weekly review neglect — dedicated UI, prominent time-since-review
-- Task list guilt monument — review prompts "Still want to do X?" for old items
+- MSAL SSR incompatibility (Pitfall 2)
+- Admin consent failures in corporate tenants (Pitfall 8)
+- 24-hour refresh token expiry without re-auth flow (Pitfall 13)
+- Conditional Access policies blocking sync (Pitfall 15)
 
 **Validation criteria:**
-- 70%+ of users complete review within 7-day window after 2 weeks of usage
-- Review completion time under 30 minutes for typical user (50-100 active items)
+- User can log in via popup/redirect, see profile, log out
+- Tokens acquired silently on subsequent page loads
+- Re-authentication triggered gracefully after 24+ hour gap
+- Test in production M365 tenant with Conditional Access enabled
 
-### Phase 3: Microsoft Graph Integration (Read-Only)
+**Duration estimate:** 1-2 days
 
-**Rationale:** Calendar integration is complex enough to deserve its own phase. Start with read-only Outlook calendar viewing to validate integration value before attempting bidirectional sync.
+---
 
-**Delivers:**
-- OAuth 2.0 authentication via MSAL React
-- Read-only Outlook calendar view
-- Calendar events displayed in GTD app
-- "Hard landscape" reference during daily planning
-- Network-aware (works offline, syncs when online)
+### Phase 2: One-Way Sync (Outlook → GTD)
+**Rationale:** Read-only sync is lower risk than write and validates Graph API integration, delta query pattern, and event mapping without introducing two-way conflict complexity. This phase establishes the delta sync foundation (token management, pagination, deletion handling) that Phase 3 builds upon.
 
-**Features from research:**
-- Outlook Calendar Integration (should-have) — read-only first
-- Basic Calendar View (must-have) — enhanced with real Outlook data
+**Delivers:** "Sync now" button pulls Outlook events into GTD calendar view, delta query for incremental sync, deletion detection, initial sync for 500+ event calendars
 
-**Uses stack elements:**
-- MSAL React for authentication
-- Microsoft Graph SDK for API calls
-- TanStack Query for caching calendar events
-- date-fns for time zone normalization
-
-**Implements architecture:**
-- Integration layer: services/graph/ with auth.ts, calendar.ts
-- Offline queue pattern for auth token refresh
-- Read-only sync (no conflict resolution yet)
+**Addresses features:**
+- Display Outlook events in GTD calendar view (table stakes)
+- Manual sync trigger (table stakes)
+- Real-time sync foundation (webhooks added later)
 
 **Avoids pitfalls:**
-- Calendar sync chaos — read-only eliminates conflicts, validates value before complexity
-- Browser storage eviction — tokens stored securely via MSAL, not localStorage
+- Delta token expiry without fallback (Pitfall 1) — detect `syncStateNotFound`, fall back to full sync
+- Skip token expiry during pagination (Pitfall 6) — fetch all pages rapidly, batch process
+- Rate limiting on initial sync (Pitfall 9) — handle 429 responses, respect Retry-After header
+- Missing deleted events (Pitfall 12) — process @removed annotations
+- DST boundary errors (Pitfall 11) — use IANA timezone identifiers, test on March/November dates
 
-**Research flag:** Needs `/gsd:research-phase` for Microsoft Graph API patterns, token refresh flows, and rate limiting strategies.
+**Validation criteria:**
+- Initial sync completes for 500-2000 event calendars without timeout
+- Delta sync fetches only changes (verify with network logs)
+- Events deleted in Outlook are removed from local Dexie
+- Sync works across DST transition dates
 
-### Phase 4: Calendar Bidirectional Sync
+**Duration estimate:** 2-3 days
 
-**Rationale:** After read-only calendar proves valuable, add write-back capability. This is the most complex technical phase requiring delta queries, conflict resolution, and extensive testing.
+---
 
-**Delivers:**
-- GTD next actions with due dates create Outlook events
-- Delta query sync (incremental, not full refresh)
-- Conflict resolution UI ("GTD says 2pm, Outlook says 3pm — which is correct?")
-- Sync status indicators and manual sync trigger
-- Sync pause/reset options
-- Comprehensive error handling and retry logic
+### Phase 3: Two-Way Sync (GTD → Outlook)
+**Rationale:** After read works reliably, add write to enable bidirectional sync. Conflict detection with ETag is critical before introducing offline queue (Phase 4) because queued operations need the same conflict logic.
 
-**Features from research:**
-- Outlook Calendar Sync (should-have) — now bidirectional
-- Forecast View (defer to v2+, but synergy with calendar sync)
+**Delivers:** GTD tasks with scheduled times create Outlook calendar events, updates push to Outlook, ETag-based conflict detection with "Outlook wins" resolution
 
-**Implements architecture:**
-- Delta query sync pattern from ARCHITECTURE.md
-- Sync queue for offline changes
-- Conflict detection and resolution strategy
-- Webhook subscriptions for real-time updates (optional)
+**Addresses features:**
+- Sync tasks-with-times to Outlook (table stakes)
+- Basic conflict detection (table stakes)
+- "Outlook wins" conflict resolution (differentiator)
+- Task-to-event metadata preservation (duration, notes)
 
 **Avoids pitfalls:**
-- Calendar sync chaos — delta queries, UTC normalization, @removed handling, manual resolution UI
-- Performance at scale — batch operations, respect rate limits
+- Use If-Match header with ETag for optimistic concurrency
+- Handle 412 Precondition Failed → fetch current Outlook state → overwrite local
+- Show user notification: "Event updated from Outlook due to conflict"
 
-**Critical for Phase 4:**
-- Establish clear ownership model (GTD creates, Outlook can modify)
-- Test extensively with recurring events across time zones
-- Implement comprehensive error logging for debugging sync issues
-- Build manual "Trust GTD" / "Trust Outlook" resolution buttons
+**Validation criteria:**
+- Create GTD task with time, appears in Outlook within 1 minute
+- Update GTD task, Outlook event updates
+- Concurrent edit in Outlook during GTD edit → Outlook version wins
+- Metadata (title, time, duration, notes) syncs correctly
 
-**Research flag:** Needs `/gsd:research-phase` for delta query implementation patterns, conflict resolution UX patterns, and webhook subscription best practices.
+**Duration estimate:** 2-3 days
 
-### Phase 5: Advanced Features (Power User)
+---
 
-**Rationale:** After core GTD workflow and calendar integration are stable, add features for power users who have mastered basics.
+### Phase 4: Offline Resilience
+**Rationale:** Offline support is core to GTD app's existing architecture (Dexie-based). Build after two-way sync works to avoid debugging sync and offline simultaneously. This phase is where complexity peaks—conflict detection, deduplication, stale data handling all come together.
 
-**Delivers:**
-- Defer dates (start dates) to hide tasks until relevant
-- Sequential vs. Parallel projects (OmniFocus-style)
-- Custom perspectives (saved filter combinations)
-- Energy and time estimates for tasks
-- Natural language parsing for quick capture
-- Template projects for recurring workflows
+**Delivers:** Queue changes while offline, auto-replay on reconnection, pre-execution conflict detection, correlation IDs to prevent duplicate creation, queue status UI
 
-**Features from research:**
-- Defer Dates (should-have)
-- Sequential/Parallel Projects (defer to v2+)
-- Custom Perspectives (defer to v2+)
-- Energy/Time Estimates (defer to v2+)
-- Natural Language Parsing (should-have)
-- Template Projects (should-have)
+**Addresses features:**
+- Offline sync queue (table stakes)
+- Offline-aware sync queue (differentiator)
+- Sync status indicators (queue count, last sync time)
 
-**Why defer these to Phase 5:**
-- Defer dates: Users report list overwhelm only after using system 1+ month
-- Sequential/Parallel: Complex feature benefiting only power users with 10+ active projects
-- Perspectives: Requires understanding context/project/date interplay (3+ months experience)
-- Energy/Time: Beyond core GTD, nice-to-have for optimization
-- NLP: Efficiency matters when capture volume >5/day (established users)
-- Templates: Pattern emerges after completing 3+ similar projects
+**Avoids pitfalls:**
+- Orphaned events after deletion (Pitfall 3) — check remote `lastModifiedDateTime` before executing queued deletes
+- Infinite sync loops (Pitfall 7) — store correlation ID in event extensions or use "pending sync" flag
+- Stale offline data overwrites (Pitfall 10) — fetch remote state before applying queued PATCH, compare timestamps
 
-**Validation triggers:**
-- Defer dates: User feedback "too many next actions visible" or average >50 next actions
-- Sequential/Parallel: Users with 10+ active projects requesting feature
-- Perspectives: Power users creating same filter combinations repeatedly
-- NLP: Average >5 captures per day sustained for 2+ weeks
+**Validation criteria:**
+- Create event offline, shows in queue, syncs on reconnection without duplicates
+- Edit event offline, concurrent edit in Outlook, reconnect → Outlook wins
+- Delete event offline, modified in Outlook, reconnect → prompt user or skip deletion
+- Queue processes FIFO with retry logic (max 3 retries, then move to dead letter queue)
+
+**Duration estimate:** 2-3 days
+
+---
+
+### Phase 5: Recurring Events & Polish
+**Rationale:** Recurring events are common (weekly meetings, daily standups) but add significant complexity. Separated from MVP (Phases 1-4) to avoid blocking basic sync, but required for production readiness. All-day events often recur (holidays), so handled together.
+
+**Delivers:** Recurring event sync with exception handling, all-day event support, improved error messages, loading states, edge case handling
+
+**Addresses features:**
+- Recurring event support (table stakes for calendar apps)
+- All-day event handling (common in productivity apps)
+- User-friendly error messages and sync status
+
+**Avoids pitfalls:**
+- Recurring event exception invisibility (Pitfall 4) — use `/calendarView` instead of `/events`
+- All-day event timezone issues (Pitfall 5) — check `isAllDay`, ignore timezone, store as date-only
+- Series vs. occurrence edit confusion (Pitfall 14) — distinguish series master from occurrence, prompt user
+
+**Validation criteria:**
+- Create weekly recurring series in Outlook, all instances appear in GTD
+- Edit single occurrence in Outlook, exception syncs correctly
+- All-day event displays on correct date in all timezones
+- Edit one occurrence vs. edit series distinguished in UI
+
+**Duration estimate:** 2-3 days
+
+---
 
 ### Phase Ordering Rationale
 
 **Why this order:**
-1. **Phase 1 first** — Cannot use GTD without complete capture → process → organize flow. Atomic workflow.
-2. **Phase 2 before integration** — Weekly review is critical success factor. Validate engagement before adding complexity.
-3. **Phase 3 before Phase 4** — Read-only calendar validates value and builds integration foundation without conflict complexity.
-4. **Phase 4 after stable core** — Bidirectional sync is complex and fragile. Needs stable GTD system underneath.
-5. **Phase 5 after product-market fit** — Advanced features serve power users. Build after core proven with beginners.
+1. **Authentication first** — Prerequisite for all Graph API calls. Corporate environment issues (admin consent, Conditional Access) are blockers that won't surface until production testing.
+2. **Read before write** — One-way sync validates API integration, delta query pattern, error handling without conflict complexity.
+3. **Online two-way before offline** — Establish conflict detection with ETag before adding queue-based offline mutations that need the same conflict logic.
+4. **Offline as complexity layer** — Queue management, deduplication, stale data handling amplify sync complexity. Build only after core sync is solid.
+5. **Recurring events separate from MVP** — High complexity (series masters, exceptions, calendarView endpoint), but required for production. Defer to avoid blocking basic sync.
 
 **Dependency chain:**
-- Phase 2 requires Phase 1 (need lists to review)
-- Phase 3 requires Phase 1 (need stable GTD workflow before external integration)
-- Phase 4 requires Phase 3 (build on read-only foundation)
-- Phase 5 requires Phase 1-2 (defer dates/perspectives enhance existing workflow)
+- Phase 2 requires Phase 1 (auth needed for delta queries)
+- Phase 3 requires Phase 2 (write builds on read patterns, ETag from delta sync)
+- Phase 4 requires Phase 3 (offline queue uses same conflict logic as online sync)
+- Phase 5 requires Phase 2-4 (recurring events layer on top of working sync engine)
 
-**How this avoids pitfalls:**
-- Progressive complexity prevents over-complicated initial implementation
-- Weekly review in Phase 2 prevents system abandonment
-- Read-only calendar first prevents sync chaos
-- Someday/maybe in Phase 1 prevents guilt monument
-- Persistent storage in Phase 1 prevents data loss
+**Risk mitigation:**
+- Each phase has validation criteria that must pass before proceeding
+- Phases 1-2 validate in dev environment; Phases 3-4 require production-like testing (large calendars, corporate policies, offline scenarios)
+- Total duration: 8-13 days with validation gates between phases
 
 ### Research Flags
 
 **Phases needing deeper research during planning:**
-- **Phase 3:** Microsoft Graph API authentication flows, MSAL React integration patterns, calendar event schema. *Reason: Complex enterprise integration with OAuth 2.0 and external API.*
-- **Phase 4:** Delta query implementation, conflict resolution strategies, webhook subscription patterns, recurring event handling. *Reason: Advanced sync patterns, sparse documentation for edge cases.*
+- **Phase 5 (Recurring Events):** Graph API recurring event model is complex (series masters, instances, exceptions). May need phase-specific research on `/instances` endpoint, exception handling, RRULE mapping.
 
-**Phases with standard patterns (skip research-phase):**
-- **Phase 1:** IndexedDB/Dexie patterns, React component architecture, Zustand state management. *Reason: Well-documented, established patterns, covered in STACK.md and ARCHITECTURE.md.*
-- **Phase 2:** Form handling with React Hook Form, wizard UI patterns, progress tracking. *Reason: Standard React patterns with abundant examples.*
-- **Phase 5:** Natural language parsing libraries (chrono-node), template/cloning patterns. *Reason: Standard features with established libraries.*
+**Phases with well-documented patterns (skip research-phase):**
+- **Phase 1 (OAuth):** MSAL.js is extensively documented by Microsoft. SvelteKit integration patterns established via community examples.
+- **Phase 2 (Delta Sync):** Delta query pattern thoroughly documented in Microsoft Graph docs. Standard implementation.
+- **Phase 3 (Two-Way Sync):** ETag-based conflict detection is standard REST pattern. Microsoft Graph docs cover this well.
+- **Phase 4 (Offline Queue):** Queue-store-detect-sync pattern well-known from offline-first architectures. Dexie usage already established in app.
 
 ## Confidence Assessment
 
 | Area | Confidence | Notes |
 |------|------------|-------|
-| Stack | HIGH | All core technologies verified via official documentation, Context7, and npm/GitHub. React 19.2, TypeScript 5.8, Vite 7.3.1, Zustand 5.0.10, TanStack Query 5.90.19, Dexie 4.0 all confirmed. MSAL React and Microsoft Graph SDK verified via Microsoft Learn. |
-| Features | HIGH | GTD methodology features verified against official GTD sources (gettingthingsdone.com), GTD forums, and comprehensive ecosystem analysis of OmniFocus, Todoist, Nirvana (2026 GTD app landscape). Table stakes vs. differentiators clearly identified. |
-| Architecture | MEDIUM | Standard patterns for offline-first React apps well-documented. Feature-slice architecture, IndexedDB patterns, and hybrid state management have multiple quality sources. Microsoft Graph delta sync patterns have official docs but fewer real-world examples. |
-| Pitfalls | MEDIUM | GTD system failure patterns verified through official GTD resources, productivity app postmortems, and forum discussions. Technical pitfalls (storage eviction, sync conflicts) verified via MDN and Microsoft Learn. Some UX pitfall patterns inferred from user complaints rather than direct research. |
+| Stack | HIGH | MSAL v4.28.1 and Graph SDK v3.0.7 versions verified via GitHub releases. Bundle size measured. Only uncertainty is MSAL v5.x timeline for stabilization. |
+| Features | MEDIUM-HIGH | Based on competitor analysis (Todoist, TickTick, OmniFocus) and productivity app trends. Not validated with actual GTD app users. Table stakes features have high confidence; differentiators (reschedule detection, metadata sync) medium confidence. |
+| Architecture | HIGH | Delta query, MSAL auth, offline queue patterns extensively documented in Microsoft Learn and community implementations. SvelteKit integration patterns proven via community examples (andreideak/sveltekit-msal-spa). |
+| Pitfalls | HIGH | All 15 pitfalls verified with official Microsoft documentation or Microsoft Q&A forum reports from real developers. Delta token expiry, SSR incompatibility, recurring event exceptions confirmed in official docs. Corporate environment issues (Conditional Access, admin consent) documented in Microsoft Tech Community. |
 
 **Overall confidence:** HIGH
 
-Research sources are authoritative (official GTD documentation, Microsoft Learn, React official docs, verified npm packages). Stack and feature recommendations are evidence-based. Architecture patterns are industry-standard with clear documentation. Pitfalls are drawn from real-world GTD failures and technical constraints.
-
 ### Gaps to Address
 
-**During Phase 1 planning:**
-- **Context recommendation algorithm**: Research suggests 3-5 contexts, but what's the recommended starter set for corporate environment? (@office, @home, @computer, @phone, @errands likely, but validate with target users)
-- **Storage quota monitoring thresholds**: When to warn users about low storage? IndexedDB allows 50MB-10GB depending on browser, but what's safe threshold?
+**During planning:**
+- Recurring event RRULE mapping complexity — Graph API uses own recurrence schema, GTD app uses RFC 5545 RRULE strings. May need transformation logic. Validate during Phase 5 planning.
+- Webhook implementation details — Research focused on delta query (pull). Webhooks for push notifications are mentioned but not deeply researched. Consider phase-specific research if implementing real-time updates beyond delta query.
 
-**During Phase 3 planning (Microsoft Graph):**
-- **OAuth scope requirements**: Need to research exact permissions required. Likely `User.Read`, `Calendars.ReadWrite`, but validate minimum necessary scopes.
-- **Rate limiting strategy**: Graph API allows 10k requests/10 min. Need to model typical usage patterns to ensure we stay under limits.
+**During implementation:**
+- Corporate IT approval process — Document required permissions (`Calendars.ReadWrite`, `User.Read`, `offline_access`) for IT admin review before rollout. Unknown timeline for admin consent in large orgs.
+- Graph API rate limits — Official limits not published, vary by tenant. Monitor 429 responses in production to establish actual limits for this app's usage pattern.
+- Performance at scale — Unknown how delta query performs with 2000+ events in corporate calendars. Load testing needed in Phase 2.
+- Background Sync API compatibility — Service Worker Background Sync support varies by browser. Test in target corporate environment (may be disabled by IT policy).
 
-**During Phase 4 planning (Bidirectional Sync):**
-- **Conflict resolution UX patterns**: Research shows conflicts happen, but what's the optimal UI pattern? "Last write wins," "manual resolution," or "GTD always wins"?
-- **Recurring event edge cases**: How to handle "edit this occurrence" vs. "edit series"? Outlook's recurrence model is complex.
-
-**Validation during execution:**
-- **Weekly review engagement**: Target 70%+ completion rate, but this is estimate. Monitor real users and adjust workflow if engagement lower.
-- **Onboarding completion time**: Target <60 seconds to first capture, but validate with real users. Adjust if abandonment high.
+**Validation needed:**
+- User preference on all-day task sync — Research suggests requiring time+duration for sync, but GTD users may want all-day task blocking. Consider optional "Sync as all-day event" checkbox (defer to user testing).
+- Conflict resolution UX — "Outlook wins" is clear policy, but user may want to see diff view when conflicts occur. Consider Phase 4+ enhancement based on user feedback.
 
 ## Sources
 
 ### Primary (HIGH confidence)
-
-**Stack & Technology:**
-- [React Official Docs](https://react.dev) — React 19.2 verified
-- [TypeScript 5.8 Release Notes](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-5-8.html)
-- [Microsoft Learn: MSAL React](https://learn.microsoft.com/en-us/entra/msal/javascript/react/getting-started)
-- [Microsoft Learn: Microsoft Graph API](https://learn.microsoft.com/en-us/graph/use-the-api)
-- [MDN: IndexedDB API](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API)
-- [Dexie.js Official Docs](https://dexie.org) — v4.0 features verified
-- [shadcn/ui Official](https://ui.shadcn.com/)
-- [Zustand GitHub Releases](https://github.com/pmndrs/zustand/releases) — v5.0.10 verified
-- [TanStack Query npm](https://www.npmjs.com/package/@tanstack/react-query) — v5.90.19 verified
-
-**GTD Methodology:**
-- [Getting Things Done Official Tools & Software](https://gettingthingsdone.com/common-tools-software/)
-- [GTD Weekly Review Checklist](https://gettingthingsdone.com/wp-content/uploads/2014/10/Weekly_Review_Checklist.pdf)
-- [Basic GTD: How to Process Your Stuff](https://facilethings.com/blog/en/basics-processing)
-- [GTD Contexts — Theoretical & Practical Guide](https://facilethings.com/blog/en/gtd-contexts)
+- Microsoft Graph API Official Documentation — delta query, event API, throttling, recurring events, timezone handling
+- MSAL.js Official Documentation — caching, token lifetimes, SPA flows, best practices
+- Microsoft Learn — authorization code flow, Conditional Access, calendar API overview
+- Microsoft Graph GitHub — MSAL.js releases, Graph SDK releases, version history
 
 ### Secondary (MEDIUM confidence)
-
-**Architecture Patterns:**
-- [Modern Web Application Architecture in 2026: A Practical Guide](https://quokkalabs.com/blog/modern-web-application-architecture/)
-- [Frontend Architecture 2025: Structure Large Apps](https://www.frontendtools.tech/blog/frontend-architecture-structure-large-scale-web-apps)
-- [Offline-first frontend apps in 2025: IndexedDB and SQLite](https://blog.logrocket.com/offline-first-frontend-apps-2025-indexeddb-sqlite/)
-- [Dexie.js - Build Offline-First Apps](https://dexie.org/)
-
-**GTD Apps Ecosystem:**
-- [9 Best GTD Apps & Software for Getting Things Done in 2026](https://clickup.com/blog/gtd-apps/)
-- [Top GTD apps for Getting Things Done in 2026](https://www.onepagecrm.com/blog/gtd-business-software-to-stay-organized/)
-- [The Best GTD Apps For Getting Things Done](https://www.asianefficiency.com/technology/best-gtd-apps/)
-
-**Common Pitfalls:**
-- [10 Reasons Why GTD Might Be Failing](https://facilethings.com/blog/en/why-gtd-fails)
-- [8 Tips to Implement GTD Successfully](https://facilethings.com/blog/en/implement-gtd)
-- [Storage quotas and eviction criteria - MDN](https://developer.mozilla.org/en-us/docs/Web/API/Storage_API/Storage_quotas_and_eviction_criteria)
-
-**Microsoft Graph Integration:**
-- [Outlook calendar API overview - Microsoft Graph](https://learn.microsoft.com/en-us/graph/outlook-calendar-concept-overview)
-- [Get incremental changes to events in a calendar view](https://learn.microsoft.com/en-us/graph/delta-query-events)
-- [Implement Bidirectional Calendar Sync - 2025 Guide](https://calendhub.com/blog/implement-bidirectional-calendar-sync-2025/)
+- Microsoft Q&A Forums — real-world developer issues (delta token expiry, all-day event timezones, pagination errors, admin consent failures)
+- Microsoft Tech Community — Graph API throttling guidance, Conditional Access changes, recurring event endpoints
+- SvelteKit Community Examples — andreideak/sveltekit-msal-spa, varu87 Medium article on Azure AD auth in SvelteKit
+- Competitor Documentation — Todoist calendar integration, OmniFocus Forecast view, TickTick Google Calendar sync
 
 ### Tertiary (LOW confidence)
-
-**State Management:**
-- [Zustand vs Redux 2025](https://www.zignuts.com/blog/react-state-management-2025) — Community comparison
-- [State Management in 2026: Redux, Context API, and Modern Patterns](https://www.nucamp.co/blog/state-management-in-2026-redux-context-api-and-modern-patterns)
-
-**Testing:**
-- [Vitest vs Jest 2025](https://medium.com/@ruverd/jest-vs-vitest-which-test-runner-should-you-use-in-2025-5c85e4f2bda9) — Performance benchmarks
-
-**UX Patterns:**
-- [Why 90% Of Users Abandon Apps During Onboarding](https://thisisglance.com/blog/why-90-of-users-abandon-apps-during-onboarding-process)
-- [4 examples of bad user onboarding](https://www.appcues.com/blog/bad-user-onboarding)
+- Offline-first architecture articles — DEV.to cascading complexity, LogRocket IndexedDB patterns (general patterns, not Graph-specific)
+- WebSearch results on calendar sync best practices — general guidance, not Microsoft Graph specific
 
 ---
-*Research completed: 2026-01-30*
+*Research completed: 2026-01-31*
 *Ready for roadmap: yes*
