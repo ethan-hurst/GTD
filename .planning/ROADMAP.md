@@ -13,7 +13,7 @@ This roadmap delivers a complete web-based GTD (Getting Things Done) productivit
 Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Foundation & Storage** - Offline-first data persistence and reliability (2/2 plans complete)
-- [ ] **Phase 2: Inbox Capture & Processing** - Quick capture and guided processing workflow
+- [x] **Phase 2: Inbox Capture & Processing** - Quick capture and guided processing workflow (4/4 plans complete)
 - [ ] **Phase 3: Next Actions & Contexts** - Context-based task filtering and completion
 - [ ] **Phase 4: Projects Management** - Multi-step outcomes with stalled project warnings
 - [ ] **Phase 5: Waiting For & Someday/Maybe** - Delegated items and future ideas
@@ -54,7 +54,7 @@ Plans:
 - [x] 02-01-PLAN.md — Data layer & utilities foundation (schema migration, search indexes, time formatting, inbox state) (completed 2026-01-30)
 - [x] 02-02-PLAN.md — Inbox capture & list view (capture input, FIFO list, sidebar badge, multi-select) (completed 2026-01-30)
 - [x] 02-03-PLAN.md — Search bar, keyboard shortcuts & toast (global search, Cmd+K/Cmd+I, notifications) (completed 2026-01-30)
-- [ ] 02-04-PLAN.md — Processing workflow (GTD decision tree, inline expansion, sequential mode)
+- [x] 02-04-PLAN.md — Processing workflow (GTD decision tree, inline expansion, sequential mode) (completed 2026-01-30)
 
 ### Phase 3: Next Actions & Contexts
 **Goal**: User can view and complete next actions filtered by where/when/how work can be done
@@ -66,11 +66,13 @@ Plans:
   3. User can mark a next action as complete and it disappears from active lists
   4. User can assign a next action to a project (for tracking multi-step outcomes)
   5. User sees only next actions relevant to current context (reduces cognitive load)
-**Plans**: TBD
+**Plans**: 4 plans
 
 Plans:
-- [ ] 03-01: TBD
-- [ ] 03-02: TBD
+- [ ] 03-01-PLAN.md — Data layer: schema v3, context model, action operations, state store
+- [ ] 03-02-PLAN.md — Context sidebar, action list with DnD, action item with completion flow
+- [ ] 03-03-PLAN.md — Detail panel, processing flow context assignment, keyboard shortcuts
+- [ ] 03-04-PLAN.md — Human verification of complete feature
 
 ### Phase 4: Projects Management
 **Goal**: User can track multi-step outcomes and identify stalled projects without next actions
@@ -152,13 +154,13 @@ Plans:
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8
+Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation & Storage | 2/2 | Complete | 2026-01-30 |
-| 2. Inbox Capture & Processing | 3/4 | In progress | - |
-| 3. Next Actions & Contexts | 0/TBD | Not started | - |
+| 2. Inbox Capture & Processing | 4/4 | Complete | 2026-01-30 |
+| 3. Next Actions & Contexts | 0/4 | In progress | - |
 | 4. Projects Management | 0/TBD | Not started | - |
 | 5. Waiting For & Someday/Maybe | 0/TBD | Not started | - |
 | 6. Weekly Review | 0/TBD | Not started | - |
