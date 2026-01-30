@@ -106,7 +106,7 @@ Plans:
 
 Plans:
 - [x] 05-01-PLAN.md — Data layer: schema v4, waiting/someday operations, reactive state stores (completed 2026-01-30)
-- [ ] 05-02-PLAN.md — Waiting For route, list UI with inline add, resolve flow, overdue styling
+- [x] 05-02-PLAN.md — Waiting For route, list UI with inline add, resolve flow, overdue styling (completed 2026-01-30)
 - [ ] 05-03-PLAN.md — Someday/Maybe route, list UI with category filter, promote flow
 - [ ] 05-04-PLAN.md — Integration: sidebar nav, keyboard shortcuts, ProcessingFlow delegate enhancement
 - [ ] 05-05-PLAN.md — Human verification of complete feature
@@ -167,7 +167,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8
 | 2. Inbox Capture & Processing | 4/4 | Complete | 2026-01-30 |
 | 3. Next Actions & Contexts | 4/4 | Complete | 2026-01-30 |
 | 4. Projects Management | 4/4 | Complete | 2026-01-30 |
-| 5. Waiting For & Someday/Maybe | 1/5 | In Progress | - |
+| 5. Waiting For & Someday/Maybe | 2/5 | In Progress | - |
 | 6. Weekly Review | 0/TBD | Not started | - |
 | 7. GTD Onboarding | 0/TBD | Not started | - |
 | 8. Calendar View | 0/TBD | Not started | - |

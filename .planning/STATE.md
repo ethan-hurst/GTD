@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-01-30)
 ## Current Position
 
 Phase: 5 of 8 (Waiting For & Someday/Maybe) — IN PROGRESS
-Plan: 1 of 5 in current phase (05-01 complete)
+Plan: 2 of 5 in current phase (05-02 complete)
 Status: In progress
-Last activity: 2026-01-30 — Completed 05-01-PLAN.md
+Last activity: 2026-01-30 — Completed 05-02-PLAN.md
 
-Progress: [████████░░] 93.75% (15/16 plans complete)
+Progress: [█████████░] 94.12% (16/17 plans complete)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 15
+- Total plans completed: 16
 - Average duration: 2.1 min
-- Total execution time: ~0.53 hours
+- Total execution time: ~0.56 hours
 
 **By Phase:**
 
@@ -31,11 +31,11 @@ Progress: [████████░░] 93.75% (15/16 plans complete)
 | 02 - Inbox Capture & Processing | 4/4 | complete | — |
 | 03 - Next Actions & Contexts | 4/4 | 14 min | 3.5 min |
 | 04 - Projects Management | 4/4 | 8.9 min | 2.2 min |
-| 05 - Waiting For & Someday/Maybe | 1/5 | 1.95 min | 1.95 min |
+| 05 - Waiting For & Someday/Maybe | 2/5 | 4.02 min | 2.01 min |
 
 **Recent Trend:**
-- Last 5 plans: 04-02 (1.8 min), 04-03 (2.7 min), 04-04 (3 min, human verification), 05-01 (1.95 min)
-- Phase 5 started: data layer complete
+- Last 5 plans: 04-03 (2.7 min), 04-04 (3 min, human verification), 05-01 (1.95 min), 05-02 (2.07 min)
+- Phase 5 in progress: data layer and Waiting For UI complete
 
 *Updated after each plan completion*
 
@@ -103,6 +103,9 @@ Recent decisions affecting current work:
 - MAX_SAFE_INTEGER nulls-last sorting: Consistent pattern for sorting with optional dates (05-01)
 - Overdue detection in loadItems(): Computed once on load rather than $derived to avoid constant recomputation (05-01)
 - Exported SOMEDAY_CATEGORIES constant: 8 predefined categories for helpful organization without rigid structure (05-01)
+- Native date input for follow-up dates: HTML5 date input provides good UX without library dependencies (05-02)
+- Overdue red styling for waiting-for items: Strong visual indicator helps identify items needing follow-up (05-02)
+- "Resolve" terminology for waiting-for completion: More GTD-accurate than "complete" for delegation tracking (05-02)
 
 ### Pending Todos
 
@@ -119,5 +122,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-01-30
-Stopped at: Completed 05-01-PLAN.md (data layer). Ready for 05-02 (Waiting For UI).
+Stopped at: Completed 05-02-PLAN.md (Waiting For UI). Ready for 05-03 (Someday/Maybe UI).
 Resume file: None
