@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-01-30)
 ## Current Position
 
 Phase: 8 of 8 (Calendar View) — IN PROGRESS
-Plan: 3 of 7 in current phase
+Plan: 4 of 7 in current phase
 Status: In progress
-Last activity: 2026-01-31 — Completed 08-03-PLAN.md (Calendar UI)
+Last activity: 2026-01-31 — Completed 08-04-PLAN.md (Event Form and Interactions)
 
-Progress: [██████████████████████████░] 34/38 plans complete (7/8 phases)
+Progress: [██████████████████████████░] 35/38 plans complete (7/8 phases)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 34
-- Average duration: ~2 min
-- Total execution time: ~1.25 hours
+- Total plans completed: 35
+- Average duration: ~2.2 min
+- Total execution time: ~1.35 hours
 
 **By Phase:**
 
@@ -34,11 +34,11 @@ Progress: [███████████████████████
 | 05 - Waiting For & Someday/Maybe | 5/5 | ~11 min | 2.2 min |
 | 06 - Weekly Review | 4/4 | ~6 min | ~1.5 min |
 | 07 - GTD Onboarding | 5/5 | ~12 min | 2.4 min |
-| 08 - Calendar View | 3/7 | 8.4 min | 2.8 min |
+| 08 - Calendar View | 4/7 | 12.4 min | 3.1 min |
 
 **Recent Trend:**
-- Last 5 plans: 07-04 (3 min), 07-05 (human verify), 08-01 (2 min), 08-02 (3.4 min), 08-03 (3 min)
-- Phase 8 progress: calendar UI complete, event forms next
+- Last 5 plans: 07-05 (human verify), 08-01 (2 min), 08-02 (3.4 min), 08-03 (3 min), 08-04 (4 min)
+- Phase 8 progress: event form complete, ready for import/side panel features
 
 *Updated after each plan completion*
 
@@ -152,6 +152,11 @@ Recent decisions affecting current work:
 - TypeScript declarations for @event-calendar packages: No official types exist, ambient module declarations satisfy compiler (08-03)
 - Dark mode via CSS custom properties: Override --ec-* variables in dark mode selector for calendar theming (08-03)
 - Empty state overlaid on calendar grid: Calendar grid always renders, empty state message provides guidance with pointer-events-none (08-03)
+- EventForm matches ActionDetailPanel pattern: Consistent slide-in panel UI with transition:slide (08-04)
+- datetime-local input type: Native browser date/time picker without library dependencies (08-04)
+- Preset color swatches over color input: 8 colors with visual ring selection, simpler UX than free-form picker (08-04)
+- Basic recurrence only: Daily/weekly/monthly RRULE strings, advanced patterns deferred (08-04)
+- Toast notifications for drag operations: Immediate feedback for reschedule/resize actions (08-04)
 
 ### Pending Todos
 
@@ -168,5 +173,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-01-31
-Stopped at: Completed 08-03-PLAN.md (Calendar UI)
+Stopped at: Completed 08-04-PLAN.md (Event Form and Interactions)
 Resume file: None
