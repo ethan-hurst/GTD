@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-01-30)
 ## Current Position
 
 Phase: 6 of 8 (Weekly Review) — IN PROGRESS
-Plan: 1 of 3 in current phase (plan 06-01 complete)
+Plan: 2 of 3 in current phase (plan 06-02 complete)
 Status: In progress
-Last activity: 2026-01-30 — Completed 06-01-PLAN.md
+Last activity: 2026-01-30 — Completed 06-02-PLAN.md
 
-Progress: [██████████░] 95% (20/21 plans complete)
+Progress: [███████████] 100% (21/21 plans complete)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 20
-- Average duration: 2.10 min
-- Total execution time: ~0.70 hours
+- Total plans completed: 21
+- Average duration: 2.09 min
+- Total execution time: ~0.73 hours
 
 **By Phase:**
 
@@ -32,11 +32,11 @@ Progress: [██████████░] 95% (20/21 plans complete)
 | 03 - Next Actions & Contexts | 4/4 | 14 min | 3.5 min |
 | 04 - Projects Management | 4/4 | 8.9 min | 2.2 min |
 | 05 - Waiting For & Someday/Maybe | 5/5 | ~11 min | 2.2 min |
-| 06 - Weekly Review | 1/3 | 2 min | 2.0 min |
+| 06 - Weekly Review | 2/3 | 4 min | 2.0 min |
 
 **Recent Trend:**
-- Last 5 plans: 05-02 (2.07 min), 05-03 (parallel), 05-04 (2.17 min), 05-05 (~5 min, verification), 06-01 (2 min)
-- Phase 6 in progress: data layer complete, UI build next
+- Last 5 plans: 05-03 (parallel), 05-04 (2.17 min), 05-05 (~5 min, verification), 06-01 (2 min), 06-02 (2 min)
+- Phase 6 in progress: data layer and UI complete, confetti integration next
 
 *Updated after each plan completion*
 
@@ -114,6 +114,9 @@ Recent decisions affecting current work:
 - Store lastReviewCompletedAt as ISO string: Avoids Date object serialization issues with IndexedDB (06-01)
 - Set reactivity pattern: new Set(this.completedSteps): Svelte 5 $state requires new object instances (06-01)
 - Progress as percentage: (completedSteps.size / 8) * 100: Derived state for UI progress bar (06-01)
+- Auto-advance to next incomplete step after marking complete: Better UX than forcing manual navigation (06-02)
+- Empty states show encouraging messages: 'No items here — looking good!' in green builds confidence (06-02)
+- Sidebar width matches app pattern (240px): Visual consistency with existing layout (06-02)
 
 ### Pending Todos
 
@@ -129,6 +132,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-01-30 10:37 UTC
-Stopped at: Completed 06-01-PLAN.md (Weekly Review data layer)
+Last session: 2026-01-30 18:42 UTC
+Stopped at: Completed 06-02-PLAN.md (Weekly Review UI)
 Resume file: None
