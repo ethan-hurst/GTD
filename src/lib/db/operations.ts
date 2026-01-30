@@ -37,3 +37,7 @@ export async function getItemsByType(type: GTDItem['type']): Promise<GTDItem[]> 
 		.equals(type)
 		.toArray();
 }
+
+export async function bulkDeleteItems(ids: number[]): Promise<void> {
+	await db.items.bulkDelete(ids);
+}
