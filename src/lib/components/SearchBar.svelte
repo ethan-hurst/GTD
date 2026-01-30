@@ -73,9 +73,14 @@
 
 	// Navigate to item
 	function navigateToItem(item: GTDItem) {
-		// For now, all items go to inbox (only page that exists)
-		// In future phases, this will route to appropriate page based on item.type
-		window.location.href = '/';
+		const typeRoutes: Record<GTDItem['type'], string> = {
+			'inbox': '/',
+			'next-action': '/actions',
+			'project': '/projects',
+			'waiting': '/waiting',
+			'someday': '/someday'
+		};
+		window.location.href = typeRoutes[item.type] ?? '/';
 		close();
 	}
 
