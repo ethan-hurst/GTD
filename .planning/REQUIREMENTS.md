@@ -14,10 +14,10 @@
 
 ### Next Actions & Contexts
 
-- [ ] **NACT-01**: User can view next actions filtered by context (@computer, @office, @phone, @home, @errands)
-- [ ] **NACT-02**: User can create custom contexts
-- [ ] **NACT-03**: User can mark a next action as complete
-- [ ] **NACT-04**: User can assign a next action to a project
+- [x] **NACT-01**: User can view next actions filtered by context (@computer, @office, @phone, @home, @errands)
+- [x] **NACT-02**: User can create custom contexts
+- [x] **NACT-03**: User can mark a next action as complete
+- [x] **NACT-04**: User can assign a next action to a project
 
 ### Projects
 
@@ -104,10 +104,10 @@
 | INBX-02 | Phase 2 | Pending |
 | INBX-03 | Phase 2 | Pending |
 | INBX-04 | Phase 2 | Pending |
-| NACT-01 | Phase 3 | Pending |
-| NACT-02 | Phase 3 | Pending |
-| NACT-03 | Phase 3 | Pending |
-| NACT-04 | Phase 3 | Pending |
+| NACT-01 | Phase 3 | Complete |
+| NACT-02 | Phase 3 | Complete |
+| NACT-03 | Phase 3 | Complete |
+| NACT-04 | Phase 3 | Complete |
 | PROJ-01 | Phase 4 | Pending |
 | PROJ-02 | Phase 4 | Pending |
 | PROJ-03 | Phase 4 | Pending |
