@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
 	import ThemeToggle from './ThemeToggle.svelte';
+	import ContextList from './ContextList.svelte';
 	import { inboxState } from '$lib/stores/inbox.svelte';
 
 	onMount(async () => {
@@ -31,6 +32,29 @@
 				</span>
 			{/if}
 		</a>
+
+		<!-- Separator -->
+		<div class="border-t border-gray-200 dark:border-gray-700 my-2"></div>
+
+		<!-- Next Actions section -->
+		<a
+			href="/actions"
+			class="block px-4 py-2 rounded-md text-sm font-medium transition-colors
+				{$page.url.pathname.startsWith('/actions')
+					? 'bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-gray-100'
+					: 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800'}"
+		>
+			Next Actions
+		</a>
+
+		<!-- Context List (indented) -->
+		<div class="pl-2">
+			<ContextList />
+		</div>
+
+		<!-- Separator -->
+		<div class="border-t border-gray-200 dark:border-gray-700 my-2"></div>
+
 		<a
 			href="/settings"
 			class="block px-4 py-2 rounded-md text-sm font-medium transition-colors
