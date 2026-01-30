@@ -15,7 +15,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 1: Foundation & Storage** - Offline-first data persistence and reliability (2/2 plans complete)
 - [x] **Phase 2: Inbox Capture & Processing** - Quick capture and guided processing workflow (4/4 plans complete)
 - [x] **Phase 3: Next Actions & Contexts** - Context-based task filtering and completion (4/4 plans complete)
-- [ ] **Phase 4: Projects Management** - Multi-step outcomes with stalled project warnings
+- [ ] **Phase 4: Projects Management** - Multi-step outcomes with stalled project warnings (0/4 plans complete)
 - [ ] **Phase 5: Waiting For & Someday/Maybe** - Delegated items and future ideas
 - [ ] **Phase 6: Weekly Review** - Guided review workflow (critical GTD success factor)
 - [ ] **Phase 7: GTD Onboarding** - Progressive introduction for first-time users
@@ -84,11 +84,13 @@ Plans:
   3. User can mark a project as complete when outcome is achieved
   4. User can move a project to someday/maybe when it's no longer active
   5. User can view which next actions belong to which project
-**Plans**: TBD
+**Plans**: 4 plans
 
 Plans:
-- [ ] 04-01: TBD
-- [ ] 04-02: TBD
+- [ ] 04-01-PLAN.md — Project data layer and reactive state store (operations + ProjectState)
+- [ ] 04-02-PLAN.md — Projects route, list UI, detail panel with stalled indicators
+- [ ] 04-03-PLAN.md — Integration: ProcessingFlow project linking, ActionDetailPanel dropdown, sidebar nav, keyboard shortcut
+- [ ] 04-04-PLAN.md — Human verification of complete feature
 
 ### Phase 5: Waiting For & Someday/Maybe
 **Goal**: User can track delegated items and park future ideas without cluttering active lists
@@ -161,7 +163,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8
 | 1. Foundation & Storage | 2/2 | Complete | 2026-01-30 |
 | 2. Inbox Capture & Processing | 4/4 | Complete | 2026-01-30 |
 | 3. Next Actions & Contexts | 4/4 | Complete | 2026-01-30 |
-| 4. Projects Management | 0/TBD | Not started | - |
+| 4. Projects Management | 0/4 | In progress | - |
 | 5. Waiting For & Someday/Maybe | 0/TBD | Not started | - |
 | 6. Weekly Review | 0/TBD | Not started | - |
 | 7. GTD Onboarding | 0/TBD | Not started | - |
