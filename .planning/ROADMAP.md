@@ -19,7 +19,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 5: Waiting For & Someday/Maybe** - Delegated items and future ideas (5/5 plans complete)
 - [x] **Phase 6: Weekly Review** - Guided review workflow (critical GTD success factor) (4/4 plans complete)
 - [x] **Phase 7: GTD Onboarding** - Progressive introduction for first-time users (5/5 plans complete)
-- [ ] **Phase 8: Calendar View** - Read-only calendar for hard landscape reference
+- [ ] **Phase 8: Calendar View** - Read-only calendar for hard landscape reference (0/7 plans)
 
 ## Phase Details
 
@@ -156,10 +156,16 @@ Plans:
   1. User can view a read-only calendar showing their schedule
   2. Calendar displays time-specific commitments separately from next actions
   3. Calendar view helps user answer "what can I do now given my schedule?"
-**Plans**: TBD
+**Plans**: 7 plans
 
 Plans:
-- [ ] 08-01: TBD
+- [ ] 08-01-PLAN.md — Foundation: npm packages, CalendarEvent model, schema v6, event CRUD, CalendarState store
+- [ ] 08-02-PLAN.md — Utilities: ICS file parser (ical.js) and recurrence expansion (rrule.js)
+- [ ] 08-03-PLAN.md — Calendar UI: EventCalendar wrapper component, /calendar route with day/week/month views
+- [ ] 08-04-PLAN.md — Event form: create/edit form, click-to-create, click-to-edit, drag-and-drop interactions
+- [ ] 08-05-PLAN.md — Import and side panel: ICS file import UI, next actions side panel for GTD context
+- [ ] 08-06-PLAN.md — Integration: sidebar nav, 'c' keyboard shortcut, ProcessingFlow "Schedule it" path
+- [ ] 08-07-PLAN.md — Human verification of complete calendar view feature
 
 ## Progress
 
@@ -175,4 +181,4 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8
 | 5. Waiting For & Someday/Maybe | 5/5 | Complete | 2026-01-30 |
 | 6. Weekly Review | 4/4 | Complete | 2026-01-30 |
 | 7. GTD Onboarding | 5/5 | Complete | 2026-01-30 |
-| 8. Calendar View | 0/TBD | Not started | - |
+| 8. Calendar View | 0/7 | Not started | - |
