@@ -38,15 +38,15 @@
 
 ### Weekly Review
 
-- [ ] **REVW-01**: User can start a guided weekly review checklist
-- [ ] **REVW-02**: Review walks through: empty inbox, review projects, review waiting-for, review someday/maybe
-- [ ] **REVW-03**: User can see when they last completed a review
+- [x] **REVW-01**: User can start a guided weekly review checklist
+- [x] **REVW-02**: Review walks through: empty inbox, review projects, review waiting-for, review someday/maybe
+- [x] **REVW-03**: User can see when they last completed a review
 
 ### GTD Onboarding
 
-- [ ] **ONBR-01**: First-time user gets progressive introduction to GTD concepts
-- [ ] **ONBR-02**: User captures first task within 60 seconds of opening app
-- [ ] **ONBR-03**: GTD concepts explained contextually as user encounters each feature
+- [x] **ONBR-01**: First-time user gets progressive introduction to GTD concepts
+- [x] **ONBR-02**: User captures first task within 60 seconds of opening app
+- [x] **ONBR-03**: GTD concepts explained contextually as user encounters each feature
 
 ### Calendar
 
@@ -116,12 +116,12 @@
 | WAIT-02 | Phase 5 | Complete |
 | SMBY-01 | Phase 5 | Complete |
 | SMBY-02 | Phase 5 | Complete |
-| REVW-01 | Phase 6 | Pending |
-| REVW-02 | Phase 6 | Pending |
-| REVW-03 | Phase 6 | Pending |
-| ONBR-01 | Phase 7 | Pending |
-| ONBR-02 | Phase 7 | Pending |
-| ONBR-03 | Phase 7 | Pending |
+| REVW-01 | Phase 6 | Complete |
+| REVW-02 | Phase 6 | Complete |
+| REVW-03 | Phase 6 | Complete |
+| ONBR-01 | Phase 7 | Complete |
+| ONBR-02 | Phase 7 | Complete |
+| ONBR-03 | Phase 7 | Complete |
 | CALV-01 | Phase 8 | Pending |
 
 **Coverage:**
@@ -131,4 +131,4 @@
 
 ---
 *Requirements defined: 2026-01-30*
-*Last updated: 2026-01-30 after Phase 5 completion*
+*Last updated: 2026-01-30 after Phase 7 completion*
