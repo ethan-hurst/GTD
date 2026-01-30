@@ -202,3 +202,78 @@ export async function bulkCompleteActions(ids: number[]): Promise<() => Promise<
 		);
 	};
 }
+
+// ============================================================================
+// Project Operations
+// ============================================================================
+
+export async function getAllProjects(): Promise<GTDItem[]> {
+	return await db.items
+		.where('type')
+		.equals('project')
+		.filter(item => !item.completedAt)
+		.sortBy('created');
+}
+
+export async function getActionsByProject(projectId: number): Promise<GTDItem[]> {
+	return await db.items
+		.where('type')
+		.equals('next-action')
+		.filter(item => !item.completedAt && item.projectId === projectId)
+		.toArray();
+}
+
+export async function getStalledProjects(): Promise<GTDItem[]> {
+	// Use 2-query pattern to avoid N+1
+	const projects = await db.items
+		.where('type')
+		.equals('project')
+		.filter(item => !item.completedAt)
+		.toArray();
+
+	const actionsWithProject = await db.items
+		.where('type')
+		.equals('next-action')
+		.filter(item => !item.completedAt && item.projectId !== undefined)
+		.toArray();
+
+	// Build Set of project IDs that have active actions
+	const activeProjectIds = new Set(
+		actionsWithProject.map(action => action.projectId!)
+	);
+
+	// Return projects NOT in the active set
+	return projects.filter(project => !activeProjectIds.has(project.id));
+}
+
+export async function completeProject(id: number): Promise<() => Promise<void>> {
+	await db.items.update(id, {
+		completedAt: new Date(),
+		modified: new Date()
+	});
+
+	// Return undo function
+	return async () => {
+		await db.items.update(id, {
+			completedAt: undefined,
+			modified: new Date()
+		});
+	};
+}
+
+export async function moveProjectToSomeday(id: number): Promise<void> {
+	await db.items.update(id, {
+		type: 'someday',
+		modified: new Date()
+	});
+}
+
+export async function addProject(title: string, notes?: string): Promise<number> {
+	return await db.items.add({
+		title,
+		type: 'project',
+		notes: notes || '',
+		created: new Date(),
+		modified: new Date()
+	} as GTDItem);
+}
