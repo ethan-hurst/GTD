@@ -27,7 +27,11 @@
 <aside class="w-60 border-r border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900 flex flex-col">
 	<!-- App Title -->
 	<div class="p-6 border-b border-gray-200 dark:border-gray-800">
-		<h1 class="text-xl font-bold text-gray-900 dark:text-gray-100">GTD</h1>
+		<h1 class="gtd-logo text-xl font-bold text-gray-900 dark:text-gray-100">
+			<span class="gtd-word">G<span class="gtd-expand gtd-expand-1">et</span></span>
+			<span class="gtd-word">T<span class="gtd-expand gtd-expand-2">hings</span></span>
+			<span class="gtd-word">D<span class="gtd-expand gtd-expand-3">one</span></span>
+		</h1>
 	</div>
 
 	<!-- Navigation -->
@@ -158,3 +162,48 @@
 		<ThemeToggle />
 	</div>
 </aside>
+
+<style>
+	.gtd-logo {
+		cursor: default;
+		white-space: nowrap;
+		display: flex;
+		gap: 0;
+	}
+
+	.gtd-word {
+		display: inline-flex;
+	}
+
+	.gtd-expand {
+		display: inline-block;
+		max-width: 0;
+		overflow: hidden;
+		transition: max-width 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+	}
+
+	.gtd-logo:hover .gtd-expand {
+		max-width: 4rem;
+	}
+
+	.gtd-logo:hover .gtd-word {
+		margin-right: 0.3rem;
+	}
+
+	.gtd-word {
+		margin-right: 0;
+		transition: margin-right 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+	}
+
+	.gtd-expand-1 {
+		transition-delay: 0s;
+	}
+
+	.gtd-expand-2 {
+		transition-delay: 0.06s;
+	}
+
+	.gtd-expand-3 {
+		transition-delay: 0.12s;
+	}
+</style>
