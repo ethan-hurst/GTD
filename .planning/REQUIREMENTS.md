@@ -97,38 +97,38 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| INBX-01 | — | Pending |
-| INBX-02 | — | Pending |
-| INBX-03 | — | Pending |
-| INBX-04 | — | Pending |
-| NACT-01 | — | Pending |
-| NACT-02 | — | Pending |
-| NACT-03 | — | Pending |
-| NACT-04 | — | Pending |
-| PROJ-01 | — | Pending |
-| PROJ-02 | — | Pending |
-| PROJ-03 | — | Pending |
-| PROJ-04 | — | Pending |
-| WAIT-01 | — | Pending |
-| WAIT-02 | — | Pending |
-| SMBY-01 | — | Pending |
-| SMBY-02 | — | Pending |
-| REVW-01 | — | Pending |
-| REVW-02 | — | Pending |
-| REVW-03 | — | Pending |
-| ONBR-01 | — | Pending |
-| ONBR-02 | — | Pending |
-| ONBR-03 | — | Pending |
-| CALV-01 | — | Pending |
-| DATA-01 | — | Pending |
-| DATA-02 | — | Pending |
-| DATA-03 | — | Pending |
+| DATA-01 | Phase 1 | Pending |
+| DATA-02 | Phase 1 | Pending |
+| DATA-03 | Phase 1 | Pending |
+| INBX-01 | Phase 2 | Pending |
+| INBX-02 | Phase 2 | Pending |
+| INBX-03 | Phase 2 | Pending |
+| INBX-04 | Phase 2 | Pending |
+| NACT-01 | Phase 3 | Pending |
+| NACT-02 | Phase 3 | Pending |
+| NACT-03 | Phase 3 | Pending |
+| NACT-04 | Phase 3 | Pending |
+| PROJ-01 | Phase 4 | Pending |
+| PROJ-02 | Phase 4 | Pending |
+| PROJ-03 | Phase 4 | Pending |
+| PROJ-04 | Phase 4 | Pending |
+| WAIT-01 | Phase 5 | Pending |
+| WAIT-02 | Phase 5 | Pending |
+| SMBY-01 | Phase 5 | Pending |
+| SMBY-02 | Phase 5 | Pending |
+| REVW-01 | Phase 6 | Pending |
+| REVW-02 | Phase 6 | Pending |
+| REVW-03 | Phase 6 | Pending |
+| ONBR-01 | Phase 7 | Pending |
+| ONBR-02 | Phase 7 | Pending |
+| ONBR-03 | Phase 7 | Pending |
+| CALV-01 | Phase 8 | Pending |
 
 **Coverage:**
 - v1 requirements: 26 total
-- Mapped to phases: 0
-- Unmapped: 26 (pending roadmap creation)
+- Mapped to phases: 26
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-01-30*
-*Last updated: 2026-01-30 after initial definition*
+*Last updated: 2026-01-30 after roadmap creation*
