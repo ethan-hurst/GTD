@@ -16,7 +16,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 2: Inbox Capture & Processing** - Quick capture and guided processing workflow (4/4 plans complete)
 - [x] **Phase 3: Next Actions & Contexts** - Context-based task filtering and completion (4/4 plans complete)
 - [x] **Phase 4: Projects Management** - Multi-step outcomes with stalled project warnings (4/4 plans complete)
-- [ ] **Phase 5: Waiting For & Someday/Maybe** - Delegated items and future ideas
+- [x] **Phase 5: Waiting For & Someday/Maybe** - Delegated items and future ideas (5/5 plans complete)
 - [ ] **Phase 6: Weekly Review** - Guided review workflow (critical GTD success factor)
 - [ ] **Phase 7: GTD Onboarding** - Progressive introduction for first-time users
 - [ ] **Phase 8: Calendar View** - Read-only calendar for hard landscape reference
@@ -109,7 +109,7 @@ Plans:
 - [x] 05-02-PLAN.md — Waiting For route, list UI with inline add, resolve flow, overdue styling (completed 2026-01-30)
 - [x] 05-03-PLAN.md — Someday/Maybe route, list UI with category filter, promote flow (completed 2026-01-30)
 - [x] 05-04-PLAN.md — Integration: sidebar nav, keyboard shortcuts, ProcessingFlow delegate enhancement (completed 2026-01-30)
-- [ ] 05-05-PLAN.md — Human verification of complete feature
+- [x] 05-05-PLAN.md — Human verification of complete feature (completed 2026-01-30)
 
 ### Phase 6: Weekly Review
 **Goal**: User can complete guided weekly review to keep GTD system current (critical success factor)
@@ -167,7 +167,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8
 | 2. Inbox Capture & Processing | 4/4 | Complete | 2026-01-30 |
 | 3. Next Actions & Contexts | 4/4 | Complete | 2026-01-30 |
 | 4. Projects Management | 4/4 | Complete | 2026-01-30 |
-| 5. Waiting For & Someday/Maybe | 4/5 | In Progress | - |
+| 5. Waiting For & Someday/Maybe | 5/5 | Complete | 2026-01-30 |
 | 6. Weekly Review | 0/TBD | Not started | - |
 | 7. GTD Onboarding | 0/TBD | Not started | - |
 | 8. Calendar View | 0/TBD | Not started | - |

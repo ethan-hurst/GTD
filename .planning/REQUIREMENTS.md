@@ -28,13 +28,13 @@
 
 ### Waiting For
 
-- [ ] **WAIT-01**: User can add items to waiting-for list (what, who, when delegated)
-- [ ] **WAIT-02**: User can mark waiting-for items as resolved
+- [x] **WAIT-01**: User can add items to waiting-for list (what, who, when delegated)
+- [x] **WAIT-02**: User can mark waiting-for items as resolved
 
 ### Someday/Maybe
 
-- [ ] **SMBY-01**: User can add items to someday/maybe list
-- [ ] **SMBY-02**: User can promote a someday/maybe item to an active project
+- [x] **SMBY-01**: User can add items to someday/maybe list
+- [x] **SMBY-02**: User can promote a someday/maybe item to an active project
 
 ### Weekly Review
 
@@ -112,10 +112,10 @@
 | PROJ-02 | Phase 4 | Complete |
 | PROJ-03 | Phase 4 | Complete |
 | PROJ-04 | Phase 4 | Complete |
-| WAIT-01 | Phase 5 | Pending |
-| WAIT-02 | Phase 5 | Pending |
-| SMBY-01 | Phase 5 | Pending |
-| SMBY-02 | Phase 5 | Pending |
+| WAIT-01 | Phase 5 | Complete |
+| WAIT-02 | Phase 5 | Complete |
+| SMBY-01 | Phase 5 | Complete |
+| SMBY-02 | Phase 5 | Complete |
 | REVW-01 | Phase 6 | Pending |
 | REVW-02 | Phase 6 | Pending |
 | REVW-03 | Phase 6 | Pending |
@@ -131,4 +131,4 @@
 
 ---
 *Requirements defined: 2026-01-30*
-*Last updated: 2026-01-30 after Phase 4 completion*
+*Last updated: 2026-01-30 after Phase 5 completion*
