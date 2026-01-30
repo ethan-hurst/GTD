@@ -14,6 +14,8 @@ export interface GTDItem {
 	projectId?: number;
 	completedAt?: Date;
 	sortOrder?: number;
+	followUpDate?: Date;
+	category?: string;
 }
 
 export interface Context {
@@ -50,6 +52,12 @@ db.version(2).stores({
 
 db.version(3).stores({
 	items: "++id, type, created, modified, *searchWords, context, projectId, sortOrder, completedAt",
+	lists: "++id, name, type",
+	contexts: "++id, name, sortOrder"
+});
+
+db.version(4).stores({
+	items: "++id, type, created, modified, *searchWords, context, projectId, sortOrder, completedAt, followUpDate, category",
 	lists: "++id, name, type",
 	contexts: "++id, name, sortOrder"
 });

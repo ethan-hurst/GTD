@@ -277,3 +277,94 @@ export async function addProject(title: string, notes?: string): Promise<number>
 		modified: new Date()
 	} as GTDItem);
 }
+
+// ============================================================================
+// Waiting For Operations
+// ============================================================================
+
+export async function getAllWaitingFor(): Promise<GTDItem[]> {
+	const items = await db.items
+		.where('type')
+		.equals('waiting')
+		.filter(item => !item.completedAt)
+		.toArray();
+
+	// Sort by followUpDate ascending (nulls last using MAX_SAFE_INTEGER pattern), then by created date
+	return items.sort((a, b) => {
+		// Handle followUpDate nulls/undefined
+		const aDate = a.followUpDate ? a.followUpDate.getTime() : Number.MAX_SAFE_INTEGER;
+		const bDate = b.followUpDate ? b.followUpDate.getTime() : Number.MAX_SAFE_INTEGER;
+
+		if (aDate !== bDate) {
+			return aDate - bDate;
+		}
+
+		// If followUpDate is same (or both null), sort by created date
+		return a.created.getTime() - b.created.getTime();
+	});
+}
+
+export async function resolveWaitingFor(id: number): Promise<() => Promise<void>> {
+	await db.items.update(id, {
+		completedAt: new Date(),
+		modified: new Date()
+	});
+
+	// Return undo function
+	return async () => {
+		await db.items.update(id, {
+			completedAt: undefined,
+			modified: new Date()
+		});
+	};
+}
+
+export async function addWaitingFor(
+	title: string,
+	delegatedTo: string,
+	followUpDate?: Date,
+	projectId?: number,
+	notes?: string
+): Promise<number> {
+	return await db.items.add({
+		title,
+		type: 'waiting',
+		delegatedTo,
+		followUpDate,
+		projectId,
+		notes: notes || '',
+		created: new Date(),
+		modified: new Date()
+	} as GTDItem);
+}
+
+// ============================================================================
+// Someday/Maybe Operations
+// ============================================================================
+
+export async function getAllSomedayMaybe(): Promise<GTDItem[]> {
+	return await db.items
+		.where('type')
+		.equals('someday')
+		.filter(item => !item.completedAt)
+		.sortBy('created');
+}
+
+export async function promoteSomedayToActive(id: number, newType: 'project' | 'next-action'): Promise<void> {
+	await db.items.update(id, {
+		type: newType,
+		category: undefined,
+		modified: new Date()
+	});
+}
+
+export async function addSomedayItem(title: string, notes?: string, category?: string): Promise<number> {
+	return await db.items.add({
+		title,
+		type: 'someday',
+		notes: notes || '',
+		category,
+		created: new Date(),
+		modified: new Date()
+	} as GTDItem);
+}
