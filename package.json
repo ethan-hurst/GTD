@@ -13,6 +13,7 @@
     "@sveltejs/adapter-static": "^3.0.1",
     "@sveltejs/kit": "^2.10.0",
     "@sveltejs/vite-plugin-svelte": "^4.0.0",
+    "@types/canvas-confetti": "^1.9.0",
     "svelte": "^5.0.0",
     "svelte-check": "^4.0.0",
     "typescript": "^5.0.0",
@@ -21,6 +22,7 @@
   "type": "module",
   "dependencies": {
     "@tailwindcss/vite": "^4.1.18",
+    "canvas-confetti": "^1.9.4",
     "dexie": "^4.2.1",
     "svelte-5-french-toast": "^2.0.6",
     "svelte-dnd-action": "^0.9.69",

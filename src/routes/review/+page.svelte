@@ -1,5 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import confetti from 'canvas-confetti';
+	import { toast } from 'svelte-5-french-toast';
 	import WeeklyReviewWizard from '$lib/components/WeeklyReviewWizard.svelte';
 	import { weeklyReviewState } from '$lib/stores/review.svelte';
 
@@ -36,6 +38,17 @@
 
 	async function handleFinish() {
 		await weeklyReviewState.finishReview();
+
+		// Celebration confetti
+		confetti({
+			particleCount: 100,
+			spread: 70,
+			origin: { y: 0.6 },
+			disableForReducedMotion: true
+		});
+
+		// Success toast
+		toast.success('Weekly review complete! Your GTD system is current.');
 	}
 </script>
 
