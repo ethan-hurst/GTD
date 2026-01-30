@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import type { GTDItem, Context } from '../db/schema';
-	import { updateItem, deleteItem, getAllContexts, getAllProjects, addProject } from '../db/operations';
+	import { updateItem, deleteItem, getAllContexts, getAllProjects, addProject, addEvent } from '../db/operations';
 	import { storageStatus } from '../stores/storage.svelte';
 	import { toast } from 'svelte-5-french-toast';
 
@@ -12,10 +12,12 @@
 
 	let { item, onProcessed }: ProcessingFlowProps = $props();
 
-	type Step = 'actionable' | 'two-minute' | 'not-actionable' | 'delegate-or-defer' | 'delegate-input' | 'assign-context' | 'select-project';
+	type Step = 'actionable' | 'two-minute' | 'not-actionable' | 'delegate-or-defer' | 'delegate-input' | 'assign-context' | 'select-project' | 'schedule-event';
 	let step = $state<Step>('actionable');
 	let delegateName = $state('');
 	let followUpDateStr = $state('');
+	let eventStartTime = $state('');
+	let eventEndTime = $state('');
 	let contexts = $state<Context[]>([]);
 	let projects = $state<GTDItem[]>([]);
 	let selectedProjectId = $state<number | undefined>(undefined);
@@ -30,7 +32,8 @@
 		'delegate-or-defer': 'Step 3 of 3',
 		'delegate-input': 'Step 3 of 3',
 		'select-project': 'Select Project',
-		'assign-context': 'Choose Context'
+		'assign-context': 'Choose Context',
+		'schedule-event': 'Schedule Event'
 	};
 
 	onMount(async () => {
@@ -46,6 +49,8 @@
 		} else if (step === 'delegate-input') {
 			step = 'delegate-or-defer';
 		} else if (step === 'select-project') {
+			step = 'delegate-or-defer';
+		} else if (step === 'schedule-event') {
 			step = 'delegate-or-defer';
 		} else if (step === 'assign-context') {
 			if (afterContext === 'project') {
@@ -128,6 +133,27 @@
 		});
 		storageStatus.recordSave();
 		toast.success('Moved to Waiting For.');
+		onProcessed();
+	}
+
+	async function scheduleEvent() {
+		if (!eventStartTime) return;
+
+		// Parse start time, default end time to start + 1 hour if not provided
+		const startDate = new Date(eventStartTime);
+		const endDate = eventEndTime ? new Date(eventEndTime) : new Date(startDate.getTime() + 60 * 60 * 1000);
+
+		await addEvent({
+			title: item.title,
+			startTime: startDate,
+			endTime: endDate,
+			source: 'manual'
+		});
+
+		// Remove the inbox item (mark as processed)
+		await deleteItem(item.id);
+		storageStatus.recordSave();
+		toast.success('Added to calendar.');
 		onProcessed();
 	}
 </script>
@@ -245,16 +271,22 @@
 			</p>
 			<div class="flex flex-col gap-2">
 				<button
-					onclick={() => step = 'delegate-input'}
-					class="px-4 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 rounded-md transition-colors"
-				>
-					Delegate to someone
-				</button>
-				<button
 					onclick={initiateNextAction}
 					class="px-4 py-2.5 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 rounded-md transition-colors"
 				>
-					I'll do it next
+					Defer (Next Action)
+				</button>
+				<button
+					onclick={() => step = 'delegate-input'}
+					class="px-4 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 rounded-md transition-colors"
+				>
+					Delegate
+				</button>
+				<button
+					onclick={() => step = 'schedule-event'}
+					class="px-4 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 rounded-md transition-colors"
+				>
+					Schedule it
 				</button>
 				<button
 					onclick={initiateProject}
@@ -397,6 +429,53 @@
 					Skip (no context)
 				</button>
 			</div>
+		</div>
+		<button
+			onclick={goBack}
+			class="text-xs text-blue-600 dark:text-blue-400 hover:underline"
+		>
+			← Back
+		</button>
+	{/if}
+
+	<!-- Schedule Event -->
+	{#if step === 'schedule-event'}
+		<div class="mb-4">
+			<p class="text-base font-semibold text-gray-900 dark:text-gray-100 mb-3">
+				When is this scheduled?
+			</p>
+			<form onsubmit={(e) => { e.preventDefault(); scheduleEvent(); }} class="flex flex-col gap-3">
+				<div>
+					<label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">
+						Start time
+					</label>
+					<input
+						type="datetime-local"
+						bind:value={eventStartTime}
+						class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+						required
+						autofocus
+					/>
+				</div>
+				<div>
+					<label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">
+						End time (optional)
+					</label>
+					<input
+						type="datetime-local"
+						bind:value={eventEndTime}
+						class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+					/>
+					<p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Defaults to 1 hour after start</p>
+				</div>
+				<button
+					type="submit"
+					disabled={!eventStartTime}
+					class="px-4 py-2.5 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed rounded-md transition-colors"
+				>
+					Add to Calendar
+				</button>
+			</form>
 		</div>
 		<button
 			onclick={goBack}
