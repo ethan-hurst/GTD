@@ -9,32 +9,33 @@ See: .planning/PROJECT.md (updated 2026-01-30)
 
 ## Current Position
 
-Phase: 4 of 8 (Projects Management) — COMPLETE
-Plan: 4 of 4 in current phase (all complete)
-Status: Phase complete, ready for Phase 5
-Last activity: 2026-01-30 — Completed 04-04-PLAN.md (Human Verification + bugfix)
+Phase: 5 of 8 (Waiting For & Someday/Maybe) — IN PROGRESS
+Plan: 1 of 5 in current phase (05-01 complete)
+Status: In progress
+Last activity: 2026-01-30 — Completed 05-01-PLAN.md
 
-Progress: [████████░░] 87.5% (14/16 plans complete)
+Progress: [████████░░] 93.75% (15/16 plans complete)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 14
+- Total plans completed: 15
 - Average duration: 2.1 min
-- Total execution time: ~0.50 hours
+- Total execution time: ~0.53 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| 01 - Foundation & Storage | 2 | 7.1 min | 3.6 min |
-| 02 - Inbox Capture & Processing | 4 | complete | — |
+| 01 - Foundation & Storage | 2/2 | 7.1 min | 3.6 min |
+| 02 - Inbox Capture & Processing | 4/4 | complete | — |
 | 03 - Next Actions & Contexts | 4/4 | 14 min | 3.5 min |
 | 04 - Projects Management | 4/4 | 8.9 min | 2.2 min |
+| 05 - Waiting For & Someday/Maybe | 1/5 | 1.95 min | 1.95 min |
 
 **Recent Trend:**
-- Last 5 plans: 04-01 (1.4 min), 04-02 (1.8 min), 04-03 (2.7 min), 04-04 (3 min, human verification)
-- Phase 4 complete with human verification passed
+- Last 5 plans: 04-02 (1.8 min), 04-03 (2.7 min), 04-04 (3 min, human verification), 05-01 (1.95 min)
+- Phase 5 started: data layer complete
 
 *Updated after each plan completion*
 
@@ -98,6 +99,10 @@ Recent decisions affecting current work:
 - Inline project creation in ProcessingFlow: Keeps user in processing context, matches InboxCapture pattern (04-03)
 - 'p' keyboard shortcut for Projects: Mirrors 'n' for Next Actions, single-key navigation pattern (04-03)
 - ProjectItem needs explicit onSave prop for list refresh: onToggleExpand alone doesn't reload data (04-04 bugfix)
+- Schema extension over new tables: Extended GTDItem with optional fields rather than separate tables (05-01)
+- MAX_SAFE_INTEGER nulls-last sorting: Consistent pattern for sorting with optional dates (05-01)
+- Overdue detection in loadItems(): Computed once on load rather than $derived to avoid constant recomputation (05-01)
+- Exported SOMEDAY_CATEGORIES constant: 8 predefined categories for helpful organization without rigid structure (05-01)
 
 ### Pending Todos
 
@@ -114,5 +119,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-01-30
-Stopped at: Phase 4 complete (all 4 plans + human verification). Ready for Phase 5: Waiting For & Someday/Maybe.
+Stopped at: Completed 05-01-PLAN.md (data layer). Ready for 05-02 (Waiting For UI).
 Resume file: None
