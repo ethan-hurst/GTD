@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-01-30)
 ## Current Position
 
 Phase: 8 of 8 (Calendar View) — IN PROGRESS
-Plan: 5 of 7 in current phase
+Plan: 6 of 7 in current phase
 Status: In progress
-Last activity: 2026-01-31 — Completed 08-05-PLAN.md (ICS Import & Next Actions Panel)
+Last activity: 2026-01-30 — Completed 08-06-PLAN.md (Calendar Integration)
 
-Progress: [██████████████████████████░░] 36/38 plans complete (7/8 phases)
+Progress: [██████████████████████████░░] 37/38 plans complete (7/8 phases)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 35
+- Total plans completed: 36
 - Average duration: ~2.2 min
-- Total execution time: ~1.35 hours
+- Total execution time: ~1.40 hours
 
 **By Phase:**
 
@@ -34,11 +34,11 @@ Progress: [███████████████████████
 | 05 - Waiting For & Someday/Maybe | 5/5 | ~11 min | 2.2 min |
 | 06 - Weekly Review | 4/4 | ~6 min | ~1.5 min |
 | 07 - GTD Onboarding | 5/5 | ~12 min | 2.4 min |
-| 08 - Calendar View | 5/7 | 17.4 min | 3.5 min |
+| 08 - Calendar View | 6/7 | 20.4 min | 3.4 min |
 
 **Recent Trend:**
-- Last 5 plans: 08-01 (2 min), 08-02 (3.4 min), 08-03 (3 min), 08-04 (4 min), 08-05 (5 min)
-- Phase 8 progress: ICS import and next actions panel complete, calendar view nearly feature-complete
+- Last 5 plans: 08-02 (3.4 min), 08-03 (3 min), 08-04 (4 min), 08-05 (5 min), 08-06 (3 min)
+- Phase 8 progress: Calendar integration complete, one plan remaining for final polish
 
 *Updated after each plan completion*
 
@@ -163,6 +163,11 @@ Recent decisions affecting current work:
 - Side panel defaults visible on desktop: Immediate GTD context for calendar-based planning (08-05)
 - Modal with file input and drag-and-drop for ICS uploads: Familiar pattern with preview before import (08-05)
 - Context-grouped action lists with completion and undo: Reusable pattern for GTD methodology (08-05)
+- 'c' keyboard shortcut for calendar navigation: Extends n/p/w/s/r single-key navigation pattern (08-06)
+- Calendar between Weekly Review and Settings in sidebar: Logically grouped with review functionality as reference tool (08-06)
+- Schedule it option in processing flow: Creates calendar event and processes inbox item in single action (08-06)
+- Default 1-hour event duration: When end time omitted, reduces friction in event creation (08-06)
+- Inline event creation form in ProcessingFlow: Keeps user in processing context without modal (08-06)
 
 ### Pending Todos
 
@@ -178,6 +183,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-01-31
-Stopped at: Completed 08-05-PLAN.md (ICS Import & Next Actions Panel)
+Last session: 2026-01-30
+Stopped at: Completed 08-06-PLAN.md (Calendar Integration)
 Resume file: None
