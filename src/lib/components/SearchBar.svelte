@@ -177,9 +177,9 @@
 			onkeydown={handleKeydown}
 			type="text"
 			placeholder="Search... (Cmd+K)"
-			class="w-full bg-gray-100 dark:bg-gray-800 border-0 rounded-md pl-10 pr-3 py-1.5
+			class="w-full bg-gray-100/70 dark:bg-gray-800/60 border border-transparent rounded-md pl-10 pr-3 py-2
 				text-sm placeholder-gray-400 focus:ring-2 focus:ring-blue-500
-				focus:bg-white dark:focus:bg-gray-700 transition-colors"
+				focus:bg-white dark:focus:bg-gray-700 focus:border-gray-200 dark:focus:border-gray-700 focus:shadow-sm transition-all duration-200"
 		/>
 	</div>
 
@@ -187,7 +187,7 @@
 	{#if isOpen && results.length > 0}
 		<div
 			class="absolute top-full left-0 right-0 mt-1 bg-white dark:bg-gray-800
-				shadow-lg border border-gray-200 dark:border-gray-700 rounded-md
+				shadow-xl border border-gray-200 dark:border-gray-700 rounded-lg
 				max-h-80 overflow-y-auto z-50"
 		>
 			{#each results as item, index}
@@ -195,8 +195,8 @@
 				<!-- svelte-ignore a11y_no_static_element_interactions -->
 				<div
 					class="px-4 py-3 cursor-pointer border-b border-gray-100 dark:border-gray-700
-						last:border-b-0 hover:bg-gray-50 dark:hover:bg-gray-700
-						{selectedIndex === index ? 'bg-gray-100 dark:bg-gray-700' : ''}"
+						last:border-b-0 hover:bg-blue-50/50 dark:hover:bg-blue-900/20
+						{selectedIndex === index ? 'bg-blue-50 dark:bg-blue-900/30' : ''}"
 					onclick={() => navigateToItem(item)}
 				>
 					<div class="flex items-center gap-2 mb-1">

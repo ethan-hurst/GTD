@@ -16,14 +16,15 @@
 	<label class="text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wide">
 		Theme
 	</label>
-	<div class="flex gap-1 bg-gray-200 dark:bg-gray-800 rounded-md p-1">
+	<div class="flex gap-1 bg-gray-200 dark:bg-gray-800 rounded-lg p-1">
 		{#each options as option}
 			<button
 				onclick={() => handleChange(option.value)}
-				class="flex-1 px-2 py-1.5 rounded text-xs font-medium transition-colors
+				class="flex-1 px-2 py-2 rounded-lg text-xs font-medium transition-all
+					focus:outline-none focus:ring-2 focus:ring-blue-500/40
 					{theme.current === option.value
 						? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 shadow-sm'
-						: 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100'}"
+						: 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-100'}"
 				title={option.label}
 			>
 				<svg class="w-4 h-4 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">

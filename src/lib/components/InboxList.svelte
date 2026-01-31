@@ -41,20 +41,20 @@
 				{#if !allSelected}
 					<button
 						onclick={() => inboxState.selectAll()}
-						class="px-3 py-1 text-sm font-medium text-blue-700 dark:text-blue-300 hover:bg-blue-100 dark:hover:bg-blue-800 rounded-md transition-colors"
+						class="px-3 py-1 text-sm font-medium text-blue-700 dark:text-blue-300 hover:bg-blue-100 dark:hover:bg-blue-800 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-blue-900"
 					>
 						Select All
 					</button>
 				{/if}
 				<button
 					onclick={() => inboxState.clearSelection()}
-					class="px-3 py-1 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md transition-colors"
+					class="px-3 py-1 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 dark:focus:ring-offset-blue-900"
 				>
 					Deselect
 				</button>
 				<button
 					onclick={handleBulkDelete}
-					class="px-3 py-1 text-sm font-medium text-red-700 dark:text-red-300 hover:bg-red-100 dark:hover:bg-red-800 rounded-md transition-colors"
+					class="px-3 py-1 text-sm font-medium text-red-700 dark:text-red-300 hover:bg-red-100 dark:hover:bg-red-800 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 dark:focus:ring-offset-blue-900"
 				>
 					Delete
 				</button>
@@ -82,7 +82,7 @@
 							checked={inboxState.selectedIds.includes(item.id)}
 							onchange={() => inboxState.toggleSelection(item.id)}
 							disabled={inboxState.isProcessing}
-							class="mt-1 w-4 h-4 rounded border-gray-300 dark:border-gray-600 text-blue-600 focus:ring-blue-500 focus:ring-offset-0 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+							class="mt-1 w-4 h-4 rounded border-gray-300 dark:border-gray-600 text-blue-600 focus:ring-2 focus:ring-blue-500 focus:ring-offset-0 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
 						/>
 					{:else}
 						<!-- Spacer to maintain alignment when checkbox is hidden -->

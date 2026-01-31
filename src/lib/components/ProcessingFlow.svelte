@@ -222,7 +222,7 @@
 		</div>
 		<button
 			onclick={goBack}
-			class="text-xs text-blue-600 dark:text-blue-400 hover:underline"
+			class="text-xs text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:underline"
 		>
 			← Back
 		</button>
@@ -257,7 +257,7 @@
 		</div>
 		<button
 			onclick={goBack}
-			class="text-xs text-blue-600 dark:text-blue-400 hover:underline"
+			class="text-xs text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:underline"
 		>
 			← Back
 		</button>
@@ -298,7 +298,7 @@
 		</div>
 		<button
 			onclick={goBack}
-			class="text-xs text-blue-600 dark:text-blue-400 hover:underline"
+			class="text-xs text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:underline"
 		>
 			← Back
 		</button>
@@ -315,14 +315,14 @@
 					type="text"
 					bind:value={delegateName}
 					placeholder="Name or email"
-					class="px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+					class="px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
 					autofocus
 				/>
 				<div class="flex flex-col gap-1">
 					<input
 						type="date"
 						bind:value={followUpDateStr}
-						class="px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+						class="px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
 					/>
 					<p class="text-xs text-gray-500 dark:text-gray-400">Optional: When to follow up</p>
 				</div>
@@ -337,7 +337,7 @@
 		</div>
 		<button
 			onclick={goBack}
-			class="text-xs text-blue-600 dark:text-blue-400 hover:underline"
+			class="text-xs text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:underline"
 		>
 			← Back
 		</button>
@@ -360,7 +360,7 @@
 				{/each}
 
 				{#if projects.length > 0}
-					<div class="border-t border-gray-200 dark:border-gray-700 my-2"></div>
+					<div class="border-t border-gray-100 dark:border-gray-700/50 my-2"></div>
 				{/if}
 
 				<div class="space-y-2">
@@ -371,7 +371,7 @@
 						type="text"
 						bind:value={newProjectTitle}
 						placeholder="New project outcome..."
-						class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+						class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
 					/>
 					<button
 						onclick={async () => {
@@ -389,11 +389,11 @@
 					</button>
 				</div>
 
-				<div class="border-t border-gray-200 dark:border-gray-700 my-2"></div>
+				<div class="border-t border-gray-100 dark:border-gray-700/50 my-2"></div>
 
 				<button
 					onclick={() => { selectedProjectId = undefined; afterContext = 'project'; step = 'assign-context'; }}
-					class="px-4 py-2.5 text-sm font-medium text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 rounded-md transition-colors"
+					class="px-4 py-2.5 text-sm font-medium text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 rounded-md active:scale-[0.98] transition-all focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800"
 				>
 					Skip (no project)
 				</button>
@@ -401,7 +401,7 @@
 		</div>
 		<button
 			onclick={goBack}
-			class="text-xs text-blue-600 dark:text-blue-400 hover:underline"
+			class="text-xs text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:underline"
 		>
 			← Back
 		</button>
@@ -417,14 +417,14 @@
 				{#each contexts as context (context.id)}
 					<button
 						onclick={() => assignContextAndSave(context.name)}
-						class="px-4 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 rounded-md transition-colors text-left"
+						class="px-4 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 rounded-md active:scale-[0.98] transition-all text-left focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800"
 					>
 						{context.name}
 					</button>
 				{/each}
 				<button
 					onclick={() => assignContextAndSave()}
-					class="px-4 py-2.5 text-sm font-medium text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 rounded-md transition-colors"
+					class="px-4 py-2.5 text-sm font-medium text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 rounded-md active:scale-[0.98] transition-all focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800"
 				>
 					Skip (no context)
 				</button>
@@ -432,7 +432,7 @@
 		</div>
 		<button
 			onclick={goBack}
-			class="text-xs text-blue-600 dark:text-blue-400 hover:underline"
+			class="text-xs text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:underline"
 		>
 			← Back
 		</button>
@@ -452,7 +452,7 @@
 					<input
 						type="datetime-local"
 						bind:value={eventStartTime}
-						class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+						class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
 						required
 						autofocus
 					/>
@@ -464,14 +464,14 @@
 					<input
 						type="datetime-local"
 						bind:value={eventEndTime}
-						class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+						class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
 					/>
 					<p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Defaults to 1 hour after start</p>
 				</div>
 				<button
 					type="submit"
 					disabled={!eventStartTime}
-					class="px-4 py-2.5 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed rounded-md transition-colors"
+					class="px-4 py-2.5 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed rounded-md active:scale-[0.98] transition-all focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800"
 				>
 					Add to Calendar
 				</button>
@@ -479,7 +479,7 @@
 		</div>
 		<button
 			onclick={goBack}
-			class="text-xs text-blue-600 dark:text-blue-400 hover:underline"
+			class="text-xs text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:underline"
 		>
 			← Back
 		</button>

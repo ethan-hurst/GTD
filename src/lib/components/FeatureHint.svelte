@@ -103,7 +103,7 @@
 	{#if displayHint}
 		<div
 			id="hint-{feature}"
-			class="absolute z-50 w-64 px-3 py-2 text-sm bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 rounded-md shadow-lg {positionClasses}"
+			class="absolute z-50 w-64 px-3 py-2 text-sm bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 rounded-lg shadow-lg {positionClasses}"
 			role="tooltip"
 			onkeydown={handleKeydown}
 		>
