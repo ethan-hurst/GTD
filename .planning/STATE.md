@@ -11,11 +11,11 @@ See: .planning/PROJECT.md (updated 2026-01-31)
 ## Current Position
 
 Phase: 08.5 (Device Sync — in progress)
-Plan: 4 of 7 in current phase
+Plan: 5 of 7 in current phase
 Status: In progress
-Last activity: 2026-01-31 — Completed 08.5-04-PLAN.md (Merge & Sync Engine)
+Last activity: 2026-01-31 — Completed 08.5-05-PLAN.md (Sync UI & Status Indicators)
 
-Progress: [███████████░░░░░░░░░] 58% (58/TBD plans complete across all phases)
+Progress: [███████████░░░░░░░░░] 59% (59/TBD plans complete across all phases)
 
 ## Performance Metrics
 
@@ -124,6 +124,10 @@ Recent decisions affecting current work:
 - 08.5-04: Full-replace import strategy (clear + bulkPut) instead of incremental updates
 - 08.5-04: Pairing code held in memory only - re-prompt after page refresh for security
 - 08.5-04: Debouncer triggers after 2000ms delay OR 5 changes (whichever comes first)
+- 08.5-05: Modal confirmation for unpair action prevents accidental unpairing
+- 08.5-05: Auto-format pairing code input as XXX-XXX for improved UX
+- 08.5-05: Sync status indicators only visible when paired (don't clutter UI for non-sync users)
+- 08.5-05: StatusBar sync status clickable to navigate to Settings page
 
 ### Roadmap Evolution
 
@@ -151,6 +155,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-01-31
-Stopped at: Completed 08.5-04-PLAN.md (Merge & Sync Engine)
+Last session: 2026-01-31T10:48:29Z
+Stopped at: Completed 08.5-05-PLAN.md (Sync UI & Status Indicators)
 Resume file: None
