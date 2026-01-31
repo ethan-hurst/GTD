@@ -11,11 +11,11 @@ See: .planning/PROJECT.md (updated 2026-01-31)
 ## Current Position
 
 Phase: 08.1 (UI/UX Review — inserted)
-Plan: 0 of TBD in current phase
-Status: Ready to plan
-Last activity: 2026-01-31 — Phase 08.1 inserted for comprehensive UI/UX review
+Plan: 1 of TBD in current phase
+Status: In progress
+Last activity: 2026-01-31 — Completed 08.1-01-PLAN.md (Design Foundation)
 
-Progress: [████████░░░░░░░░░░░░] 40% (35/TBD plans complete across all phases)
+Progress: [████████░░░░░░░░░░░░] 40% (36/TBD plans complete across all phases)
 
 ## Performance Metrics
 
@@ -54,6 +54,9 @@ Recent decisions affecting current work:
 - v1.0: @event-calendar/core for calendar component (35KB vs 150KB FullCalendar)
 - v1.0: Offline-first storage with service worker caching
 - v1.0: Schema extension over separate tables (optional fields on GTDItem)
+- 08.1-01: Use shadows instead of borders for header separation (professional aesthetic)
+- 08.1-01: Gray-950 dark mode background (not pure black) for reduced eye strain
+- 08.1-01: Minimal utility class set to avoid over-engineering full design system
 
 ### Roadmap Evolution
 
@@ -77,6 +80,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-01-31
-Stopped at: Phase 08.1 inserted
-Resume file: None (ready to plan Phase 08.1)
+Last session: 2026-01-31T00:37:18Z
+Stopped at: Completed 08.1-01-PLAN.md
+Resume file: None
