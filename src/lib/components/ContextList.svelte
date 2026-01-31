@@ -27,8 +27,14 @@
 		}, 0)
 	);
 
-	function handleAddClick() {
+	function handleAddClick(e: Event) {
+		e.stopPropagation();
 		isAddingContext = true;
+		// Ensure details is open when adding
+		const detailsEl = document.querySelector('.context-details');
+		if (detailsEl && !detailsEl.hasAttribute('open')) {
+			detailsEl.setAttribute('open', '');
+		}
 		// Focus input after it's rendered
 		setTimeout(() => inputElement?.focus(), 50);
 	}
@@ -121,24 +127,40 @@
 	}
 </script>
 
-<div class="space-y-1">
-	<!-- Header with Add button -->
-	<div class="flex items-center justify-between px-4 py-2">
-		<span class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+<details class="context-details space-y-1">
+	<summary class="flex items-center justify-between px-4 py-1.5 cursor-pointer rounded-md
+		text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider
+		hover:bg-gray-100/70 dark:hover:bg-gray-800/70
+		transition-all duration-150
+		focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:ring-offset-1
+		list-none">
+		<span class="flex items-center gap-2">
 			Contexts
+			<!-- Show total context count when collapsed for discoverability -->
+			<span class="text-gray-400 dark:text-gray-500 font-normal normal-case tracking-normal">
+				({actionState.contexts.length})
+			</span>
 		</span>
-		<button
-			onclick={handleAddClick}
-			class="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-all duration-150
-				focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:ring-offset-1 rounded"
-			title="Add context"
-		>
-			<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+		<span class="flex items-center gap-1">
+			<!-- Add context button -->
+			<button
+				onclick={handleAddClick}
+				class="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-all duration-150
+					focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:ring-offset-1 rounded"
+				title="Add context"
+			>
+				<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+				</svg>
+			</button>
+			<!-- Chevron indicator -->
+			<svg class="w-4 h-4 text-gray-400 transition-transform duration-150 context-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
 			</svg>
-		</button>
-	</div>
+		</span>
+	</summary>
 
+	<div class="space-y-1">
 	<!-- All view -->
 	<button
 		onclick={() => { actionState.showAll(); goto('/actions'); }}
@@ -233,4 +255,5 @@
 			/>
 		</div>
 	{/if}
-</div>
+	</div>
+</details>

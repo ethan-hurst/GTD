@@ -58,6 +58,20 @@
 	:where(.dark) ::-webkit-scrollbar-thumb:hover {
 		background: theme(--color-gray-500);
 	}
+
+	/* Collapsible context list */
+	.context-details summary::-webkit-details-marker {
+		display: none;
+	}
+
+	.context-details summary::marker {
+		content: "";
+	}
+
+	/* Rotate chevron when details is open */
+	.context-details[open] .context-chevron {
+		transform: rotate(180deg);
+	}
 }
 
 @layer utilities {
