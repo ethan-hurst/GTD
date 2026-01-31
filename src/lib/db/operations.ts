@@ -16,7 +16,11 @@ export async function updateItem(id: number, changes: Partial<GTDItem>): Promise
 }
 
 export async function deleteItem(id: number): Promise<void> {
-	await db.items.delete(id);
+	await db.items.update(id, {
+		deleted: true,
+		deletedAt: new Date(),
+		modified: new Date()
+	});
 }
 
 export async function getItem(id: number): Promise<GTDItem | undefined> {
@@ -27,6 +31,7 @@ export async function getAllInbox(): Promise<GTDItem[]> {
 	return await db.items
 		.where('type')
 		.equals('inbox')
+		.filter(item => !item.deleted)
 		.sortBy('created');
 }
 
@@ -34,11 +39,21 @@ export async function getItemsByType(type: GTDItem['type']): Promise<GTDItem[]> 
 	return await db.items
 		.where('type')
 		.equals(type)
+		.filter(item => !item.deleted)
 		.toArray();
 }
 
 export async function bulkDeleteItems(ids: number[]): Promise<void> {
-	await db.items.bulkDelete(ids);
+	const now = new Date();
+	await Promise.all(
+		ids.map(id =>
+			db.items.update(id, {
+				deleted: true,
+				deletedAt: now,
+				modified: now
+			})
+		)
+	);
 }
 
 // ============================================================================
@@ -46,7 +61,10 @@ export async function bulkDeleteItems(ids: number[]): Promise<void> {
 // ============================================================================
 
 export async function getAllContexts(): Promise<Context[]> {
-	return await db.contexts.orderBy('sortOrder').toArray();
+	return await db.contexts
+		.orderBy('sortOrder')
+		.filter(ctx => !ctx.deleted)
+		.toArray();
 }
 
 export async function addContext(name: string): Promise<number> {
@@ -90,8 +108,11 @@ export async function deleteContext(id: number): Promise<void> {
 		);
 	}
 
-	// Delete the context
-	await db.contexts.delete(id);
+	// Soft-delete the context
+	await db.contexts.update(id, {
+		deleted: true,
+		deletedAt: new Date()
+	});
 }
 
 // ============================================================================
@@ -102,7 +123,7 @@ export async function getAllNextActions(): Promise<GTDItem[]> {
 	const actions = await db.items
 		.where('type')
 		.equals('next-action')
-		.filter(item => !item.completedAt)
+		.filter(item => !item.completedAt && !item.deleted)
 		.toArray();
 
 	// Sort by sortOrder (ascending, nulls last), then by created (FIFO)
@@ -126,7 +147,7 @@ export async function getActionsByContext(contexts: string[]): Promise<GTDItem[]
 		.where('type')
 		.equals('next-action')
 		.filter(item => {
-			return !item.completedAt && !!item.context && contexts.includes(item.context);
+			return !item.completedAt && !item.deleted && !!item.context && contexts.includes(item.context);
 		})
 		.toArray();
 
@@ -211,7 +232,7 @@ export async function getAllProjects(): Promise<GTDItem[]> {
 	return await db.items
 		.where('type')
 		.equals('project')
-		.filter(item => !item.completedAt)
+		.filter(item => !item.completedAt && !item.deleted)
 		.sortBy('created');
 }
 
@@ -219,7 +240,7 @@ export async function getActionsByProject(projectId: number): Promise<GTDItem[]>
 	return await db.items
 		.where('type')
 		.equals('next-action')
-		.filter(item => !item.completedAt && item.projectId === projectId)
+		.filter(item => !item.completedAt && !item.deleted && item.projectId === projectId)
 		.toArray();
 }
 
@@ -228,13 +249,13 @@ export async function getStalledProjects(): Promise<GTDItem[]> {
 	const projects = await db.items
 		.where('type')
 		.equals('project')
-		.filter(item => !item.completedAt)
+		.filter(item => !item.completedAt && !item.deleted)
 		.toArray();
 
 	const actionsWithProject = await db.items
 		.where('type')
 		.equals('next-action')
-		.filter(item => !item.completedAt && item.projectId !== undefined)
+		.filter(item => !item.completedAt && !item.deleted && item.projectId !== undefined)
 		.toArray();
 
 	// Build Set of project IDs that have active actions
@@ -286,7 +307,7 @@ export async function getAllWaitingFor(): Promise<GTDItem[]> {
 	const items = await db.items
 		.where('type')
 		.equals('waiting')
-		.filter(item => !item.completedAt)
+		.filter(item => !item.completedAt && !item.deleted)
 		.toArray();
 
 	// Sort by followUpDate ascending (nulls last using MAX_SAFE_INTEGER pattern), then by created date
@@ -346,7 +367,7 @@ export async function getAllSomedayMaybe(): Promise<GTDItem[]> {
 	return await db.items
 		.where('type')
 		.equals('someday')
-		.filter(item => !item.completedAt)
+		.filter(item => !item.completedAt && !item.deleted)
 		.sortBy('created');
 }
 
@@ -407,7 +428,11 @@ export async function updateEvent(id: number, changes: Partial<CalendarEvent>): 
 }
 
 export async function deleteEvent(id: number): Promise<void> {
-	await db.events.delete(id);
+	await db.events.update(id, {
+		deleted: true,
+		deletedAt: new Date(),
+		modified: new Date()
+	});
 }
 
 export async function getEvent(id: number): Promise<CalendarEvent | undefined> {
@@ -422,12 +447,13 @@ export async function getEventsInRange(start: Date, end: Date): Promise<Calendar
 		.between(start, end, true, true)
 		.or('endTime')
 		.between(start, end, true, true)
+		.filter(e => !e.deleted)
 		.toArray();
 }
 
 export async function getRecurringEvents(): Promise<CalendarEvent[]> {
 	return await db.events
-		.filter(event => !!event.rrule)
+		.filter(event => !!event.rrule && !event.deleted)
 		.toArray();
 }
 
@@ -442,5 +468,45 @@ export async function bulkAddEvents(events: Omit<CalendarEvent, 'id' | 'created'
 }
 
 export async function getAllEvents(): Promise<CalendarEvent[]> {
-	return await db.events.toArray();
+	return await db.events
+		.filter(e => !e.deleted)
+		.toArray();
+}
+
+// ============================================================================
+// Tombstone Compaction
+// ============================================================================
+
+export async function compactTombstones(maxAgeDays: number = 30): Promise<number> {
+	const cutoff = new Date(Date.now() - maxAgeDays * 24 * 60 * 60 * 1000);
+	let count = 0;
+
+	// Clean up old deleted items
+	const oldItems = await db.items
+		.filter(item => !!item.deleted && !!item.deletedAt && item.deletedAt < cutoff)
+		.toArray();
+	if (oldItems.length > 0) {
+		await db.items.bulkDelete(oldItems.map(i => i.id!));
+		count += oldItems.length;
+	}
+
+	// Clean up old deleted events
+	const oldEvents = await db.events
+		.filter(e => !!e.deleted && !!e.deletedAt && e.deletedAt < cutoff)
+		.toArray();
+	if (oldEvents.length > 0) {
+		await db.events.bulkDelete(oldEvents.map(e => e.id!));
+		count += oldEvents.length;
+	}
+
+	// Clean up old deleted contexts
+	const oldContexts = await db.contexts
+		.filter(c => !!(c as any).deleted && !!(c as any).deletedAt && (c as any).deletedAt < cutoff)
+		.toArray();
+	if (oldContexts.length > 0) {
+		await db.contexts.bulkDelete(oldContexts.map(c => c.id!));
+		count += oldContexts.length;
+	}
+
+	return count;
 }
