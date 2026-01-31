@@ -80,6 +80,7 @@ Recent decisions affecting current work:
 ### Roadmap Evolution
 
 - Phase 08.1 inserted after Phase 8: UI/UX Review — comprehensive pass on visual consistency, design principles, and usability before starting v1.1 Outlook sync
+- Phase 8.2 inserted after Phase 8: how does storage work currently? If I click not persistent - click to request nothing actually happens in the app (URGENT)
 
 ### Pending Todos
 

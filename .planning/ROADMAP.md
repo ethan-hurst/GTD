@@ -115,13 +115,27 @@ Plans:
 **Plans**: 7 plans
 
 Plans:
-- [ ] 08.1-01-PLAN.md — Design tokens in app.css + root layout shell polish
-- [ ] 08.1-02-PLAN.md — Sidebar navigation + SearchBar + ThemeToggle polish
-- [ ] 08.1-03-PLAN.md — Inbox page + capture input + processing flow polish
-- [ ] 08.1-04-PLAN.md — Actions + Projects list views and detail panels polish
-- [ ] 08.1-05-PLAN.md — Waiting For + Someday/Maybe + Settings polish
-- [ ] 08.1-06-PLAN.md — Calendar toolbar/panels + Weekly Review wizard polish
-- [ ] 08.1-07-PLAN.md — OnboardingWizard polish + full visual verification
+- [x] 08.1-01-PLAN.md — Design tokens in app.css + root layout shell polish
+- [x] 08.1-02-PLAN.md — Sidebar navigation + SearchBar + ThemeToggle polish
+- [x] 08.1-03-PLAN.md — Inbox page + capture input + processing flow polish
+- [x] 08.1-04-PLAN.md — Actions + Projects list views and detail panels polish
+- [x] 08.1-05-PLAN.md — Waiting For + Someday/Maybe + Settings polish
+- [x] 08.1-06-PLAN.md — Calendar toolbar/panels + Weekly Review wizard polish
+- [x] 08.1-07-PLAN.md — OnboardingWizard polish + full visual verification
+
+---
+
+### Phase 08.2: how does storage work currently? If I click not persistent - click to request nothing actually happens in the app (INSERTED)
+
+**Goal:** [Urgent work - to be planned]
+**Depends on:** Phase 8
+**Plans:** 0 plans
+
+Plans:
+- [ ] TBD (run /gsd:plan-phase 8.2 to break down)
+
+**Details:**
+[To be added during planning]
 
 ---
 
@@ -263,7 +277,7 @@ Plans:
 | 6. Weekly Review | v1.0 | 4/4 | Complete | 2026-01-31 |
 | 7. Calendar & ICS | v1.0 | 6/6 | Complete | 2026-01-31 |
 | 8. Onboarding & Polish | v1.0 | 6/6 | Complete | 2026-01-31 |
-| 08.1 UI/UX Review | v1.0+ | 0/7 | Not started | - |
+| 08.1 UI/UX Review | v1.0+ | 7/7 | Complete | 2026-01-31 |
 | 9. OAuth Foundation | v1.1 | 0/TBD | Not started | - |
 | 10. Read Calendar | v1.1 | 0/TBD | Not started | - |
 | 11. Two-Way Sync | v1.1 | 0/TBD | Not started | - |
