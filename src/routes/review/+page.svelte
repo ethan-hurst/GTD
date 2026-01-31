@@ -56,7 +56,7 @@
 	<!-- Start Page -->
 	<div class="flex items-center justify-center min-h-full">
 		<div class="text-center max-w-2xl px-8">
-			<h1 class="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">
+			<h1 class="text-3xl font-bold tracking-tight text-gray-900 dark:text-gray-100 mb-4">
 				Weekly Review
 			</h1>
 			<p class="text-lg text-gray-500 dark:text-gray-400 mb-8">
@@ -64,7 +64,7 @@
 			</p>
 
 			<!-- Last Review Indicator -->
-			<div class="mb-8">
+			<div class="mb-8 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
 				<p class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
 					Last Review
 				</p>
@@ -80,7 +80,7 @@
 			<!-- Start Button -->
 			<button
 				onclick={() => weeklyReviewState.startReview()}
-				class="px-8 py-4 text-base font-medium text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 rounded-lg transition-colors shadow-lg hover:shadow-xl"
+				class="px-8 py-4 text-base font-medium text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 rounded-lg transition-all shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-950 active:scale-[0.98]"
 			>
 				Start Weekly Review
 			</button>

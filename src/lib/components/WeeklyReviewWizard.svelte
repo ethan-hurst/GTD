@@ -104,16 +104,16 @@
 
 <div class="flex h-full">
 	<!-- Step Sidebar -->
-	<div class="w-60 border-r border-gray-200 dark:border-gray-700 flex flex-col">
+	<div class="w-60 border-r border-gray-200/60 dark:border-gray-700/60 flex flex-col">
 		<!-- Progress Bar -->
-		<div class="p-4 border-b border-gray-200 dark:border-gray-700">
+		<div class="p-4 border-b border-gray-200/60 dark:border-gray-700/60">
 			<div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 mb-2">
 				<div
 					class="bg-blue-600 dark:bg-blue-500 h-2 rounded-full transition-all duration-300"
 					style="width: {weeklyReviewState.progress}%"
 				></div>
 			</div>
-			<p class="text-xs text-gray-600 dark:text-gray-400 text-center">
+			<p class="text-xs text-gray-600 dark:text-gray-400 text-center tabular-nums">
 				{weeklyReviewState.completedSteps.size} of 8 steps complete ({Math.round(weeklyReviewState.progress)}%)
 			</p>
 		</div>
@@ -125,7 +125,7 @@
 				{@const isCurrent = weeklyReviewState.currentStep === step}
 				<button
 					onclick={() => weeklyReviewState.goToStep(step)}
-					class="w-full text-left px-4 py-3 border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors {isCurrent ? 'bg-blue-50 dark:bg-blue-900/20 border-l-4 border-l-blue-600 dark:border-l-blue-500' : ''}"
+					class="w-full text-left px-4 py-3 border-b border-gray-200/60 dark:border-gray-700/60 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-inset {isCurrent ? 'bg-blue-50 dark:bg-blue-900/20 border-l-4 border-l-blue-600 dark:border-l-blue-500' : ''}"
 				>
 					<div class="flex items-start gap-3">
 						<div class="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center {isCompleted ? 'bg-green-600 dark:bg-green-500' : isCurrent ? 'bg-blue-600 dark:bg-blue-500' : 'bg-gray-300 dark:bg-gray-600'}">
@@ -163,7 +163,7 @@
 				</p>
 
 				<!-- Item Count Context -->
-				<div class="bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-lg p-4 mb-6">
+				<div class="bg-gray-50/50 dark:bg-gray-800/30 border border-gray-200/60 dark:border-gray-700/60 rounded-lg p-4 mb-6">
 					<p class="text-sm {isStepEmpty(weeklyReviewState.currentStep) ? 'text-green-600 dark:text-green-400 font-medium' : 'text-gray-700 dark:text-gray-300'}">
 						{getStepContext(weeklyReviewState.currentStep)}
 					</p>
@@ -173,7 +173,7 @@
 				{#if !weeklyReviewState.completedSteps.has(weeklyReviewState.currentStep)}
 					<button
 						onclick={handleCompleteStep}
-						class="px-6 py-3 text-sm font-medium text-white bg-green-600 hover:bg-green-700 dark:bg-green-500 dark:hover:bg-green-600 rounded-md transition-colors"
+						class="px-6 py-3 text-sm font-medium text-white bg-green-600 hover:bg-green-700 dark:bg-green-500 dark:hover:bg-green-600 rounded-md transition-all shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 dark:focus:ring-offset-gray-950 active:scale-[0.98]"
 					>
 						Mark Step Complete
 					</button>
@@ -189,11 +189,11 @@
 		</div>
 
 		<!-- Navigation Footer -->
-		<div class="border-t border-gray-200 dark:border-gray-700 p-4 flex items-center justify-between bg-white dark:bg-gray-800">
+		<div class="border-t border-gray-200/60 dark:border-gray-700/60 p-4 flex items-center justify-between bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm">
 			<button
 				onclick={() => weeklyReviewState.back()}
 				disabled={!weeklyReviewState.canGoBack}
-				class="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed rounded-md transition-colors"
+				class="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-950"
 			>
 				← Back
 			</button>
@@ -202,7 +202,7 @@
 				<button
 					onclick={() => weeklyReviewState.next()}
 					disabled={!weeklyReviewState.canGoNext}
-					class="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed rounded-md transition-colors"
+					class="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-950"
 				>
 					Next →
 				</button>
@@ -210,7 +210,7 @@
 				{#if weeklyReviewState.isComplete}
 					<button
 						onclick={handleFinishReview}
-						class="px-6 py-2 text-sm font-medium text-white bg-green-600 hover:bg-green-700 dark:bg-green-500 dark:hover:bg-green-600 rounded-md transition-colors"
+						class="px-6 py-2 text-sm font-medium text-white bg-green-600 hover:bg-green-700 dark:bg-green-500 dark:hover:bg-green-600 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 dark:focus:ring-offset-gray-950"
 					>
 						Finish Review
 					</button>
