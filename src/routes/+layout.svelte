@@ -16,6 +16,8 @@
 	import { onboardingState } from '$lib/stores/onboarding.svelte';
 	import { mobileState } from '$lib/stores/mobile.svelte';
 	import { getFeatureFromRoute, markFeatureVisited } from '$lib/utils/featureTracking';
+	import { syncState } from '$lib/stores/sync.svelte';
+	import { compactTombstones } from '$lib/db/operations';
 
 	const { children } = $props();
 	let searchBarRef: any;
@@ -158,9 +160,33 @@
 			}
 		})();
 
+		// Initialize sync state (non-blocking)
+		(async () => {
+			await syncState.init();
+
+			// Auto-sync on app open if paired and has pairing code
+			if (syncState.isPaired && syncState.hasPairingCode()) {
+				await syncState.sync();
+			}
+
+			// Run tombstone compaction (non-blocking, runs once on app open)
+			compactTombstones(30).catch(err => {
+				console.warn('Tombstone compaction failed:', err);
+			});
+		})();
+
+		// Add visibility change listener to sync when app becomes visible
+		function handleVisibilityChange() {
+			if (document.visibilityState === 'visible' && syncState.isPaired && syncState.hasPairingCode()) {
+				syncState.sync();
+			}
+		}
+		document.addEventListener('visibilitychange', handleVisibilityChange);
+
 		return () => {
 			mobileState.destroy();
 			cleanup();
+			document.removeEventListener('visibilitychange', handleVisibilityChange);
 		};
 	});
 </script>
