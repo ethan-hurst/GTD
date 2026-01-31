@@ -68,11 +68,11 @@
 	}
 </script>
 
-<div class="fixed inset-0 z-50 backdrop-blur-sm bg-black/50 flex items-center justify-center p-6">
-	<!-- Modal Container -->
-	<div class="w-full max-w-2xl bg-white dark:bg-gray-950 rounded-xl shadow-2xl flex flex-col max-h-[90vh]">
+<div class="fixed inset-0 z-50 backdrop-blur-sm bg-black/50 tablet:flex tablet:items-center tablet:justify-center tablet:p-6">
+	<!-- Modal Container - full-screen on mobile, centered card on tablet+ -->
+	<div class="w-full h-full tablet:h-auto tablet:max-w-2xl bg-white dark:bg-gray-950 tablet:rounded-xl shadow-2xl flex flex-col tablet:max-h-[90vh]">
 		<!-- Progress Bar at top -->
-		<div class="border-b border-gray-200 dark:border-gray-700 p-6">
+		<div class="border-b border-gray-200 dark:border-gray-700 p-4 tablet:p-6">
 			<div class="flex items-center justify-between mb-2">
 				<p class="text-sm font-medium text-gray-700 dark:text-gray-300">
 					Step {onboardingState.currentStepIndex + 1} of 5
@@ -90,27 +90,27 @@
 		</div>
 
 		<!-- Central content area -->
-		<div class="flex-1 overflow-y-auto p-6">
+		<div class="flex-1 overflow-y-auto p-4 tablet:p-6">
 			<div class="w-full mx-auto">
 				{#if onboardingState.currentStep === 'welcome'}
 					<!-- Step 1: Welcome -->
 					<div class="text-center">
-						<h1 class="text-4xl font-bold tracking-tight text-gray-900 dark:text-gray-100 mb-4">
+						<h1 class="text-2xl tablet:text-4xl font-bold tracking-tight text-gray-900 dark:text-gray-100 mb-4">
 							Welcome to GTD
 						</h1>
-						<p class="text-lg text-gray-600 dark:text-gray-300 mb-8 max-w-md mx-auto">
+						<p class="text-base tablet:text-lg text-gray-600 dark:text-gray-300 mb-8 max-w-md mx-auto">
 							Getting Things Done is a methodology for managing everything on your plate. We'll walk through the 4 key concepts in about 60 seconds.
 						</p>
-						<div class="flex items-center justify-center gap-4">
+						<div class="flex flex-col gap-2 phablet:flex-row phablet:items-center phablet:justify-center phablet:gap-4">
 							<button
 								onclick={() => onboardingState.skipOnboarding()}
-								class="px-6 py-3 text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400/40 focus:ring-offset-2 transition-all duration-150"
+								class="w-full phablet:w-auto min-h-11 px-6 py-3 text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400/40 focus:ring-offset-2 transition-all duration-150"
 							>
 								I know GTD — skip
 							</button>
 							<button
 								onclick={() => onboardingState.next()}
-								class="px-6 py-3 text-base font-medium text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 rounded-lg shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:ring-offset-2 active:scale-[0.98] transition-all duration-150"
+								class="w-full phablet:w-auto min-h-11 px-6 py-3 text-base font-medium text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 rounded-lg shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:ring-offset-2 active:scale-[0.98] transition-all duration-150"
 							>
 								Let's go
 							</button>
@@ -120,7 +120,7 @@
 				{:else if onboardingState.currentStep === 'capture'}
 					<!-- Step 2: Capture -->
 					<div>
-						<h2 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-100 mb-4">
+						<h2 class="text-xl tablet:text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-100 mb-4">
 							Step 1: Capture Everything
 						</h2>
 						<p class="text-base text-gray-600 dark:text-gray-300 mb-6">
@@ -134,6 +134,7 @@
 								placeholder="Try it — type something on your mind..."
 								disabled={isSubmitting}
 								class="w-full px-4 py-3 text-base border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:focus:ring-blue-400/40 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-150"
+								style="font-size: 16px;"
 							/>
 						</form>
 
@@ -153,7 +154,7 @@
 				{:else if onboardingState.currentStep === 'process'}
 					<!-- Step 3: Process -->
 					<div>
-						<h2 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-100 mb-4">
+						<h2 class="text-xl tablet:text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-100 mb-4">
 							Step 2: Process to Zero
 						</h2>
 					<p class="text-base text-gray-600 dark:text-gray-300 mb-6">
@@ -217,7 +218,7 @@
 				{:else if onboardingState.currentStep === 'organize'}
 					<!-- Step 4: Organize -->
 					<div>
-						<h2 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-100 mb-4">
+						<h2 class="text-xl tablet:text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-100 mb-4">
 							Step 3: Organize by Lists
 						</h2>
 					<p class="text-base text-gray-600 dark:text-gray-300 mb-6">
@@ -275,7 +276,7 @@
 				{:else if onboardingState.currentStep === 'review-intro'}
 					<!-- Step 5: Review Intro -->
 					<div class="text-center">
-						<h2 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-100 mb-4">
+						<h2 class="text-xl tablet:text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-100 mb-4">
 							Step 4: Review Weekly
 						</h2>
 						<p class="text-base text-gray-600 dark:text-gray-300 mb-6 max-w-md mx-auto">
@@ -286,7 +287,7 @@
 						</p>
 						<button
 							onclick={handleFinish}
-							class="px-6 py-3 text-base font-medium text-white bg-green-600 hover:bg-green-700 dark:bg-green-500 dark:hover:bg-green-600 rounded-lg shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-green-500/40 focus:ring-offset-2 active:scale-[0.98] transition-all duration-150"
+							class="w-full phablet:w-auto min-h-11 px-6 py-3 text-base font-medium text-white bg-green-600 hover:bg-green-700 dark:bg-green-500 dark:hover:bg-green-600 rounded-lg shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-green-500/40 focus:ring-offset-2 active:scale-[0.98] transition-all duration-150"
 						>
 							Get Started
 						</button>
@@ -296,12 +297,12 @@
 		</div>
 
 		<!-- Navigation buttons at bottom -->
-		<div class="border-t border-gray-200 dark:border-gray-700 p-6">
-			<div class="flex items-center justify-between">
+		<div class="border-t border-gray-200 dark:border-gray-700 p-4 tablet:p-6 pb-[env(safe-area-inset-bottom,0px)]">
+			<div class="flex flex-col gap-2 phablet:flex-row phablet:items-center phablet:justify-between">
 				<button
 					onclick={() => onboardingState.back()}
 					disabled={!onboardingState.canGoBack}
-					class="px-6 py-3 text-base font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 rounded-lg shadow-sm disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-gray-400/40 focus:ring-offset-2 transition-all duration-150"
+					class="w-full phablet:w-auto min-h-11 px-6 py-3 text-base font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 rounded-lg shadow-sm disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-gray-400/40 focus:ring-offset-2 transition-all duration-150"
 				>
 					← Back
 				</button>
@@ -310,14 +311,14 @@
 					<button
 						onclick={() => onboardingState.next()}
 						disabled={!hasCapturedFirst}
-						class="px-6 py-3 text-base font-medium text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 rounded-lg shadow-sm hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:ring-offset-2 active:scale-[0.98] transition-all duration-150"
+						class="w-full phablet:w-auto min-h-11 px-6 py-3 text-base font-medium text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 rounded-lg shadow-sm hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:ring-offset-2 active:scale-[0.98] transition-all duration-150"
 					>
 						Next →
 					</button>
 				{:else if onboardingState.currentStep !== 'welcome' && onboardingState.currentStep !== 'review-intro'}
 					<button
 						onclick={() => onboardingState.next()}
-						class="px-6 py-3 text-base font-medium text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 rounded-lg shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:ring-offset-2 active:scale-[0.98] transition-all duration-150"
+						class="w-full phablet:w-auto min-h-11 px-6 py-3 text-base font-medium text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 rounded-lg shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:ring-offset-2 active:scale-[0.98] transition-all duration-150"
 					>
 						Next →
 					</button>
