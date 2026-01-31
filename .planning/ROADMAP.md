@@ -145,7 +145,7 @@ Plans:
 
 Plans:
 - [x] 08.3-01-PLAN.md — Optimize sidebar spacing, nav grouping, and collapsible context list
-- [ ] 08.3-02-PLAN.md — Add sidebar collapse toggle with icon-only mode
+- [x] 08.3-02-PLAN.md — Add sidebar collapse toggle with icon-only mode
 
 ---
 
@@ -289,7 +289,7 @@ Plans:
 | 8. Onboarding & Polish | v1.0 | 6/6 | Complete | 2026-01-31 |
 | 08.1 UI/UX Review | v1.0+ | 7/7 | Complete | 2026-01-31 |
 | 08.2 Storage Persistence | v1.0+ | 2/2 | Complete | 2026-01-31 |
-| 08.3 Left Nav Bar UX | v1.0+ | 1/2 | In progress | - |
+| 08.3 Left Nav Bar UX | v1.0+ | 2/2 | Complete | 2026-01-31 |
 | 9. OAuth Foundation | v1.1 | 0/TBD | Not started | - |
 | 10. Read Calendar | v1.1 | 0/TBD | Not started | - |
 | 11. Two-Way Sync | v1.1 | 0/TBD | Not started | - |

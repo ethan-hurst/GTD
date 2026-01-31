@@ -11,11 +11,11 @@ See: .planning/PROJECT.md (updated 2026-01-31)
 ## Current Position
 
 Phase: 08.3 (Left Nav Bar UX Improvement — inserted)
-Plan: 1 of 2 in current phase
-Status: In progress
-Last activity: 2026-01-31 — Completed 08.3-01-PLAN.md (Sidebar Spacing & Collapsible Context List)
+Plan: 2 of 2 in current phase
+Status: Complete
+Last activity: 2026-01-31 — Completed 08.3-02-PLAN.md (Sidebar Collapse Toggle with Icon-Only Mode)
 
-Progress: [██████████░░░░░░░░░░] 45% (45/TBD plans complete across all phases)
+Progress: [██████████░░░░░░░░░░] 47% (47/TBD plans complete across all phases)
 
 ## Performance Metrics
 
@@ -86,6 +86,11 @@ Recent decisions affecting current work:
 - 08.3-01: Native details/summary for collapsible context list (zero-JS progressive enhancement)
 - 08.3-01: Replaced border separators with mt-3 spacing groups for cleaner hierarchy
 - 08.3-01: Context list collapsed by default to save ~150px vertical space
+- 08.3-02: Svelte 5 reactive class pattern (matching theme.svelte.ts) for sidebar state store
+- 08.3-02: Icons in both collapsed and expanded modes for visual consistency
+- 08.3-02: cycleTheme function for collapsed footer (light → dark → system)
+- 08.3-02: `[` keyboard shortcut to toggle sidebar (common productivity app pattern)
+- 08.3-02: Badge dots on collapsed icons for inbox/stalled project indicators
 
 ### Roadmap Evolution
 
@@ -111,6 +116,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-01-31T04:35:00Z
-Stopped at: Completed 08.3-01-PLAN.md (Sidebar Spacing & Collapsible Context List)
+Last session: 2026-01-31
+Stopped at: Completed Phase 08.3 (Left Nav Bar UX Improvement) — all 2 plans complete
 Resume file: None
