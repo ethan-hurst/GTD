@@ -97,6 +97,34 @@ Plans:
 
 ---
 
+### Phase 08.1: UI/UX Review (INSERTED)
+
+**Goal**: Comprehensive review and fix of all v1.0 views for visual consistency, design principle adherence, and usability — ensuring a solid UI foundation before layering Outlook sync features
+
+**Depends on**: Phase 8 (v1.0 complete)
+
+**Success Criteria** (what must be TRUE):
+1. All views use consistent spacing, typography, and color patterns
+2. Interactive elements have clear affordances (hover states, focus rings, click targets)
+3. Information hierarchy is clear on every screen — users know what's primary vs secondary
+4. Light and dark modes are both visually coherent with proper contrast ratios
+5. Empty states, loading states, and error states are handled consistently
+6. Navigation and layout patterns are uniform across all GTD views
+7. Mobile/responsive behavior works correctly across breakpoints
+
+**Plans**: 7 plans
+
+Plans:
+- [ ] 08.1-01-PLAN.md — Design tokens in app.css + root layout shell polish
+- [ ] 08.1-02-PLAN.md — Sidebar navigation + SearchBar + ThemeToggle polish
+- [ ] 08.1-03-PLAN.md — Inbox page + capture input + processing flow polish
+- [ ] 08.1-04-PLAN.md — Actions + Projects list views and detail panels polish
+- [ ] 08.1-05-PLAN.md — Waiting For + Someday/Maybe + Settings polish
+- [ ] 08.1-06-PLAN.md — Calendar toolbar/panels + Weekly Review wizard polish
+- [ ] 08.1-07-PLAN.md — OnboardingWizard polish + full visual verification
+
+---
+
 ### 🚧 v1.1 Outlook Calendar Sync (In Progress)
 
 **Milestone Goal:** Two-way calendar sync between GTD and Outlook so the user sees work commitments in GTD and GTD tasks appear on their Outlook calendar.
@@ -223,7 +251,7 @@ Plans:
 
 ## Progress
 
-**Execution Order:** Phases execute in numeric order: 9 → 10 → 11 → 12 → 13
+**Execution Order:** Phases execute in numeric order: 08.1 → 9 → 10 → 11 → 12 → 13
 
 | Phase | Milestone | Plans Complete | Status | Completed |
 |-------|-----------|----------------|--------|-----------|
@@ -235,6 +263,7 @@ Plans:
 | 6. Weekly Review | v1.0 | 4/4 | Complete | 2026-01-31 |
 | 7. Calendar & ICS | v1.0 | 6/6 | Complete | 2026-01-31 |
 | 8. Onboarding & Polish | v1.0 | 6/6 | Complete | 2026-01-31 |
+| 08.1 UI/UX Review | v1.0+ | 0/7 | Not started | - |
 | 9. OAuth Foundation | v1.1 | 0/TBD | Not started | - |
 | 10. Read Calendar | v1.1 | 0/TBD | Not started | - |
 | 11. Two-Way Sync | v1.1 | 0/TBD | Not started | - |
