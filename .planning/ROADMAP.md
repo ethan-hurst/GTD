@@ -177,6 +177,41 @@ Plans:
 
 ---
 
+### Phase 08.5: Device Sync (INSERTED)
+
+**Goal:** Enable multi-device sync using Netlify Functions + Netlify Blobs — pair devices once with a short code, auto-sync on open, per-record merge by timestamp, encrypted at rest using the pairing code as the key
+
+**Depends on:** Phase 08.4
+
+**Success Criteria** (what must be TRUE):
+1. User can generate a pairing code on one device and enter it on another to link them
+2. On app open, the app automatically pulls the latest state from the other device and merges
+3. Changes push automatically (debounced) to Netlify Blob after local modifications
+4. Per-record merge by `modified` timestamp — newer version of each record wins, new items from both sides preserved
+5. Data is encrypted client-side (AES-GCM, key derived from pairing code via PBKDF2) before upload
+6. Deleted items tracked via soft-delete tombstones to propagate deletions across devices
+7. Sync status indicator in sidebar shows last sync time and connection state
+8. User can unpair and force-sync from Settings page
+
+**Plans:** 6 plans
+
+Plans:
+- [ ] 08.5-01-PLAN.md — Schema migration (soft-delete tombstones) + sync type definitions
+- [ ] 08.5-02-PLAN.md — Crypto module (AES-GCM + PBKDF2) + pairing code generation
+- [ ] 08.5-03-PLAN.md — Netlify Functions (sync-push + sync-pull) with Netlify Blobs
+- [ ] 08.5-04-PLAN.md — Merge logic (LWW) + sync orchestration engine + reactive store
+- [ ] 08.5-05-PLAN.md — Settings Device Sync UI + Sidebar/StatusBar sync indicators
+- [ ] 08.5-06-PLAN.md — Integration wiring (auto-sync on open, debounced push, verification)
+
+**Details:**
+- Netlify Functions: sync-push.mts + sync-pull.mts
+- Netlify Blobs: ephemeral storage keyed by hashed pairing code
+- Client: src/lib/sync/ (crypto.ts, merge.ts, sync.ts, pair.ts)
+- UI: Device Sync card in Settings + sidebar status indicator
+- No new dependencies (Web Crypto API + Netlify Blobs SDK built-in)
+
+---
+
 ### 🚧 v1.1 Outlook Calendar Sync (In Progress)
 
 **Milestone Goal:** Two-way calendar sync between GTD and Outlook so the user sees work commitments in GTD and GTD tasks appear on their Outlook calendar.
@@ -303,7 +338,7 @@ Plans:
 
 ## Progress
 
-**Execution Order:** Phases execute in numeric order: 08.1 → 08.2 → 08.3 → 08.4 → 9 → 10 → 11 → 12 → 13
+**Execution Order:** Phases execute in numeric order: 08.1 → 08.2 → 08.3 → 08.4 → 08.5 → 9 → 10 → 11 → 12 → 13
 
 | Phase | Milestone | Plans Complete | Status | Completed |
 |-------|-----------|----------------|--------|-----------|
@@ -319,6 +354,7 @@ Plans:
 | 08.2 Storage Persistence | v1.0+ | 2/2 | Complete | 2026-01-31 |
 | 08.3 Left Nav Bar UX | v1.0+ | 2/2 | Complete | 2026-01-31 |
 | 08.4 Mobile Responsive Pass | v1.0+ | 7/7 | Complete | 2026-01-31 |
+| 08.5 Device Sync | v1.0+ | 0/6 | Not started | - |
 | 9. OAuth Foundation | v1.1 | 0/TBD | Not started | - |
 | 10. Read Calendar | v1.1 | 0/TBD | Not started | - |
 | 11. Two-Way Sync | v1.1 | 0/TBD | Not started | - |
