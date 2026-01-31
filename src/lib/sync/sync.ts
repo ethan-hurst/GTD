@@ -139,17 +139,18 @@ export async function performSync(
 			throw new Error('Push to cloud failed');
 		}
 
-		// Step 7: If merge happened, import merged data into local DB
-		if (remoteData) {
-			await importFromSync(mergedData);
+		// Step 7: Import merged data into local DB
+		// Always import to ensure local DB matches what was pushed
+		// and to trigger UI refresh even on first sync
+		await importFromSync(mergedData);
 
-			// Notify page stores to refresh their data
-			if (typeof window !== 'undefined') {
-				window.dispatchEvent(new CustomEvent('sync-data-imported'));
-			}
+		// Step 8: Notify page stores to refresh their data
+		// Always dispatch event to ensure UI updates even on first sync
+		if (typeof window !== 'undefined') {
+			window.dispatchEvent(new CustomEvent('sync-data-imported'));
 		}
 
-		// Step 8: Save lastSyncTime
+		// Step 9: Save lastSyncTime
 		await setSetting('sync-last-sync-time', new Date().toISOString());
 
 		return { success: true };
