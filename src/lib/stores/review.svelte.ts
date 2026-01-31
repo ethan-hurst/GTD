@@ -1,4 +1,5 @@
 import { getSetting, setSetting } from '../db/operations';
+import { onSyncDataImported } from '$lib/sync/sync';
 
 export type ReviewStep =
 	| 'inbox'
@@ -92,3 +93,4 @@ export class WeeklyReviewState {
 }
 
 export const weeklyReviewState = new WeeklyReviewState();
+onSyncDataImported(() => weeklyReviewState.loadLastReview());

@@ -142,6 +142,11 @@ export async function performSync(
 		// Step 7: If merge happened, import merged data into local DB
 		if (remoteData) {
 			await importFromSync(mergedData);
+
+			// Notify page stores to refresh their data
+			if (typeof window !== 'undefined') {
+				window.dispatchEvent(new CustomEvent('sync-data-imported'));
+			}
 		}
 
 		// Step 8: Save lastSyncTime
@@ -213,3 +218,13 @@ export class SyncDebouncer {
  * Global sync debouncer instance
  */
 export const syncDebouncer = new SyncDebouncer();
+
+/**
+ * Register a callback to run when sync imports new data
+ * Used by page stores to refresh their state after a sync
+ */
+export function onSyncDataImported(callback: () => void): void {
+	if (typeof window !== 'undefined') {
+		window.addEventListener('sync-data-imported', () => callback());
+	}
+}

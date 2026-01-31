@@ -1,5 +1,6 @@
 import { getAllWaitingFor, resolveWaitingFor } from '../db/operations';
 import type { GTDItem } from '../db/schema';
+import { onSyncDataImported } from '$lib/sync/sync';
 
 /**
  * Reactive state for Waiting For list with overdue detection.
@@ -50,3 +51,4 @@ export class WaitingForState {
 }
 
 export const waitingForState = new WaitingForState();
+onSyncDataImported(() => waitingForState.loadItems());

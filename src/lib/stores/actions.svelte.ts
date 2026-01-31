@@ -1,5 +1,6 @@
 import { getAllNextActions, getActionsByContext, getAllContexts } from '../db/operations';
 import type { GTDItem, Context } from '../db/schema';
+import { onSyncDataImported } from '$lib/sync/sync';
 
 /**
  * Reactive state for Next Actions list with context filtering.
@@ -110,3 +111,4 @@ export class ActionState {
 }
 
 export const actionState = new ActionState();
+onSyncDataImported(() => { actionState.loadActions(); actionState.loadContexts(); });

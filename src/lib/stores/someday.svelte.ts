@@ -1,5 +1,6 @@
 import { getAllSomedayMaybe, promoteSomedayToActive } from '../db/operations';
 import type { GTDItem } from '../db/schema';
+import { onSyncDataImported } from '$lib/sync/sync';
 
 /**
  * Predefined categories for Someday/Maybe items.
@@ -64,3 +65,4 @@ export class SomedayMaybeState {
 }
 
 export const somedayMaybeState = new SomedayMaybeState();
+onSyncDataImported(() => somedayMaybeState.loadItems());

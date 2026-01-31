@@ -1,5 +1,6 @@
 import { getEventsInRange, getRecurringEvents, getAllEvents, addEvent, updateEvent, deleteEvent, bulkAddEvents } from '$lib/db/operations';
 import type { CalendarEvent } from '$lib/db/schema';
+import { onSyncDataImported } from '$lib/sync/sync';
 
 /**
  * Reactive state for Calendar events with view management.
@@ -64,3 +65,4 @@ class CalendarState {
 }
 
 export const calendarState = new CalendarState();
+onSyncDataImported(() => calendarState.loadEvents());

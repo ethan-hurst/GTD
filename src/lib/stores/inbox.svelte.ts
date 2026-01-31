@@ -1,5 +1,6 @@
 import { getAllInbox } from '../db/operations';
 import type { GTDItem } from '../db/schema';
+import { onSyncDataImported } from '$lib/sync/sync';
 
 /**
  * Shared reactive inbox state for capture, processing, and selection.
@@ -87,3 +88,4 @@ export class InboxState {
 }
 
 export const inboxState = new InboxState();
+onSyncDataImported(() => inboxState.loadItems());

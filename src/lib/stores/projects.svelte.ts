@@ -1,5 +1,6 @@
 import { getAllProjects, getStalledProjects } from '../db/operations';
 import type { GTDItem } from '../db/schema';
+import { onSyncDataImported } from '$lib/sync/sync';
 
 /**
  * Reactive state for Projects list with stalled detection.
@@ -65,3 +66,4 @@ export class ProjectState {
 }
 
 export const projectState = new ProjectState();
+onSyncDataImported(() => projectState.loadProjects());
