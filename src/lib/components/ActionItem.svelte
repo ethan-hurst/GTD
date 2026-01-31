@@ -1,7 +1,9 @@
 <script lang="ts">
 	import { fade } from 'svelte/transition';
-	import { updateItem } from '$lib/db/operations';
+	import { updateItem, deleteItem } from '$lib/db/operations';
 	import { formatRelativeTime } from '$lib/utils/time';
+	import { usePan, type PanCustomEvent, type GestureCustomEvent } from 'svelte-gestures';
+	import { mobileState } from '$lib/stores/mobile.svelte';
 	import type { GTDItem } from '$lib/db/schema';
 
 	interface Props {
@@ -18,6 +20,11 @@
 	let isCompleting = $state(false);
 	let isEditing = $state(false);
 	let editValue = $state(item.title);
+
+	// Swipe gesture state
+	let swipeOffset = $state(0);
+	let isRevealing = $state(false);
+	const SWIPE_THRESHOLD = 80;
 
 	// Keep editValue in sync with item.title
 	$effect(() => {
@@ -72,21 +79,68 @@
 		e.stopPropagation();
 		// Future: navigate to project detail
 	}
+
+	// Swipe gesture handlers
+	function handlePan(event: PanCustomEvent) {
+		if (!mobileState.isMobile) return;
+		swipeOffset = Math.max(-120, Math.min(120, event.detail.x));
+		isRevealing = Math.abs(swipeOffset) > 20;
+	}
+
+	function handlePanUp(event: GestureCustomEvent) {
+		if (!mobileState.isMobile) {
+			swipeOffset = 0;
+			isRevealing = false;
+			return;
+		}
+
+		if (swipeOffset > SWIPE_THRESHOLD) {
+			// Swipe right: complete item
+			handleComplete();
+		} else if (swipeOffset < -SWIPE_THRESHOLD) {
+			// Swipe left: delete item
+			deleteItem(item.id);
+		}
+		swipeOffset = 0;
+		isRevealing = false;
+	}
+
+	const panGesture = usePan(handlePan, () => ({ delay: 0, touchAction: 'pan-y' }), { onpanup: handlePanUp });
 </script>
 
 {#if !isCompleting}
-	<div
-		class="flex items-start gap-3 min-h-11 p-3 hover:bg-gray-50 dark:hover:bg-gray-800/50 active:bg-gray-50 dark:active:bg-gray-800 transition-colors cursor-pointer rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:ring-inset"
-		onclick={handleRowClick}
-		role="button"
-		tabindex="0"
-		onkeydown={(e) => {
-			if (e.key === 'Enter' || e.key === ' ') {
-				e.preventDefault();
-				handleRowClick();
-			}
-		}}
-	>
+	<div class="relative overflow-hidden rounded-md">
+		<!-- Revealed action backgrounds -->
+		{#if isRevealing && mobileState.isMobile}
+			<div class="absolute inset-y-0 left-0 w-full flex items-center px-4 bg-green-500 text-white z-0">
+				<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+				</svg>
+				<span class="ml-2 text-sm font-medium">Complete</span>
+			</div>
+			<div class="absolute inset-y-0 right-0 w-full flex items-center justify-end px-4 bg-red-500 text-white z-0">
+				<span class="mr-2 text-sm font-medium">Delete</span>
+				<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+				</svg>
+			</div>
+		{/if}
+
+		<!-- Main item content (slides) -->
+		<div
+			{...panGesture}
+			style="transform: translateX({mobileState.isMobile ? swipeOffset : 0}px); transition: {isRevealing ? 'none' : 'transform 0.2s ease-out'};"
+			class="relative z-10 bg-white dark:bg-gray-950 flex items-start gap-3 min-h-11 p-3 hover:bg-gray-50 dark:hover:bg-gray-800/50 active:bg-gray-50 dark:active:bg-gray-800 transition-colors cursor-pointer rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:ring-inset"
+			onclick={handleRowClick}
+			role="button"
+			tabindex="0"
+			onkeydown={(e: KeyboardEvent) => {
+				if (e.key === 'Enter' || e.key === ' ') {
+					e.preventDefault();
+					handleRowClick();
+				}
+			}}
+		>
 		<!-- Selection checkbox (visible on hover or when selected) -->
 		<div
 			class="flex-shrink-0 mt-1"
@@ -159,6 +213,7 @@
 					{formatRelativeTime(item.created)}
 				</span>
 			</div>
+		</div>
 		</div>
 	</div>
 {:else}

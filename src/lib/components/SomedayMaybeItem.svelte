@@ -2,6 +2,8 @@
 	import toast from 'svelte-5-french-toast';
 	import { SOMEDAY_CATEGORIES } from '$lib/stores/someday.svelte';
 	import { promoteSomedayToActive, updateItem, deleteItem } from '$lib/db/operations';
+	import { usePan, type PanCustomEvent, type GestureCustomEvent } from 'svelte-gestures';
+	import { mobileState } from '$lib/stores/mobile.svelte';
 	import type { GTDItem } from '$lib/db/schema';
 
 	interface Props {
@@ -15,6 +17,11 @@
 
 	// Local state for editing
 	let notes = $state(item.notes || '');
+
+	// Swipe gesture state
+	let swipeOffset = $state(0);
+	let isRevealing = $state(false);
+	const SWIPE_THRESHOLD = 80;
 
 	// Keep notes in sync with item
 	$effect(() => {
@@ -59,26 +66,72 @@
 			onChanged();
 		}
 	}
+
+	// Swipe gesture handlers
+	function handlePan(event: PanCustomEvent) {
+		if (!mobileState.isMobile) return;
+		swipeOffset = Math.max(-120, Math.min(120, event.detail.x));
+		isRevealing = Math.abs(swipeOffset) > 20;
+	}
+
+	function handlePanUp(event: GestureCustomEvent) {
+		if (!mobileState.isMobile) {
+			swipeOffset = 0;
+			isRevealing = false;
+			return;
+		}
+
+		if (swipeOffset > SWIPE_THRESHOLD) {
+			// Swipe right: promote to action
+			handlePromoteToAction();
+		} else if (swipeOffset < -SWIPE_THRESHOLD) {
+			// Swipe left: delete item
+			handleDelete();
+		}
+		swipeOffset = 0;
+		isRevealing = false;
+	}
+
+	const panGesture = usePan(handlePan, () => ({ delay: 0, touchAction: 'pan-y' }), { onpanup: handlePanUp });
 </script>
 
-<div
-	class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg hover:shadow-sm transition-shadow"
->
-	<!-- Main row -->
-	<div class="min-h-11 px-4 py-3 flex items-start justify-between gap-2">
-		<!-- Left side: title, category, date -->
-		<div
-			class="flex-1 min-w-0 cursor-pointer active:bg-gray-50 dark:active:bg-gray-800 transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-inset rounded-lg"
-			onclick={onToggleExpand}
-			role="button"
-			tabindex="0"
-			onkeydown={(e) => {
-				if (e.key === 'Enter' || e.key === ' ') {
-					e.preventDefault();
-					onToggleExpand();
-				}
-			}}
-		>
+<div class="relative overflow-hidden rounded-lg">
+	<!-- Revealed action backgrounds -->
+	{#if isRevealing && mobileState.isMobile}
+		<div class="absolute inset-y-0 left-0 w-full flex items-center px-4 bg-blue-500 text-white z-0">
+			<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+			</svg>
+			<span class="ml-2 text-sm font-medium">Activate</span>
+		</div>
+		<div class="absolute inset-y-0 right-0 w-full flex items-center justify-end px-4 bg-red-500 text-white z-0">
+			<span class="mr-2 text-sm font-medium">Delete</span>
+			<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+			</svg>
+		</div>
+	{/if}
+
+	<div
+		{...panGesture}
+		style="transform: translateX({mobileState.isMobile ? swipeOffset : 0}px); transition: {isRevealing ? 'none' : 'transform 0.2s ease-out'};"
+		class="relative z-10 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg hover:shadow-sm transition-shadow"
+	>
+		<!-- Main row -->
+		<div class="min-h-11 px-4 py-3 flex items-start justify-between gap-2">
+			<!-- Left side: title, category, date -->
+			<div
+				class="flex-1 min-w-0 cursor-pointer active:bg-gray-50 dark:active:bg-gray-800 transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-inset rounded-lg"
+				onclick={onToggleExpand}
+				role="button"
+				tabindex="0"
+				onkeydown={(e) => {
+					if (e.key === 'Enter' || e.key === ' ') {
+						e.preventDefault();
+						onToggleExpand();
+					}
+				}}
+			>
 			<div class="flex items-center gap-2 flex-wrap">
 				<h3 class="font-medium text-gray-900 dark:text-gray-100 text-base truncate">
 					{item.title}
@@ -176,4 +229,5 @@
 			</div>
 		</div>
 	{/if}
+	</div>
 </div>

@@ -1,7 +1,9 @@
 <script lang="ts">
 	import { slide } from 'svelte/transition';
 	import toast from 'svelte-5-french-toast';
-	import { resolveWaitingFor, updateItem } from '$lib/db/operations';
+	import { resolveWaitingFor, updateItem, deleteItem } from '$lib/db/operations';
+	import { usePan, type PanCustomEvent, type GestureCustomEvent } from 'svelte-gestures';
+	import { mobileState } from '$lib/stores/mobile.svelte';
 	import type { GTDItem } from '$lib/db/schema';
 
 	interface Props {
@@ -15,6 +17,11 @@
 	let { item, isOverdue, isExpanded, onToggleExpand, onResolved }: Props = $props();
 
 	let isResolving = $state(false);
+
+	// Swipe gesture state
+	let swipeOffset = $state(0);
+	let isRevealing = $state(false);
+	const SWIPE_THRESHOLD = 80;
 
 	// Local state for editable fields
 	let notesValue = $state(item.notes || '');
@@ -98,29 +105,76 @@
 		e.stopPropagation();
 		handleResolve();
 	}
+
+	// Swipe gesture handlers
+	function handlePan(event: PanCustomEvent) {
+		if (!mobileState.isMobile) return;
+		swipeOffset = Math.max(-120, Math.min(120, event.detail.x));
+		isRevealing = Math.abs(swipeOffset) > 20;
+	}
+
+	function handlePanUp(event: GestureCustomEvent) {
+		if (!mobileState.isMobile) {
+			swipeOffset = 0;
+			isRevealing = false;
+			return;
+		}
+
+		if (swipeOffset > SWIPE_THRESHOLD) {
+			// Swipe right: resolve/complete item
+			handleResolve();
+		} else if (swipeOffset < -SWIPE_THRESHOLD) {
+			// Swipe left: delete item
+			deleteItem(item.id);
+			onResolved();
+		}
+		swipeOffset = 0;
+		isRevealing = false;
+	}
+
+	const panGesture = usePan(handlePan, () => ({ delay: 0, touchAction: 'pan-y' }), { onpanup: handlePanUp });
 </script>
 
 {#if !isResolving}
-	<div
-		class={`rounded-lg border transition-shadow ${
-			isOverdue
-				? 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800 border-l-2 border-l-red-400'
-				: 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700'
-		}`}
-	>
-		<!-- Main row -->
+	<div class="relative overflow-hidden rounded-lg">
+		<!-- Revealed action backgrounds -->
+		{#if isRevealing && mobileState.isMobile}
+			<div class="absolute inset-y-0 left-0 w-full flex items-center px-4 bg-green-500 text-white z-0">
+				<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+				</svg>
+				<span class="ml-2 text-sm font-medium">Resolve</span>
+			</div>
+			<div class="absolute inset-y-0 right-0 w-full flex items-center justify-end px-4 bg-red-500 text-white z-0">
+				<span class="mr-2 text-sm font-medium">Delete</span>
+				<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+				</svg>
+			</div>
+		{/if}
+
 		<div
-			class="min-h-11 px-4 py-3 cursor-pointer active:bg-gray-50 dark:active:bg-gray-800 transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-inset rounded-lg"
-			onclick={onToggleExpand}
-			role="button"
-			tabindex="0"
-			onkeydown={(e) => {
-				if (e.key === 'Enter' || e.key === ' ') {
-					e.preventDefault();
-					onToggleExpand();
-				}
-			}}
+			{...panGesture}
+			style="transform: translateX({mobileState.isMobile ? swipeOffset : 0}px); transition: {isRevealing ? 'none' : 'transform 0.2s ease-out'};"
+			class={`relative z-10 rounded-lg border transition-shadow ${
+				isOverdue
+					? 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800 border-l-2 border-l-red-400'
+					: 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700'
+			}`}
 		>
+			<!-- Main row -->
+			<div
+				class="min-h-11 px-4 py-3 cursor-pointer active:bg-gray-50 dark:active:bg-gray-800 transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-inset rounded-lg"
+				onclick={onToggleExpand}
+				role="button"
+				tabindex="0"
+				onkeydown={(e) => {
+					if (e.key === 'Enter' || e.key === ' ') {
+						e.preventDefault();
+						onToggleExpand();
+					}
+				}}
+			>
 			<div class="flex items-start justify-between gap-2">
 				<div class="flex-1 min-w-0">
 					<!-- Title -->
@@ -235,6 +289,7 @@
 				</div>
 			</div>
 		{/if}
+		</div>
 	</div>
 {:else}
 	<!-- Resolving state: show undo option -->
