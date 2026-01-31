@@ -11,9 +11,9 @@ See: .planning/PROJECT.md (updated 2026-01-31)
 ## Current Position
 
 Phase: 08.1 (UI/UX Review — inserted)
-Plan: 3 of TBD in current phase
+Plan: 6 of 7 in current phase
 Status: In progress
-Last activity: 2026-01-31 — Completed 08.1-03-PLAN.md (Inbox & Processing Polish)
+Last activity: 2026-01-31 — Completed 08.1-06-PLAN.md (Polish Calendar & Weekly Review)
 
 Progress: [████████░░░░░░░░░░░░] 41% (39/TBD plans complete across all phases)
 
@@ -71,6 +71,10 @@ Recent decisions affecting current work:
 - 08.1-05: Overdue items use border-l-2 for urgency without being alarming
 - 08.1-05: Active category buttons combine bg-white, shadow-sm, and font-semibold
 - 08.1-05: Settings cards use rounded-xl with hover:shadow-md for elevated feel
+- 08.1-06: Navigation arrows increased to p-2.5 for 44px touch target (accessibility)
+- 08.1-06: View switcher uses p-0.5 container with ring-1 on active segments
+- 08.1-06: Frosted glass footer with backdrop-blur-sm for Weekly Review wizard
+- 08.1-06: Tabular-nums for wizard progress percentage (stable layout)
 
 ### Roadmap Evolution
 
@@ -94,6 +98,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-01-31T00:45:47Z
-Stopped at: Completed 08.1-03-PLAN.md
+Last session: 2026-01-31T00:46:06Z
+Stopped at: Completed 08.1-06-PLAN.md
 Resume file: None
