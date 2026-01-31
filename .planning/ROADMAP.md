@@ -149,6 +149,29 @@ Plans:
 
 ---
 
+### Phase 08.4: Mobile Responsive Pass (INSERTED)
+
+**Goal:** Comprehensive mobile responsiveness pass across all views to ensure the app works well on mobile devices — touch targets, responsive layouts, and mobile-friendly navigation
+
+**Depends on:** Phase 08.3 (sidebar collapse provides foundation for mobile nav)
+
+**Success Criteria** (what must be TRUE):
+1. All views render correctly on viewport widths from 320px to 1024px
+2. Touch targets meet minimum 44px size on all interactive elements
+3. Sidebar collapses or converts to mobile-friendly navigation on small screens
+4. Forms, modals, and processing flows are usable on touch devices
+5. Calendar views adapt to narrow screens (day view default on mobile)
+6. Text remains readable without horizontal scrolling on any view
+7. No functionality is lost on mobile — all features accessible via touch
+
+**Plans:** TBD
+
+Plans:
+- [ ] 08.4-01: TBD
+- [ ] 08.4-02: TBD
+
+---
+
 ### 🚧 v1.1 Outlook Calendar Sync (In Progress)
 
 **Milestone Goal:** Two-way calendar sync between GTD and Outlook so the user sees work commitments in GTD and GTD tasks appear on their Outlook calendar.
@@ -275,7 +298,7 @@ Plans:
 
 ## Progress
 
-**Execution Order:** Phases execute in numeric order: 08.1 → 08.2 → 08.3 → 9 → 10 → 11 → 12 → 13
+**Execution Order:** Phases execute in numeric order: 08.1 → 08.2 → 08.3 → 08.4 → 9 → 10 → 11 → 12 → 13
 
 | Phase | Milestone | Plans Complete | Status | Completed |
 |-------|-----------|----------------|--------|-----------|
@@ -290,6 +313,7 @@ Plans:
 | 08.1 UI/UX Review | v1.0+ | 7/7 | Complete | 2026-01-31 |
 | 08.2 Storage Persistence | v1.0+ | 2/2 | Complete | 2026-01-31 |
 | 08.3 Left Nav Bar UX | v1.0+ | 2/2 | Complete | 2026-01-31 |
+| 08.4 Mobile Responsive Pass | v1.0+ | 0/TBD | Not started | - |
 | 9. OAuth Foundation | v1.1 | 0/TBD | Not started | - |
 | 10. Read Calendar | v1.1 | 0/TBD | Not started | - |
 | 11. Two-Way Sync | v1.1 | 0/TBD | Not started | - |

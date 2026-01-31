@@ -6,14 +6,14 @@ See: .planning/PROJECT.md (updated 2026-01-31)
 
 **Core value:** Nothing falls through the cracks — every commitment is captured, clarified, and surfaced at the right time so the user always knows what to do next.
 
-**Current focus:** Phase 08.3 - Left Nav Bar UX Improvement
+**Current focus:** Phase 08.4 - Mobile Responsive Pass
 
 ## Current Position
 
-Phase: 08.3 (Left Nav Bar UX Improvement — inserted)
-Plan: 2 of 2 in current phase
-Status: Complete
-Last activity: 2026-01-31 — Completed 08.3-02-PLAN.md (Sidebar Collapse Toggle with Icon-Only Mode)
+Phase: 08.4 (Mobile Responsive Pass — inserted)
+Plan: 0 of TBD in current phase
+Status: Not started
+Last activity: 2026-01-31 — Phase 08.4 inserted after Phase 08.3
 
 Progress: [██████████░░░░░░░░░░] 47% (47/TBD plans complete across all phases)
 
@@ -97,6 +97,7 @@ Recent decisions affecting current work:
 - Phase 08.1 inserted after Phase 8: UI/UX Review — comprehensive pass on visual consistency, design principles, and usability before starting v1.1 Outlook sync
 - Phase 8.2 inserted after Phase 8: how does storage work currently? If I click not persistent - click to request nothing actually happens in the app (URGENT)
 - Phase 08.3 inserted after Phase 08.2: Left nav bar has scrollbar on laptop — redesign nav UX while preserving all functionality
+- Phase 08.4 inserted after Phase 08.3: Mobile responsive pass — ensure site works on mobile devices (URGENT)
 
 ### Pending Todos
 
