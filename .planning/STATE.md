@@ -11,11 +11,11 @@ See: .planning/PROJECT.md (updated 2026-01-31)
 ## Current Position
 
 Phase: 08.4 (Mobile Responsive Pass — inserted)
-Plan: 0 of TBD in current phase
-Status: Not started
-Last activity: 2026-01-31 — Phase 08.4 inserted after Phase 08.3
+Plan: 1 of TBD in current phase
+Status: In progress
+Last activity: 2026-01-31 — Completed 08.4-01-PLAN.md (Mobile Responsive Foundation)
 
-Progress: [██████████░░░░░░░░░░] 47% (47/TBD plans complete across all phases)
+Progress: [██████████░░░░░░░░░░] 48% (48/TBD plans complete across all phases)
 
 ## Performance Metrics
 
@@ -91,6 +91,9 @@ Recent decisions affecting current work:
 - 08.3-02: cycleTheme function for collapsed footer (light → dark → system)
 - 08.3-02: `[` keyboard shortcut to toggle sidebar (common productivity app pattern)
 - 08.3-02: Badge dots on collapsed icons for inbox/stalled project indicators
+- 08.4-01: Custom Tailwind breakpoints (phone: 360px, phablet: 640px, tablet: 768px, desktop: 1024px)
+- 08.4-01: Separate JS-level detection (mobileState) from CSS breakpoints (Tailwind) for different use cases
+- 08.4-01: iOS input zoom prevention via min font-size 16px without blocking user zoom (WCAG compliant)
 
 ### Roadmap Evolution
 
@@ -118,5 +121,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-01-31
-Stopped at: Completed Phase 08.3 (Left Nav Bar UX Improvement) — all 2 plans complete
+Stopped at: Completed 08.4-01-PLAN.md (Mobile Responsive Foundation)
 Resume file: None
