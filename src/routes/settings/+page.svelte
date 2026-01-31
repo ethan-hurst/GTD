@@ -168,8 +168,25 @@
 	}
 
 	// Device Sync functions
-	function handleGenerateCode() {
-		generatedCode = generatePairingCode();
+	let isGenerating = $state(false);
+
+	async function handleGenerateCode() {
+		try {
+			isGenerating = true;
+			generatedCode = generatePairingCode();
+
+			// Auto-pair this device with the generated code
+			const success = await syncState.pair(generatedCode);
+			if (success) {
+				toast.success('Pairing code generated. Enter this code on your other device.');
+			} else {
+				toast.error(syncState.lastError || 'Failed to pair');
+			}
+		} catch (error) {
+			toast.error(error instanceof Error ? error.message : 'Failed to generate code');
+		} finally {
+			isGenerating = false;
+		}
 	}
 
 	async function handleCopyCode() {
@@ -235,7 +252,7 @@
 				return;
 			}
 
-			syncState.setPairingCode(reentryCode);
+			await syncState.setPairingCode(reentryCode);
 			toast.success('Pairing code set. Sync ready.');
 			reentryCode = '';
 
@@ -463,12 +480,13 @@
 			<!-- Start New Pair -->
 			<div class="mb-6">
 				<h3 class="text-base font-medium text-gray-900 dark:text-gray-100 mb-2">Start New Pair</h3>
-				{#if !generatedCode}
+				{#if !generatedCode && !syncState.isPaired}
 					<button
 						onclick={handleGenerateCode}
-						class="w-full phablet:w-auto px-4 py-2.5 min-h-11 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 rounded-md text-base font-medium hover:bg-gray-800 dark:hover:bg-gray-200 transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 active:scale-[0.98]"
+						disabled={isGenerating}
+						class="w-full phablet:w-auto px-4 py-2.5 min-h-11 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 rounded-md text-base font-medium hover:bg-gray-800 dark:hover:bg-gray-200 transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 active:scale-[0.98]"
 					>
-						Generate Pairing Code
+						{isGenerating ? 'Generating...' : 'Generate Pairing Code'}
 					</button>
 				{:else}
 					<div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-md p-4 mb-2">

@@ -98,9 +98,14 @@ export function getNextIV(): Uint8Array {
 
 /**
  * Convert Uint8Array to base64 string
+ * Uses chunked conversion to avoid call stack limits with large arrays
  */
 function arrayToBase64(array: Uint8Array): string {
-	return btoa(String.fromCharCode(...array));
+	let binary = '';
+	for (let i = 0; i < array.length; i++) {
+		binary += String.fromCharCode(array[i]);
+	}
+	return btoa(binary);
 }
 
 /**

@@ -137,12 +137,18 @@ class SyncStore {
 
 	/**
 	 * Set pairing code (for continued use after page refresh)
+	 * Also re-initializes IV counter needed for encryption
 	 */
-	setPairingCode(code: string): void {
+	async setPairingCode(code: string): Promise<void> {
 		try {
 			const normalized = normalizePairingCode(code);
 			this.pairingCode = normalized;
 			this.lastError = null;
+
+			// Re-initialize IV counter (needed for encryption during sync)
+			if (this.deviceId) {
+				await initIVCounter(this.deviceId);
+			}
 		} catch (err) {
 			this.lastError = err instanceof Error ? err.message : String(err);
 		}
