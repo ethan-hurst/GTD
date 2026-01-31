@@ -120,7 +120,7 @@
 	);
 </script>
 
-<div class="flex-1 overflow-auto p-6">
+<div class="flex-1 overflow-auto p-4 tablet:p-6">
 	<!-- Header -->
 	<div class="mb-4 flex items-center justify-between">
 		<div>
@@ -140,13 +140,13 @@
 				</span>
 				<button
 					onclick={handleBulkComplete}
-					class="px-3 py-1.5 text-sm font-medium text-white bg-green-600 hover:bg-green-700 rounded-md transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-green-500/40 focus:ring-offset-2"
+					class="min-h-11 min-w-11 px-3 py-1.5 text-sm font-medium text-white bg-green-600 hover:bg-green-700 rounded-md transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-green-500/40 focus:ring-offset-2"
 				>
 					Complete selected
 				</button>
 				<button
 					onclick={() => actionState.clearSelection()}
-					class="px-3 py-1.5 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-gray-500/40 focus:ring-offset-2"
+					class="min-h-11 min-w-11 px-3 py-1.5 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-gray-500/40 focus:ring-offset-2"
 				>
 					Clear
 				</button>

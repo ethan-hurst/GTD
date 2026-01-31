@@ -41,20 +41,20 @@
 				{#if !allSelected}
 					<button
 						onclick={() => inboxState.selectAll()}
-						class="px-3 py-1 text-sm font-medium text-blue-700 dark:text-blue-300 hover:bg-blue-100 dark:hover:bg-blue-800 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-blue-900"
+						class="min-h-11 min-w-11 px-3 py-1 text-sm font-medium text-blue-700 dark:text-blue-300 hover:bg-blue-100 dark:hover:bg-blue-800 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-blue-900"
 					>
 						Select All
 					</button>
 				{/if}
 				<button
 					onclick={() => inboxState.clearSelection()}
-					class="px-3 py-1 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 dark:focus:ring-offset-blue-900"
+					class="min-h-11 min-w-11 px-3 py-1 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 dark:focus:ring-offset-blue-900"
 				>
 					Deselect
 				</button>
 				<button
 					onclick={handleBulkDelete}
-					class="px-3 py-1 text-sm font-medium text-red-700 dark:text-red-300 hover:bg-red-100 dark:hover:bg-red-800 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 dark:focus:ring-offset-blue-900"
+					class="min-h-11 min-w-11 px-3 py-1 text-sm font-medium text-red-700 dark:text-red-300 hover:bg-red-100 dark:hover:bg-red-800 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 dark:focus:ring-offset-blue-900"
 				>
 					Delete
 				</button>
@@ -67,7 +67,7 @@
 		{#each inboxState.items as item (item.id)}
 			<div class="{inboxState.expandedId === item.id ? 'border-l-4 border-blue-500 rounded-md' : 'rounded-md'}">
 				<div
-					class="flex items-start gap-3 p-3 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors cursor-pointer"
+					class="flex items-start gap-3 min-h-11 p-3 hover:bg-gray-50 dark:hover:bg-gray-800/50 active:bg-gray-50 dark:active:bg-gray-800 transition-colors cursor-pointer"
 					onclick={(e) => {
 						// Don't expand if clicking checkbox
 						if ((e.target as HTMLElement).tagName !== 'INPUT') {
