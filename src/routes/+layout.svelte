@@ -130,10 +130,15 @@
 		// Set up theme listener for system preference changes
 		const cleanup = theme.listen();
 
-		// Request persistent storage (non-blocking)
-		storageStatus.requestPersistence().catch(() => {
-			// Silently fail if not supported or denied
-		});
+		// Check persistence status and show confirmation if granted (non-blocking)
+		(async () => {
+			await storageStatus.checkPersistence();
+			if (storageStatus.persistenceState === 'GRANTED') {
+				// Show confirmation toast on every load when storage is persistent
+				const { toast } = await import('svelte-5-french-toast');
+				toast.success('Storage is persistent', { duration: 3000 });
+			}
+		})();
 
 		// Load onboarding state and show wizard if needed (non-blocking)
 		(async () => {
