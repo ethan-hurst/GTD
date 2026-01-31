@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { goto } from '$app/navigation';
 	import { storageStatus } from '$lib/stores/storage.svelte';
+	import { syncState } from '$lib/stores/sync.svelte';
 	import { toast } from 'svelte-5-french-toast';
 
 	let intervalId: number | null = null;
@@ -89,9 +91,30 @@
 		       typeof navigator.storage.persisted === 'function';
 	}
 
-	onMount(() => {
+	// Format sync time for status bar
+	function formatSyncStatus(): string {
+		if (!syncState.lastSyncTime) return 'Synced';
+		const now = Date.now();
+		const then = syncState.lastSyncTime.getTime();
+		const seconds = Math.floor((now - then) / 1000);
+
+		if (seconds < 10) return 'Synced';
+		if (seconds < 60) return `Synced ${seconds}s ago`;
+		const minutes = Math.floor(seconds / 60);
+		if (minutes < 60) return `Synced ${minutes}m ago`;
+		const hours = Math.floor(minutes / 60);
+		return `Synced ${hours}h ago`;
+	}
+
+	// Navigate to settings on sync status click
+	function handleSyncClick() {
+		goto('/settings');
+	}
+
+	onMount(async () => {
 		storageStatus.checkPersistence();
 		storageStatus.updateQuota();
+		await syncState.init();
 
 		intervalId = window.setInterval(() => {
 			storageStatus.updateQuota();
@@ -150,6 +173,32 @@
 			</button>
 		{/if}
 	</div>
+
+	<!-- Sync Status (if paired) -->
+	{#if syncState.isPaired}
+		<span class="text-gray-400 dark:text-gray-500">|</span>
+		<button
+			onclick={handleSyncClick}
+			class="flex items-center gap-1.5 hover:text-gray-600 dark:hover:text-gray-400 transition-colors cursor-pointer"
+		>
+			{#if syncState.syncState === 'idle'}
+				<span class="w-2 h-2 rounded-full bg-blue-500"></span>
+				<span>{formatSyncStatus()}</span>
+			{:else if syncState.syncState === 'error'}
+				<span class="w-2 h-2 rounded-full bg-red-500"></span>
+				<span>Sync error</span>
+			{:else if syncState.syncState === 'pulling'}
+				<span class="w-2 h-2 rounded-full bg-blue-500"></span>
+				<span>Pulling...</span>
+			{:else if syncState.syncState === 'pushing'}
+				<span class="w-2 h-2 rounded-full bg-blue-500"></span>
+				<span>Pushing...</span>
+			{:else if syncState.syncState === 'merging'}
+				<span class="w-2 h-2 rounded-full bg-blue-500"></span>
+				<span>Merging...</span>
+			{/if}
+		</button>
+	{/if}
 
 	<!-- Storage Quota (only show when persistent) -->
 	{#if storageStatus.persistenceState === 'GRANTED' && storageStatus.quota > 0}

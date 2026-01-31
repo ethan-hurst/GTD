@@ -4,6 +4,7 @@
 	import { inboxState } from '$lib/stores/inbox.svelte';
 	import { projectState } from '$lib/stores/projects.svelte';
 	import { weeklyReviewState } from '$lib/stores/review.svelte';
+	import { syncState } from '$lib/stores/sync.svelte';
 
 	let { isOpen = $bindable(false) } = $props();
 
@@ -39,11 +40,12 @@
 		}
 	});
 
-	onMount(() => {
+	onMount(async () => {
 		// Load states for badges
-		inboxState.loadItems();
-		projectState.loadProjects();
-		weeklyReviewState.loadLastReview();
+		await inboxState.loadItems();
+		await projectState.loadProjects();
+		await weeklyReviewState.loadLastReview();
+		await syncState.init();
 	});
 </script>
 
@@ -174,12 +176,27 @@
 		<a
 			href="/settings"
 			onclick={closeDrawer}
-			class="flex items-center gap-3 px-4 py-3 transition-colors duration-150 {$page.url.pathname === '/settings' ? 'bg-white dark:bg-gray-800 shadow-sm font-semibold text-gray-900 dark:text-gray-100' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800'}"
+			class="flex items-center justify-between px-4 py-3 transition-colors duration-150 {$page.url.pathname === '/settings' ? 'bg-white dark:bg-gray-800 shadow-sm font-semibold text-gray-900 dark:text-gray-100' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800'}"
 		>
-			<svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-			</svg>
-			<span>Settings</span>
+			<div class="flex items-center gap-3">
+				<svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+				</svg>
+				<span>Settings</span>
+			</div>
+			<!-- Minimal sync indicator -->
+			{#if syncState.isPaired}
+				{#if syncState.syncState !== 'idle' && syncState.syncState !== 'error'}
+					<!-- Syncing: spinning icon -->
+					<svg class="w-4 h-4 animate-spin text-blue-500" fill="none" viewBox="0 0 24 24">
+						<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+						<path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+					</svg>
+				{:else if syncState.syncState === 'error'}
+					<!-- Error: red dot -->
+					<span class="w-2 h-2 rounded-full bg-red-500"></span>
+				{/if}
+			{/if}
 		</a>
 	</div>
 </nav>
