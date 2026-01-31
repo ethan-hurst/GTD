@@ -217,12 +217,12 @@
 	<!-- Main calendar area -->
 	<div class="flex-1 flex flex-col">
 		<!-- Toolbar -->
-		<div class="flex items-center justify-between px-6 py-4 border-b border-gray-200 dark:border-gray-800">
+		<div class="flex items-center justify-between px-6 py-3 border-b border-gray-200/60 dark:border-gray-800/60 bg-white dark:bg-gray-900">
 			<!-- Left: New Event button + Navigation -->
 			<div class="flex items-center gap-3">
 				<button
 					onclick={openNewEventForm}
-					class="px-3 py-1.5 text-sm font-medium rounded bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white transition-colors flex items-center gap-1.5"
+					class="px-3 py-1.5 text-sm font-medium rounded bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white transition-all flex items-center gap-1.5 shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 active:scale-[0.97]"
 					title="Create new event"
 				>
 					<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -230,10 +230,10 @@
 					</svg>
 					New Event
 				</button>
-				<div class="w-px h-6 bg-gray-300 dark:bg-gray-700"></div>
+				<div class="w-px h-6 bg-gray-200 dark:bg-gray-700/60"></div>
 				<button
 					onclick={goBack}
-					class="p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300"
+					class="p-2.5 rounded hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
 					title="Previous"
 				>
 					<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -242,13 +242,13 @@
 				</button>
 				<button
 					onclick={goToToday}
-					class="px-3 py-1.5 text-sm font-medium rounded border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
+					class="px-3 py-1.5 text-sm font-medium rounded border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
 				>
 					Today
 				</button>
 				<button
 					onclick={goForward}
-					class="p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300"
+					class="p-2.5 rounded hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
 					title="Next"
 				>
 					<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -264,7 +264,7 @@
 			<div class="flex items-center gap-3">
 				<button
 					onclick={openImport}
-					class="px-3 py-1.5 text-sm font-medium rounded border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 flex items-center gap-2"
+					class="px-3 py-1.5 text-sm font-medium rounded border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
 					title="Import .ics calendar file"
 				>
 					<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -275,7 +275,7 @@
 
 				<button
 					onclick={() => showSidePanel = !showSidePanel}
-					class="px-3 py-1.5 text-sm font-medium rounded border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 flex items-center gap-2 {showSidePanel ? 'ring-2 ring-blue-500 ring-offset-2 dark:ring-offset-gray-900' : ''}"
+					class="px-3 py-1.5 text-sm font-medium rounded border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 {showSidePanel ? 'ring-2 ring-blue-500 ring-offset-2 dark:ring-offset-gray-900' : ''}"
 					title="Toggle next actions panel"
 				>
 					<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -284,27 +284,27 @@
 					Actions
 				</button>
 
-				<div class="flex gap-1 bg-gray-100 dark:bg-gray-800 rounded-lg p-1">
+				<div class="flex gap-1 bg-gray-100 dark:bg-gray-800 rounded-lg p-0.5">
 					<button
 						onclick={() => calendarState.setView('timeGridDay')}
-						class="px-3 py-1.5 text-sm font-medium rounded transition-colors {calendarState.currentView === 'timeGridDay'
-							? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm'
+						class="px-3 py-1.5 text-sm font-medium rounded transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 {calendarState.currentView === 'timeGridDay'
+							? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm ring-1 ring-gray-900/5 dark:ring-white/10'
 							: 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'}"
 					>
 						Day
 					</button>
 					<button
 						onclick={() => calendarState.setView('timeGridWeek')}
-						class="px-3 py-1.5 text-sm font-medium rounded transition-colors {calendarState.currentView === 'timeGridWeek'
-							? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm'
+						class="px-3 py-1.5 text-sm font-medium rounded transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 {calendarState.currentView === 'timeGridWeek'
+							? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm ring-1 ring-gray-900/5 dark:ring-white/10'
 							: 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'}"
 					>
 						Week
 					</button>
 					<button
 						onclick={() => calendarState.setView('dayGridMonth')}
-						class="px-3 py-1.5 text-sm font-medium rounded transition-colors {calendarState.currentView === 'dayGridMonth'
-							? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm'
+						class="px-3 py-1.5 text-sm font-medium rounded transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 {calendarState.currentView === 'dayGridMonth'
+							? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm ring-1 ring-gray-900/5 dark:ring-white/10'
 							: 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'}"
 					>
 						Month

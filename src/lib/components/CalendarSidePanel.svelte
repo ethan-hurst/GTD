@@ -65,9 +65,9 @@
 	}
 </script>
 
-<div class="w-80 border-l border-gray-200 dark:border-gray-800 flex flex-col bg-white dark:bg-gray-900">
+<div class="w-80 border-l border-gray-200/60 dark:border-gray-800/60 flex flex-col bg-white dark:bg-gray-900">
 	<!-- Header -->
-	<div class="px-4 py-3 border-b border-gray-200 dark:border-gray-800">
+	<div class="px-4 py-3 border-b border-gray-200/60 dark:border-gray-800/60">
 		<div class="flex items-center justify-between">
 			<h2 class="text-sm font-semibold text-gray-900 dark:text-white">Next Actions</h2>
 			{#if actionState.itemCount > 0}
@@ -91,7 +91,7 @@
 				{#each groupedActions as group (group.context)}
 					<div class="mb-4">
 						<!-- Context header -->
-						<div class="px-4 py-1.5 bg-gray-50 dark:bg-gray-800/50">
+						<div class="px-4 py-1.5 bg-gray-50 dark:bg-gray-800/50 border-b border-gray-100 dark:border-gray-800/50">
 							<h3 class="text-xs font-medium text-gray-700 dark:text-gray-300">
 								{group.context}
 							</h3>
@@ -104,7 +104,7 @@
 									<!-- Checkbox -->
 									<button
 										onclick={() => handleComplete(action.id, action.title)}
-										class="mt-0.5 w-4 h-4 rounded border border-gray-300 dark:border-gray-600 hover:border-blue-500 dark:hover:border-blue-400 flex items-center justify-center transition-colors"
+										class="mt-0.5 w-4 h-4 rounded border border-gray-300 dark:border-gray-600 hover:border-blue-500 dark:hover:border-blue-400 flex items-center justify-center transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
 										aria-label="Complete action"
 									>
 										<svg class="w-3 h-3 text-transparent hover:text-blue-500 dark:hover:text-blue-400" fill="currentColor" viewBox="0 0 16 16">

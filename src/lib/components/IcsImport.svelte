@@ -105,7 +105,7 @@
 
 <!-- Modal overlay -->
 <div
-	class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
+	class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
 	onclick={(e) => {
 		if (e.target === e.currentTarget) onClose();
 	}}
@@ -114,14 +114,14 @@
 	aria-labelledby="import-title"
 >
 	<!-- Modal card -->
-	<div class="bg-white dark:bg-gray-900 rounded-lg shadow-xl max-w-lg w-full p-6">
+	<div class="bg-white dark:bg-gray-900 rounded-xl shadow-2xl max-w-lg w-full p-6">
 		<div class="flex items-center justify-between mb-4">
 			<h2 id="import-title" class="text-xl font-semibold text-gray-900 dark:text-white">
 				Import Calendar Events
 			</h2>
 			<button
 				onclick={onClose}
-				class="p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-500 dark:text-gray-400"
+				class="p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-500 dark:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
 				aria-label="Close"
 			>
 				<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -206,14 +206,14 @@
 					<button
 						onclick={reset}
 						disabled={isLoading}
-						class="px-4 py-2 text-sm font-medium rounded border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed"
+						class="px-4 py-2 text-sm font-medium rounded border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
 					>
 						Cancel
 					</button>
 					<button
 						onclick={handleImport}
 						disabled={isLoading}
-						class="px-4 py-2 text-sm font-medium rounded bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+						class="px-4 py-2 text-sm font-medium rounded bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
 					>
 						{#if isLoading}
 							<svg class="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24">
