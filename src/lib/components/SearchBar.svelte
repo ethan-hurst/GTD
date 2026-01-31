@@ -176,9 +176,9 @@
 			bind:value={query}
 			onkeydown={handleKeydown}
 			type="text"
-			placeholder="Search... (Cmd+K)"
+			placeholder="Search..."
 			class="w-full bg-gray-100/70 dark:bg-gray-800/60 border border-transparent rounded-md pl-10 pr-3 py-2
-				text-sm placeholder-gray-400 focus:ring-2 focus:ring-blue-500
+				text-base min-h-11 placeholder-gray-400 focus:ring-2 focus:ring-blue-500
 				focus:bg-white dark:focus:bg-gray-700 focus:border-gray-200 dark:focus:border-gray-700 focus:shadow-sm transition-all duration-200"
 		/>
 	</div>
@@ -188,19 +188,19 @@
 		<div
 			class="absolute top-full left-0 right-0 mt-1 bg-white dark:bg-gray-800
 				shadow-xl border border-gray-200 dark:border-gray-700 rounded-lg
-				max-h-80 overflow-y-auto z-50"
+				max-h-[60vh] tablet:max-h-96 overflow-y-auto z-50"
 		>
 			{#each results as item, index}
 				<!-- svelte-ignore a11y_click_events_have_key_events -->
 				<!-- svelte-ignore a11y_no_static_element_interactions -->
 				<div
-					class="px-4 py-3 cursor-pointer border-b border-gray-100 dark:border-gray-700
+					class="px-4 py-3 min-h-11 cursor-pointer border-b border-gray-100 dark:border-gray-700
 						last:border-b-0 hover:bg-blue-50/50 dark:hover:bg-blue-900/20
 						{selectedIndex === index ? 'bg-blue-50 dark:bg-blue-900/30' : ''}"
 					onclick={() => navigateToItem(item)}
 				>
 					<div class="flex items-center gap-2 mb-1">
-						<span class="font-medium text-sm text-gray-900 dark:text-gray-100">
+						<span class="font-medium text-base text-gray-900 dark:text-gray-100">
 							{item.title}
 						</span>
 						<span
@@ -210,7 +210,7 @@
 						</span>
 					</div>
 					{#if item.notes}
-						<p class="text-xs text-gray-500 dark:text-gray-400 truncate">
+						<p class="text-sm text-gray-500 dark:text-gray-400 truncate">
 							{getNotePreview(item.notes)}
 						</p>
 					{/if}

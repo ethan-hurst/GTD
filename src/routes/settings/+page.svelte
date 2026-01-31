@@ -169,7 +169,7 @@
 	});
 </script>
 
-<div class="max-w-2xl mx-auto p-6">
+<div class="max-w-4xl mx-auto p-4 tablet:p-6">
 	<!-- Header -->
 	<h1 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-8">Settings</h1>
 
@@ -184,43 +184,46 @@
 		</div>
 	{/if}
 
-	<!-- Export Section -->
-	<div class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200 p-6 mb-6">
-		<h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">Data Export</h2>
-		<p class="text-sm text-gray-600 dark:text-gray-400 mb-4">
-			Download a backup of all your data in JSON format. This includes all tasks, lists, and settings.
-		</p>
-		<button
-			onclick={handleExport}
-			disabled={isExporting}
-			class="px-4 py-2 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 rounded-md text-sm font-medium hover:bg-gray-800 dark:hover:bg-gray-200 transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 active:scale-[0.98]"
-		>
-			{isExporting ? 'Exporting...' : 'Export Data'}
-		</button>
-	</div>
-
-	<!-- Import Section -->
-	<div class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200 p-6 mb-6">
-		<h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">Data Import</h2>
-		<p class="text-sm text-gray-600 dark:text-gray-400 mb-2">
-			Restore data from a previously exported JSON file.
-		</p>
-		<div class="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-md p-3 mb-4 shadow-sm">
-			<p class="text-sm text-amber-800 dark:text-amber-300 font-medium">
-				⚠️ Warning: This will replace all existing data
+	<!-- Cards grid: single column on mobile, two columns on tablet+ -->
+	<div class="grid grid-cols-1 tablet:grid-cols-2 gap-4">
+		<!-- Export Section -->
+		<div class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200 p-4 tablet:p-6">
+			<h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">Data Export</h2>
+			<p class="text-sm text-gray-600 dark:text-gray-400 mb-4">
+				Download a backup of all your data in JSON format. This includes all tasks, lists, and settings.
 			</p>
+			<button
+				onclick={handleExport}
+				disabled={isExporting}
+				class="w-full phablet:w-auto px-4 py-2.5 min-h-11 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 rounded-md text-base font-medium hover:bg-gray-800 dark:hover:bg-gray-200 transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 active:scale-[0.98]"
+			>
+				{isExporting ? 'Exporting...' : 'Export Data'}
+			</button>
 		</div>
-		<button
-			onclick={handleImport}
-			disabled={isImporting}
-			class="px-4 py-2 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 rounded-md text-sm font-medium hover:bg-gray-800 dark:hover:bg-gray-200 transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 active:scale-[0.98]"
-		>
-			{isImporting ? 'Importing...' : 'Import Data'}
-		</button>
+
+		<!-- Import Section -->
+		<div class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200 p-4 tablet:p-6">
+			<h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">Data Import</h2>
+			<p class="text-sm text-gray-600 dark:text-gray-400 mb-2">
+				Restore data from a previously exported JSON file.
+			</p>
+			<div class="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-md p-3 mb-4 shadow-sm">
+				<p class="text-sm text-amber-800 dark:text-amber-300 font-medium">
+					Warning: This will replace all existing data
+				</p>
+			</div>
+			<button
+				onclick={handleImport}
+				disabled={isImporting}
+				class="w-full phablet:w-auto px-4 py-2.5 min-h-11 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 rounded-md text-base font-medium hover:bg-gray-800 dark:hover:bg-gray-200 transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 active:scale-[0.98]"
+			>
+				{isImporting ? 'Importing...' : 'Import Data'}
+			</button>
+		</div>
 	</div>
 
-	<!-- Storage Section -->
-	<div class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200 p-6 mb-6">
+	<!-- Storage Section (full width) -->
+	<div class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200 p-4 tablet:p-6 mt-4">
 		<h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">Storage</h2>
 		<p class="text-sm text-gray-600 dark:text-gray-400 mb-4">
 			Persistent storage ensures your data won't be deleted when the browser needs space.
@@ -287,7 +290,7 @@
 			<button
 				onclick={handleRequestPersistence}
 				disabled={isRequestingPersistence}
-				class="px-4 py-2.5 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 rounded-md text-sm font-medium hover:bg-gray-800 dark:hover:bg-gray-200 transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 active:scale-[0.98]"
+				class="w-full phablet:w-auto px-4 py-2.5 min-h-11 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 rounded-md text-base font-medium hover:bg-gray-800 dark:hover:bg-gray-200 transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 active:scale-[0.98]"
 			>
 				{#if isRequestingPersistence}
 					<span class="flex items-center gap-2">
@@ -313,8 +316,8 @@
 		</div>
 	</div>
 
-	<!-- Onboarding Section -->
-	<div class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200 p-6">
+	<!-- Onboarding Section (full width) -->
+	<div class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200 p-4 tablet:p-6 mt-4">
 		<h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">Onboarding</h2>
 		<p class="text-sm text-gray-600 dark:text-gray-400 mb-4">
 			Reset the onboarding walkthrough and re-enable all contextual hints.
@@ -322,7 +325,7 @@
 		<button
 			onclick={handleResetOnboarding}
 			disabled={isResettingOnboarding}
-			class="px-4 py-2.5 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 rounded-md text-sm font-medium hover:bg-gray-800 dark:hover:bg-gray-200 transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 active:scale-[0.98]"
+			class="w-full phablet:w-auto px-4 py-2.5 min-h-11 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 rounded-md text-base font-medium hover:bg-gray-800 dark:hover:bg-gray-200 transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 active:scale-[0.98]"
 		>
 			{isResettingOnboarding ? 'Resetting...' : 'Reset Onboarding'}
 		</button>
