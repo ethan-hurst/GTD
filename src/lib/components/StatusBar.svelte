@@ -57,7 +57,7 @@
 	});
 </script>
 
-<footer class="border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950 h-9 flex items-center px-4 text-xs text-gray-600 dark:text-gray-400">
+<footer class="border-t border-gray-100 dark:border-gray-800/50 bg-gray-50/50 dark:bg-gray-900/50 h-9 flex items-center px-6 py-1.5 text-xs text-gray-400 dark:text-gray-500">
 	<!-- Persistence Status -->
 	<div class="flex items-center gap-2">
 		{#if storageStatus.isPersistent}

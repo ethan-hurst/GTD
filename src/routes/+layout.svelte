@@ -152,20 +152,20 @@
 
 <Toaster position="top-center" />
 
-<div class="h-screen flex overflow-hidden">
+<div class="h-screen flex overflow-hidden bg-gray-50 dark:bg-gray-950 antialiased">
 	<!-- Sidebar -->
 	<Sidebar />
 
 	<!-- Main Content Area -->
 	<div class="flex-1 flex flex-col overflow-hidden">
 		<!-- Top Bar with Search -->
-		<header class="flex items-center px-6 py-3 border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950">
+		<header class="flex items-center px-6 py-3 shadow-[0_1px_3px_-1px_rgba(0,0,0,0.1)] dark:shadow-[0_1px_3px_-1px_rgba(0,0,0,0.3)] bg-white dark:bg-gray-950 z-10">
 			<div class="flex-1 max-w-xl">
 				<SearchBar bind:this={searchBarRef} />
 			</div>
 		</header>
 
-		<main class="flex-1 overflow-y-auto pb-9">
+		<main class="flex-1 overflow-y-auto pb-6 bg-white dark:bg-gray-950">
 			{@render children()}
 		</main>
 
