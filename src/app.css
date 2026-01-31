@@ -1,3 +1,83 @@
 @import "tailwindcss";
 
 @custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+	/* Transition timing tokens */
+	--transition-fast: 150ms;
+	--transition-normal: 200ms;
+}
+
+@layer base {
+	/* Professional text rendering */
+	body {
+		font-family: system-ui, -apple-system, sans-serif;
+		text-rendering: optimizeLegibility;
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+	}
+
+	/* Selection colors */
+	::selection {
+		background: theme(--color-blue-100);
+		color: theme(--color-blue-900);
+	}
+
+	:where(.dark) ::selection {
+		background: theme(--color-blue-900);
+		color: theme(--color-blue-100);
+	}
+
+	/* Smooth scrollbar styling for webkit */
+	::-webkit-scrollbar {
+		width: 6px;
+		height: 6px;
+	}
+
+	::-webkit-scrollbar-track {
+		background: theme(--color-gray-200);
+	}
+
+	:where(.dark) ::-webkit-scrollbar-track {
+		background: theme(--color-gray-800);
+	}
+
+	::-webkit-scrollbar-thumb {
+		background: theme(--color-gray-400);
+		border-radius: 3px;
+	}
+
+	:where(.dark) ::-webkit-scrollbar-thumb {
+		background: theme(--color-gray-600);
+	}
+
+	::-webkit-scrollbar-thumb:hover {
+		background: theme(--color-gray-500);
+	}
+
+	:where(.dark) ::-webkit-scrollbar-thumb:hover {
+		background: theme(--color-gray-500);
+	}
+}
+
+@layer utilities {
+	/* Focus ring pattern - reusable across all interactive elements */
+	.focus-ring {
+		@apply focus:ring-2 focus:ring-blue-500/40 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-950 focus:outline-none;
+	}
+
+	/* Base button styles */
+	.btn-base {
+		@apply font-medium rounded-md transition-all duration-150 ease-out focus:ring-2 focus:ring-blue-500/40 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-950 focus:outline-none;
+	}
+
+	/* Refined shadow for cards */
+	.shadow-soft {
+		box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.06), 0 1px 2px -1px rgb(0 0 0 / 0.06);
+	}
+
+	/* Stronger shadow for modals/dropdowns */
+	.shadow-elevated {
+		box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.07), 0 2px 4px -2px rgb(0 0 0 / 0.07);
+	}
+}
