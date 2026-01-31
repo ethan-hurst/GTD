@@ -50,6 +50,14 @@ function deserializeDates(record: any): any {
 }
 
 /**
+ * Get the best available timestamp from a record
+ * Falls back through: modified → updatedAt → created
+ */
+function getTimestamp(record: any): Date | string | null {
+	return record.modified || record.updatedAt || record.created || null;
+}
+
+/**
  * Compare two Date objects (handles both Date instances and ISO strings)
  */
 function compareDates(a: Date | string, b: Date | string): number {
@@ -79,14 +87,22 @@ export function mergeTable<T extends SyncRecord>(local: T[], remote: T[]): T[] {
 			// New record from remote device
 			merged.set(deserialized.id, deserialized);
 		} else {
-			// Conflict - use Last-Write-Wins based on modified timestamp
-			const comparison = compareDates(deserialized.modified, localRecord.modified);
-			if (comparison > 0) {
-				// Remote is newer
+			// Conflict - use Last-Write-Wins based on best available timestamp
+			const remoteTime = getTimestamp(deserialized);
+			const localTime = getTimestamp(localRecord);
+
+			if (remoteTime && localTime) {
+				const comparison = compareDates(remoteTime, localTime);
+				if (comparison > 0) {
+					// Remote is newer
+					merged.set(deserialized.id, deserialized);
+				}
+				// If comparison <= 0, keep local (already in map)
+			} else if (remoteTime && !localTime) {
+				// Only remote has a timestamp — prefer it
 				merged.set(deserialized.id, deserialized);
 			}
-			// If comparison === 0, keep local (arbitrary but consistent)
-			// If comparison < 0, keep local (already in map)
+			// If neither has timestamps or only local does, keep local
 		}
 	}
 
