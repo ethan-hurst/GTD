@@ -22,7 +22,7 @@
 	const isFormDisabled = $derived(!newProjectTitle.trim());
 </script>
 
-<div class="p-6 max-w-4xl mx-auto">
+<div class="p-4 tablet:p-6 max-w-4xl mx-auto">
 	<!-- Header -->
 	<div class="mb-4">
 		<h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100">
@@ -42,17 +42,17 @@
 
 	<!-- Create form -->
 	<form onsubmit={handleCreateProject} class="mb-6">
-		<div class="flex gap-2">
+		<div class="flex flex-col gap-2 phablet:flex-row">
 			<input
 				type="text"
 				bind:value={newProjectTitle}
 				placeholder="New project outcome..."
-				class="flex-1 px-4 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+				class="flex-1 min-h-11 px-4 py-2 text-base border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
 			/>
 			<button
 				type="submit"
 				disabled={isFormDisabled}
-				class="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:ring-offset-2"
+				class="min-h-11 min-w-11 px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:ring-offset-2"
 			>
 				Add Project
 			</button>

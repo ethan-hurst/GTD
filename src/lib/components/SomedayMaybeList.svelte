@@ -30,54 +30,56 @@
 	const totalCount = $derived(somedayMaybeState.itemCount);
 </script>
 
-<div class="flex h-full">
-	<!-- Category filter sidebar -->
-	<div class="w-48 border-r border-gray-200 dark:border-gray-700 p-4 space-y-1">
-		<div class="mb-2">
-			<span class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-				Categories
-			</span>
-		</div>
-
-		<!-- All button -->
-		<button
-			onclick={() => somedayMaybeState.selectCategory(null)}
-			class="w-full flex items-center justify-between px-3 py-2 rounded-md text-sm transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1
-				{somedayMaybeState.selectedCategory === null
-					? 'bg-white dark:bg-gray-800 shadow-sm font-semibold text-gray-900 dark:text-gray-100'
-					: 'font-medium text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800'}"
-		>
-			<span>All</span>
-			{#if totalCount > 0}
-				<span class="text-xs text-gray-500 dark:text-gray-400">
-					{totalCount}
+<div class="flex flex-col tablet:flex-row h-full">
+	<!-- Category filter sidebar - horizontal scroll on mobile, sidebar on tablet+ -->
+	<div class="w-full tablet:w-48 border-b tablet:border-b-0 tablet:border-r border-gray-200 dark:border-gray-700 p-4 overflow-x-auto tablet:overflow-x-visible">
+		<div class="flex gap-2 tablet:flex-col tablet:space-y-1 pb-2 tablet:pb-0">
+			<div class="hidden tablet:block mb-2">
+				<span class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+					Categories
 				</span>
-			{/if}
-		</button>
+			</div>
 
-		<!-- Category buttons -->
-		{#each SOMEDAY_CATEGORIES as category}
-			{@const count = getCategoryCount(category)}
-			{@const isActive = somedayMaybeState.selectedCategory === category}
+			<!-- All button -->
 			<button
-				onclick={() => somedayMaybeState.selectCategory(category)}
-				class="w-full flex items-center justify-between px-3 py-2 rounded-md text-sm transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1
-					{isActive
+				onclick={() => somedayMaybeState.selectCategory(null)}
+				class="min-h-11 flex-shrink-0 tablet:w-full flex items-center justify-between px-3 py-2 rounded-md text-sm whitespace-nowrap transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1
+					{somedayMaybeState.selectedCategory === null
 						? 'bg-white dark:bg-gray-800 shadow-sm font-semibold text-gray-900 dark:text-gray-100'
 						: 'font-medium text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800'}"
 			>
-				<span>{category}</span>
-				{#if count > 0}
-					<span class="text-xs text-gray-500 dark:text-gray-400">
-						{count}
+				<span>All</span>
+				{#if totalCount > 0}
+					<span class="text-xs text-gray-500 dark:text-gray-400 ml-2">
+						{totalCount}
 					</span>
 				{/if}
 			</button>
-		{/each}
+
+			<!-- Category buttons -->
+			{#each SOMEDAY_CATEGORIES as category}
+				{@const count = getCategoryCount(category)}
+				{@const isActive = somedayMaybeState.selectedCategory === category}
+				<button
+					onclick={() => somedayMaybeState.selectCategory(category)}
+					class="min-h-11 flex-shrink-0 tablet:w-full flex items-center justify-between px-3 py-2 rounded-md text-sm whitespace-nowrap transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1
+						{isActive
+							? 'bg-white dark:bg-gray-800 shadow-sm font-semibold text-gray-900 dark:text-gray-100'
+							: 'font-medium text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800'}"
+				>
+					<span>{category}</span>
+					{#if count > 0}
+						<span class="text-xs text-gray-500 dark:text-gray-400 ml-2">
+							{count}
+						</span>
+					{/if}
+				</button>
+			{/each}
+		</div>
 	</div>
 
 	<!-- Main content area -->
-	<div class="flex-1 overflow-auto p-6">
+	<div class="flex-1 overflow-auto p-4 tablet:p-6">
 		<!-- Header -->
 		<div class="mb-4">
 			<h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100">
@@ -95,17 +97,17 @@
 
 		<!-- Inline add form -->
 		<form onsubmit={handleAddItem} class="mb-6">
-			<div class="flex gap-2">
+			<div class="flex flex-col gap-2 phablet:flex-row">
 				<input
 					type="text"
 					bind:value={newItemTitle}
 					placeholder="Capture an idea..."
-					class="flex-1 px-4 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-sm"
+					class="flex-1 min-h-11 px-4 py-2 text-base border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-sm"
 				/>
 				<button
 					type="submit"
 					disabled={isFormDisabled}
-					class="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 rounded-md transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+					class="min-h-11 min-w-11 px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 rounded-md transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
 				>
 					Add
 				</button>

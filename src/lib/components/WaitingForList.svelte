@@ -32,7 +32,7 @@
 	const isFormDisabled = $derived(!newTitle.trim() || !newPerson.trim());
 </script>
 
-<div class="p-6 max-w-4xl mx-auto">
+<div class="p-4 tablet:p-6 max-w-4xl mx-auto">
 	<!-- Header -->
 	<div class="mb-4">
 		<h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100">
@@ -52,25 +52,25 @@
 
 	<!-- Inline add form -->
 	<form onsubmit={handleAdd} class="mb-6 space-y-3">
-		<div class="flex gap-2">
+		<div class="flex flex-col gap-2 phablet:flex-row">
 			<input
 				type="text"
 				bind:value={newTitle}
 				placeholder="What are you waiting for?"
-				class="flex-1 px-4 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-sm"
+				class="flex-1 min-h-11 px-4 py-2 text-base border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-sm"
 			/>
 			<input
 				type="text"
 				bind:value={newPerson}
 				placeholder="Who from?"
-				class="w-48 px-4 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-sm"
+				class="w-full phablet:w-48 min-h-11 px-4 py-2 text-base border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-sm"
 			/>
 		</div>
-		<div class="flex gap-2">
+		<div class="flex flex-col gap-2 phablet:flex-row phablet:items-center">
 			<input
 				type="date"
 				bind:value={newFollowUpDate}
-				class="w-48 px-4 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-sm"
+				class="w-full phablet:w-48 min-h-11 px-4 py-2 text-base border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-sm"
 			/>
 			<label class="flex items-center text-sm text-gray-600 dark:text-gray-400">
 				Follow up by (optional)
@@ -79,7 +79,7 @@
 			<button
 				type="submit"
 				disabled={isFormDisabled}
-				class="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 rounded-md transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+				class="min-h-11 min-w-11 px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 rounded-md transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
 			>
 				Add
 			</button>
