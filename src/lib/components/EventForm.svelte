@@ -2,6 +2,7 @@
 	import { slide } from 'svelte/transition';
 	import toast from 'svelte-5-french-toast';
 	import { calendarState } from '$lib/stores/calendar.svelte';
+	import { mobileState } from '$lib/stores/mobile.svelte';
 	import { getAllProjects } from '$lib/db/operations';
 	import type { CalendarEvent, GTDItem } from '$lib/db/schema';
 
@@ -156,11 +157,11 @@
 </script>
 
 <div
-	class="w-96 bg-white dark:bg-gray-900 border-l border-gray-200 dark:border-gray-800 flex flex-col h-full shadow-xl"
+	class="fixed inset-0 z-50 bg-white dark:bg-gray-950 overflow-y-auto tablet:relative tablet:inset-auto tablet:z-auto tablet:w-96 tablet:border-l tablet:border-gray-200 tablet:dark:border-gray-800 flex flex-col h-full tablet:shadow-xl pb-safe"
 	transition:slide={{ axis: 'x', duration: 200 }}
 >
-	<!-- Header -->
-	<div class="flex items-center justify-between px-4 py-3 border-b border-gray-200 dark:border-gray-800">
+	<!-- Header: sticky on mobile for scrolling -->
+	<div class="sticky top-0 z-10 flex items-center justify-between px-4 py-3 border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950">
 		<h3 class="text-lg font-semibold text-gray-900 dark:text-white">
 			{event ? 'Edit Event' : 'New Event'}
 		</h3>
@@ -188,7 +189,7 @@
 					bind:value={title}
 					type="text"
 					placeholder="Event title"
-					class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+					class="w-full px-3 py-2 text-base border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
 				/>
 			</div>
 
@@ -212,7 +213,7 @@
 				<input
 					bind:value={startTimeStr}
 					type="datetime-local"
-					class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+					class="w-full px-3 py-2 text-base border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
 				/>
 			</div>
 
@@ -224,7 +225,7 @@
 				<input
 					bind:value={endTimeStr}
 					type="datetime-local"
-					class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+					class="w-full px-3 py-2 text-base border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
 				/>
 			</div>
 
@@ -237,7 +238,7 @@
 					bind:value={location}
 					type="text"
 					placeholder="Add location"
-					class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+					class="w-full px-3 py-2 text-base border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
 				/>
 			</div>
 
@@ -250,7 +251,7 @@
 					bind:value={notes}
 					rows="3"
 					placeholder="Add notes..."
-					class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-y"
+					class="w-full px-3 py-2 text-base border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-y"
 				></textarea>
 			</div>
 
@@ -264,7 +265,7 @@
 						<button
 							type="button"
 							onclick={() => selectedColor = color.value}
-							class="w-8 h-8 rounded-full transition-all focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 {selectedColor === color.value ? 'ring-2 ring-offset-2 ring-blue-500 dark:ring-offset-gray-900' : 'hover:scale-110'}"
+							class="min-w-11 min-h-11 w-11 h-11 rounded-full transition-all focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 {selectedColor === color.value ? 'ring-2 ring-offset-2 ring-blue-500 dark:ring-offset-gray-900' : 'hover:scale-110'}"
 							style="background-color: {color.value}"
 							title={color.name}
 						></button>
@@ -279,7 +280,7 @@
 				</label>
 				<select
 					bind:value={projectId}
-					class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+					class="w-full px-3 py-2 text-base border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
 				>
 					<option value="">(None)</option>
 					{#each projects as proj (proj.id)}
@@ -295,7 +296,7 @@
 				</label>
 				<select
 					bind:value={rrule}
-					class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+					class="w-full px-3 py-2 text-base border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
 				>
 					{#each recurrenceOptions as option (option.value || 'none')}
 						<option value={option.value}>{option.label}</option>
@@ -306,24 +307,24 @@
 	</div>
 
 	<!-- Footer buttons -->
-	<div class="px-4 py-3 border-t border-gray-200 dark:border-gray-800 flex items-center gap-2">
+	<div class="px-4 py-3 border-t border-gray-200 dark:border-gray-800 flex flex-col tablet:flex-row items-stretch tablet:items-center gap-2">
 		<button
 			onclick={handleSave}
-			class="flex-1 px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
+			class="w-full tablet:flex-1 min-h-11 px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
 		>
 			{event ? 'Save' : 'Create'}
 		</button>
 		{#if event}
 			<button
 				onclick={handleDelete}
-				class="px-4 py-2 text-sm font-medium text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
+				class="w-full tablet:w-auto min-h-11 px-4 py-2 text-sm font-medium text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
 			>
 				Delete
 			</button>
 		{/if}
 		<button
 			onclick={onClose}
-			class="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
+			class="w-full tablet:w-auto min-h-11 px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
 		>
 			Cancel
 		</button>

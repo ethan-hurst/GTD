@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { actionState } from '$lib/stores/actions.svelte';
+	import { mobileState } from '$lib/stores/mobile.svelte';
 	import { completeAction } from '$lib/db/operations';
 	import toast from 'svelte-5-french-toast';
 	import type { GTDItem } from '$lib/db/schema';
@@ -65,9 +66,9 @@
 	}
 </script>
 
-<div class="w-80 border-l border-gray-200/60 dark:border-gray-800/60 flex flex-col bg-white dark:bg-gray-900">
+<div class="w-full tablet:w-80 tablet:border-l border-gray-200/60 dark:border-gray-800/60 flex flex-col bg-white dark:bg-gray-900">
 	<!-- Header -->
-	<div class="px-4 py-3 border-b border-gray-200/60 dark:border-gray-800/60">
+	<div class="px-3 tablet:px-4 py-3 border-b border-gray-200/60 dark:border-gray-800/60">
 		<div class="flex items-center justify-between">
 			<h2 class="text-sm font-semibold text-gray-900 dark:text-white">Next Actions</h2>
 			{#if actionState.itemCount > 0}
@@ -104,10 +105,10 @@
 									<!-- Checkbox -->
 									<button
 										onclick={() => handleComplete(action.id, action.title)}
-										class="mt-0.5 w-4 h-4 rounded border border-gray-300 dark:border-gray-600 hover:border-blue-500 dark:hover:border-blue-400 flex items-center justify-center transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
+										class="mt-0.5 min-w-11 min-h-11 w-11 h-11 tablet:min-w-0 tablet:min-h-0 tablet:w-4 tablet:h-4 rounded border border-gray-300 dark:border-gray-600 hover:border-blue-500 dark:hover:border-blue-400 flex items-center justify-center transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
 										aria-label="Complete action"
 									>
-										<svg class="w-3 h-3 text-transparent hover:text-blue-500 dark:hover:text-blue-400" fill="currentColor" viewBox="0 0 16 16">
+										<svg class="w-6 h-6 tablet:w-3 tablet:h-3 text-transparent hover:text-blue-500 dark:hover:text-blue-400" fill="currentColor" viewBox="0 0 16 16">
 											<path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
 										</svg>
 									</button>
