@@ -6,16 +6,16 @@ See: .planning/PROJECT.md (updated 2026-01-31)
 
 **Core value:** Nothing falls through the cracks — every commitment is captured, clarified, and surfaced at the right time so the user always knows what to do next.
 
-**Current focus:** Phase 08.1 - UI/UX Review (inserted before v1.1)
+**Current focus:** Phase 08.2 - Storage Persistence Bug (URGENT fix)
 
 ## Current Position
 
-Phase: 08.1 (UI/UX Review — inserted)
-Plan: 7 of 7 in current phase
-Status: Phase complete
-Last activity: 2026-01-31 — Completed 08.1-07-PLAN.md (OnboardingWizard + Visual Verification)
+Phase: 08.2 (Storage Persistence Bug — inserted)
+Plan: 1 of 2 in current phase
+Status: In progress
+Last activity: 2026-01-31 — Completed 08.2-01-PLAN.md (Refactor Storage Persistence State Management)
 
-Progress: [██████████░░░░░░░░░░] 42% (42/TBD plans complete across all phases)
+Progress: [██████████░░░░░░░░░░] 43% (43/TBD plans complete across all phases)
 
 ## Performance Metrics
 
@@ -76,6 +76,9 @@ Recent decisions affecting current work:
 - 08.1-06: Frosted glass footer with backdrop-blur-sm for Weekly Review wizard
 - 08.1-06: Tabular-nums for wizard progress percentage (stable layout)
 - 08.1-07: Sidebar nav needs overflow-y-auto to keep footer pinned when ContextList is expanded
+- 08.2-01: Use three discrete states (UNKNOWN, GRANTED, DENIED) instead of boolean for persistence
+- 08.2-01: Keep state as UNKNOWN when persisted() returns false (only set DENIED on explicit request rejection)
+- 08.2-01: Add console logs for all persistence state transitions
 
 ### Roadmap Evolution
 
@@ -100,6 +103,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-01-31T00:56:00Z
-Stopped at: Phase 08.1 complete — all 7 plans executed, visual verification approved
+Last session: 2026-01-31T12:08:51Z
+Stopped at: Completed 08.2-01-PLAN.md (Refactor Storage Persistence State Management)
 Resume file: None
