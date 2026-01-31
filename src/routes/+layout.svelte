@@ -5,17 +5,22 @@
 	import SearchBar from '$lib/components/SearchBar.svelte';
 	import StatusBar from '$lib/components/StatusBar.svelte';
 	import OnboardingWizard from '$lib/components/OnboardingWizard.svelte';
+	import MobileNav from '$lib/components/mobile/MobileNav.svelte';
+	import MobileHeader from '$lib/components/mobile/MobileHeader.svelte';
+	import FloatingActionButton from '$lib/components/mobile/FloatingActionButton.svelte';
 	import { Toaster } from 'svelte-5-french-toast';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 	import { theme } from '$lib/stores/theme.svelte';
 	import { storageStatus } from '$lib/stores/storage.svelte';
 	import { onboardingState } from '$lib/stores/onboarding.svelte';
+	import { mobileState } from '$lib/stores/mobile.svelte';
 	import { getFeatureFromRoute, markFeatureVisited } from '$lib/utils/featureTracking';
 
 	const { children } = $props();
 	let searchBarRef: any;
 	let previousPath = $state('');
+	let drawerOpen = $state(false);
 
 	// Global keyboard shortcut handler
 	// [ : Toggle sidebar (handled in Sidebar.svelte)
@@ -128,6 +133,9 @@
 	});
 
 	onMount(() => {
+		// Initialize mobile state detection
+		mobileState.init();
+
 		// Set up theme listener for system preference changes
 		const cleanup = theme.listen();
 
@@ -150,7 +158,10 @@
 			}
 		})();
 
-		return cleanup;
+		return () => {
+			mobileState.destroy();
+			cleanup();
+		};
 	});
 </script>
 
@@ -158,27 +169,47 @@
 
 <Toaster position="top-center" />
 
-<div class="h-screen flex overflow-hidden bg-gray-50 dark:bg-gray-950 antialiased">
-	<!-- Sidebar -->
-	<Sidebar />
+{#if mobileState.isMobile}
+	<!-- Mobile Layout -->
+	<div class="h-screen flex flex-col overflow-hidden bg-gray-50 dark:bg-gray-950 antialiased">
+		<!-- Mobile Header -->
+		<MobileHeader onToggle={() => drawerOpen = !drawerOpen} />
 
-	<!-- Main Content Area -->
-	<div class="flex-1 flex flex-col overflow-hidden">
-		<!-- Top Bar with Search -->
-		<header class="flex items-center px-6 py-3 shadow-[0_1px_3px_-1px_rgba(0,0,0,0.1)] dark:shadow-[0_1px_3px_-1px_rgba(0,0,0,0.3)] bg-white dark:bg-gray-950 z-10">
-			<div class="flex-1 max-w-xl">
-				<SearchBar bind:this={searchBarRef} />
-			</div>
-		</header>
+		<!-- Mobile Navigation Drawer -->
+		<MobileNav bind:isOpen={drawerOpen} />
 
-		<main class="flex-1 overflow-y-auto pb-6 bg-white dark:bg-gray-950">
+		<!-- Main Content with top padding for fixed header and bottom padding for FAB -->
+		<main class="flex-1 overflow-y-auto pt-14 pb-20 bg-white dark:bg-gray-950">
 			{@render children()}
 		</main>
 
-		<!-- Status Bar -->
-		<StatusBar />
+		<!-- Floating Action Button -->
+		<FloatingActionButton />
 	</div>
-</div>
+{:else}
+	<!-- Desktop Layout -->
+	<div class="h-screen flex overflow-hidden bg-gray-50 dark:bg-gray-950 antialiased">
+		<!-- Sidebar -->
+		<Sidebar />
+
+		<!-- Main Content Area -->
+		<div class="flex-1 flex flex-col overflow-hidden">
+			<!-- Top Bar with Search -->
+			<header class="flex items-center px-6 py-3 shadow-[0_1px_3px_-1px_rgba(0,0,0,0.1)] dark:shadow-[0_1px_3px_-1px_rgba(0,0,0,0.3)] bg-white dark:bg-gray-950 z-10">
+				<div class="flex-1 max-w-xl">
+					<SearchBar bind:this={searchBarRef} />
+				</div>
+			</header>
+
+			<main class="flex-1 overflow-y-auto pb-6 bg-white dark:bg-gray-950">
+				{@render children()}
+			</main>
+
+			<!-- Status Bar -->
+			<StatusBar />
+		</div>
+	</div>
+{/if}
 
 <!-- Onboarding Wizard Overlay -->
 {#if onboardingState.isActive}
