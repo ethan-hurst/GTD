@@ -55,13 +55,14 @@
 			type="text"
 			placeholder="What's on your mind?"
 			autofocus
-			class="w-full px-4 py-3 rounded-md border border-gray-300 dark:border-gray-700
+			class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700
 				bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100
+				shadow-sm focus:shadow-md
 				focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
-				transition-colors text-sm"
+				transition-all duration-200 text-base"
 		/>
 	</form>
 	<div class="mt-2">
-		<p class="text-xs text-gray-400">Press Enter to capture · Press <kbd>/</kbd> from anywhere to focus</p>
+		<p class="text-xs text-gray-400">Press Enter to capture · Press <kbd class="px-1.5 py-0.5 text-xs font-semibold text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded">/</kbd> from anywhere to focus</p>
 	</div>
 </div>
