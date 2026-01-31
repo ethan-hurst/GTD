@@ -5,12 +5,21 @@
 	import EventForm from '$lib/components/EventForm.svelte';
 	import CalendarSidePanel from '$lib/components/CalendarSidePanel.svelte';
 	import { calendarState } from '$lib/stores/calendar.svelte';
+	import { mobileState } from '$lib/stores/mobile.svelte';
 	import { expandAllRecurrences } from '$lib/utils/recurrence';
 	import toast from 'svelte-5-french-toast';
 	import type { CalendarEvent } from '$lib/db/schema';
 
+	let hasInitializedView = false;
+
 	onMount(async () => {
 		await calendarState.loadEvents();
+
+		// Default to Day view on mobile (only on first load)
+		if (mobileState.isMobile && !hasInitializedView) {
+			calendarState.setView('timeGridDay');
+			hasInitializedView = true;
+		}
 	});
 
 	// Import modal state
@@ -120,13 +129,21 @@
 		const view = calendarState.currentView;
 
 		if (view === 'timeGridDay') {
-			// "Thursday, January 30, 2026"
-			return date.toLocaleDateString('en-US', {
-				weekday: 'long',
-				year: 'numeric',
-				month: 'long',
-				day: 'numeric'
-			});
+			// Mobile: "Thu, Jan 30" - Desktop: "Thursday, January 30, 2026"
+			if (mobileState.isMobile) {
+				return date.toLocaleDateString('en-US', {
+					weekday: 'short',
+					month: 'short',
+					day: 'numeric'
+				});
+			} else {
+				return date.toLocaleDateString('en-US', {
+					weekday: 'long',
+					year: 'numeric',
+					month: 'long',
+					day: 'numeric'
+				});
+			}
 		} else if (view === 'timeGridWeek') {
 			// "Jan 26 - Feb 1, 2026"
 			const startOfWeek = new Date(date);
@@ -215,25 +232,14 @@
 
 <div class="flex h-full">
 	<!-- Main calendar area -->
-	<div class="flex-1 flex flex-col">
+	<div class="flex-1 flex flex-col" class:hidden={mobileState.isMobile && showSidePanel && !showForm}>
 		<!-- Toolbar -->
-		<div class="flex items-center justify-between px-6 py-3 border-b border-gray-200/60 dark:border-gray-800/60 bg-white dark:bg-gray-900">
-			<!-- Left: New Event button + Navigation -->
+		<div class="flex flex-col tablet:flex-row tablet:items-center tablet:justify-between gap-2 px-3 py-2 tablet:px-6 tablet:py-3 border-b border-gray-200/60 dark:border-gray-800/60 bg-white dark:bg-gray-900">
+			<!-- Row 1 on mobile: Navigation + Date label -->
 			<div class="flex items-center gap-3">
 				<button
-					onclick={openNewEventForm}
-					class="px-3 py-1.5 text-sm font-medium rounded bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white transition-all flex items-center gap-1.5 shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 active:scale-[0.97]"
-					title="Create new event"
-				>
-					<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-					</svg>
-					New Event
-				</button>
-				<div class="w-px h-6 bg-gray-200 dark:bg-gray-700/60"></div>
-				<button
 					onclick={goBack}
-					class="p-2.5 rounded hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
+					class="min-h-10 p-2.5 rounded hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
 					title="Previous"
 				>
 					<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -242,52 +248,31 @@
 				</button>
 				<button
 					onclick={goToToday}
-					class="px-3 py-1.5 text-sm font-medium rounded border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
+					class="min-h-10 px-3 py-1.5 text-sm font-medium rounded border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
 				>
 					Today
 				</button>
 				<button
 					onclick={goForward}
-					class="p-2.5 rounded hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
+					class="min-h-10 p-2.5 rounded hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
 					title="Next"
 				>
 					<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
 					</svg>
 				</button>
-				<h1 class="ml-4 text-lg font-semibold text-gray-900 dark:text-white">
+				<h1 class="ml-2 tablet:ml-4 text-base tablet:text-lg font-semibold text-gray-900 dark:text-white">
 					{dateLabel}
 				</h1>
 			</div>
 
-			<!-- Right: Import button, Actions toggle, View switcher -->
-			<div class="flex items-center gap-3">
-				<button
-					onclick={openImport}
-					class="px-3 py-1.5 text-sm font-medium rounded border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
-					title="Import .ics calendar file"
-				>
-					<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-					</svg>
-					Import
-				</button>
-
-				<button
-					onclick={() => showSidePanel = !showSidePanel}
-					class="px-3 py-1.5 text-sm font-medium rounded border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 {showSidePanel ? 'ring-2 ring-blue-500 ring-offset-2 dark:ring-offset-gray-900' : ''}"
-					title="Toggle next actions panel"
-				>
-					<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-					</svg>
-					Actions
-				</button>
-
+			<!-- Row 2 on mobile: View switcher, New Event, Import, Actions -->
+			<div class="flex items-center gap-2 tablet:gap-3">
+				<!-- View switcher -->
 				<div class="flex gap-1 bg-gray-100 dark:bg-gray-800 rounded-lg p-0.5">
 					<button
 						onclick={() => calendarState.setView('timeGridDay')}
-						class="px-3 py-1.5 text-sm font-medium rounded transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 {calendarState.currentView === 'timeGridDay'
+						class="px-2 py-1 tablet:px-3 tablet:py-1.5 text-sm font-medium rounded transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 {calendarState.currentView === 'timeGridDay'
 							? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm ring-1 ring-gray-900/5 dark:ring-white/10'
 							: 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'}"
 					>
@@ -295,7 +280,7 @@
 					</button>
 					<button
 						onclick={() => calendarState.setView('timeGridWeek')}
-						class="px-3 py-1.5 text-sm font-medium rounded transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 {calendarState.currentView === 'timeGridWeek'
+						class="px-2 py-1 tablet:px-3 tablet:py-1.5 text-sm font-medium rounded transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 {calendarState.currentView === 'timeGridWeek'
 							? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm ring-1 ring-gray-900/5 dark:ring-white/10'
 							: 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'}"
 					>
@@ -303,13 +288,49 @@
 					</button>
 					<button
 						onclick={() => calendarState.setView('dayGridMonth')}
-						class="px-3 py-1.5 text-sm font-medium rounded transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 {calendarState.currentView === 'dayGridMonth'
+						class="px-2 py-1 tablet:px-3 tablet:py-1.5 text-sm font-medium rounded transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 {calendarState.currentView === 'dayGridMonth'
 							? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm ring-1 ring-gray-900/5 dark:ring-white/10'
 							: 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'}"
 					>
 						Month
 					</button>
 				</div>
+
+				<!-- New Event button -->
+				<button
+					onclick={openNewEventForm}
+					class="min-h-10 px-3 py-1.5 text-sm font-medium rounded bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white transition-all flex items-center gap-1.5 shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 active:scale-[0.97]"
+					title="Create new event"
+				>
+					<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+					</svg>
+					<span class="hidden phablet:inline">New Event</span>
+				</button>
+
+				<!-- Import button -->
+				<button
+					onclick={openImport}
+					class="min-h-10 px-3 py-1.5 text-sm font-medium rounded border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
+					title="Import .ics calendar file"
+				>
+					<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+					</svg>
+					<span class="hidden phablet:inline">Import</span>
+				</button>
+
+				<!-- Actions toggle button -->
+				<button
+					onclick={() => showSidePanel = !showSidePanel}
+					class="min-h-10 px-3 py-1.5 text-sm font-medium rounded border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 {showSidePanel ? 'ring-2 ring-blue-500 ring-offset-2 dark:ring-offset-gray-900' : ''}"
+					title="Toggle next actions panel"
+				>
+					<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+					</svg>
+					<span class="hidden phablet:inline">Actions</span>
+				</button>
 			</div>
 		</div>
 
@@ -345,10 +366,13 @@
 		/>
 	{:else if showSidePanel}
 		<!-- CalendarSidePanel shows when EventForm is not open -->
-		<CalendarSidePanel
-			currentView={calendarState.currentView}
-			currentDate={calendarState.currentDate}
-		/>
+		<!-- On mobile: full-width, replaces calendar. On desktop: side panel -->
+		<div class:hidden={mobileState.isMobile && !showSidePanel}>
+			<CalendarSidePanel
+				currentView={calendarState.currentView}
+				currentDate={calendarState.currentDate}
+			/>
+		</div>
 	{/if}
 </div>
 
