@@ -24,9 +24,9 @@
 	});
 </script>
 
-<aside class="w-60 border-r border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900 flex flex-col">
+<aside class="w-60 border-r border-gray-200/70 dark:border-gray-800/50 bg-gray-50/80 dark:bg-gray-900/95 backdrop-blur-sm flex flex-col">
 	<!-- App Title -->
-	<div class="p-6 border-b border-gray-200 dark:border-gray-800">
+	<div class="px-5 py-4 border-b border-gray-200/50 dark:border-gray-800/50">
 		<h1 class="gtd-logo text-xl font-bold text-gray-900 dark:text-gray-100">
 			<span class="gtd-word">G<span class="gtd-expand gtd-expand-1">et</span></span>
 			<span class="gtd-word">T<span class="gtd-expand gtd-expand-2">hings</span></span>
@@ -39,14 +39,15 @@
 		<FeatureHint feature="inbox" position="right">
 			<a
 				href="/"
-				class="flex items-center justify-between px-4 py-2 rounded-md text-sm font-medium transition-colors
+				class="flex items-center justify-between px-4 py-2 rounded-md text-sm font-medium transition-all duration-150
+					focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:ring-offset-1
 					{$page.url.pathname === '/'
-						? 'bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-gray-100'
-						: 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800'}"
+						? 'bg-white dark:bg-gray-800 shadow-sm text-gray-900 dark:text-gray-100 font-semibold'
+						: 'text-gray-600 dark:text-gray-400 hover:bg-gray-100/70 dark:hover:bg-gray-800/70'}"
 			>
 				<span>Inbox</span>
 				{#if inboxState.itemCount > 0}
-					<span class="bg-blue-500 text-white text-xs font-medium px-2 py-0.5 rounded-full">
+					<span class="bg-blue-500 text-white text-xs font-medium px-2 py-0.5 rounded-full shadow-sm">
 						{inboxState.itemCount}
 					</span>
 				{/if}
@@ -54,16 +55,17 @@
 		</FeatureHint>
 
 		<!-- Separator -->
-		<div class="border-t border-gray-200 dark:border-gray-700 my-2"></div>
+		<div class="border-t border-gray-200/50 dark:border-gray-700/30 my-2"></div>
 
 		<!-- Next Actions section -->
 		<FeatureHint feature="next-actions" position="right">
 			<a
 				href="/actions"
-				class="block px-4 py-2 rounded-md text-sm font-medium transition-colors
+				class="block px-4 py-2 rounded-md text-sm font-medium transition-all duration-150
+					focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:ring-offset-1
 					{$page.url.pathname.startsWith('/actions')
-						? 'bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-gray-100'
-						: 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800'}"
+						? 'bg-white dark:bg-gray-800 shadow-sm text-gray-900 dark:text-gray-100 font-semibold'
+						: 'text-gray-600 dark:text-gray-400 hover:bg-gray-100/70 dark:hover:bg-gray-800/70'}"
 			>
 				Next Actions
 			</a>
@@ -75,19 +77,20 @@
 		</div>
 
 		<!-- Separator -->
-		<div class="border-t border-gray-200 dark:border-gray-700 my-2"></div>
+		<div class="border-t border-gray-200/50 dark:border-gray-700/30 my-2"></div>
 
 		<FeatureHint feature="projects" position="right">
 			<a
 				href="/projects"
-				class="flex items-center justify-between px-4 py-2 rounded-md text-sm font-medium transition-colors
+				class="flex items-center justify-between px-4 py-2 rounded-md text-sm font-medium transition-all duration-150
+					focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:ring-offset-1
 					{$page.url.pathname.startsWith('/projects')
-						? 'bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-gray-100'
-						: 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800'}"
+						? 'bg-white dark:bg-gray-800 shadow-sm text-gray-900 dark:text-gray-100 font-semibold'
+						: 'text-gray-600 dark:text-gray-400 hover:bg-gray-100/70 dark:hover:bg-gray-800/70'}"
 			>
 				<span>Projects</span>
 				{#if projectState.stalledCount > 0}
-					<span class="bg-yellow-500 text-white text-xs font-medium px-2 py-0.5 rounded-full">
+					<span class="bg-yellow-500 text-white text-xs font-medium px-2 py-0.5 rounded-full shadow-sm">
 						{projectState.stalledCount}
 					</span>
 				{/if}
@@ -95,15 +98,16 @@
 		</FeatureHint>
 
 		<!-- Separator -->
-		<div class="border-t border-gray-200 dark:border-gray-700 my-2"></div>
+		<div class="border-t border-gray-200/50 dark:border-gray-700/30 my-2"></div>
 
 		<FeatureHint feature="waiting" position="right">
 			<a
 				href="/waiting"
-				class="block px-4 py-2 rounded-md text-sm font-medium transition-colors
+				class="block px-4 py-2 rounded-md text-sm font-medium transition-all duration-150
+					focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:ring-offset-1
 					{$page.url.pathname.startsWith('/waiting')
-						? 'bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-gray-100'
-						: 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800'}"
+						? 'bg-white dark:bg-gray-800 shadow-sm text-gray-900 dark:text-gray-100 font-semibold'
+						: 'text-gray-600 dark:text-gray-400 hover:bg-gray-100/70 dark:hover:bg-gray-800/70'}"
 			>
 				Waiting For
 			</a>
@@ -112,29 +116,31 @@
 		<FeatureHint feature="someday" position="right">
 			<a
 				href="/someday"
-				class="block px-4 py-2 rounded-md text-sm font-medium transition-colors
+				class="block px-4 py-2 rounded-md text-sm font-medium transition-all duration-150
+					focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:ring-offset-1
 					{$page.url.pathname.startsWith('/someday')
-						? 'bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-gray-100'
-						: 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800'}"
+						? 'bg-white dark:bg-gray-800 shadow-sm text-gray-900 dark:text-gray-100 font-semibold'
+						: 'text-gray-600 dark:text-gray-400 hover:bg-gray-100/70 dark:hover:bg-gray-800/70'}"
 			>
 				Someday/Maybe
 			</a>
 		</FeatureHint>
 
 		<!-- Separator -->
-		<div class="border-t border-gray-200 dark:border-gray-700 my-2"></div>
+		<div class="border-t border-gray-200/50 dark:border-gray-700/30 my-2"></div>
 
 		<FeatureHint feature="review" position="right">
 			<a
 				href="/review"
-				class="flex items-center justify-between px-4 py-2 rounded-md text-sm font-medium transition-colors
+				class="flex items-center justify-between px-4 py-2 rounded-md text-sm font-medium transition-all duration-150
+					focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:ring-offset-1
 					{$page.url.pathname.startsWith('/review')
-						? 'bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-gray-100'
-						: 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800'}"
+						? 'bg-white dark:bg-gray-800 shadow-sm text-gray-900 dark:text-gray-100 font-semibold'
+						: 'text-gray-600 dark:text-gray-400 hover:bg-gray-100/70 dark:hover:bg-gray-800/70'}"
 			>
 				<span>Weekly Review</span>
 				{#if isOverdue()}
-					<span class="bg-red-500 text-white text-xs font-medium px-2 py-0.5 rounded-full">
+					<span class="bg-red-500 text-white text-xs font-medium px-2 py-0.5 rounded-full shadow-sm animate-pulse">
 						Overdue
 					</span>
 				{/if}
@@ -144,25 +150,27 @@
 		<FeatureHint feature="calendar" position="right">
 			<a
 				href="/calendar"
-				class="block px-4 py-2 rounded-md text-sm font-medium transition-colors
+				class="block px-4 py-2 rounded-md text-sm font-medium transition-all duration-150
+					focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:ring-offset-1
 					{$page.url.pathname.startsWith('/calendar')
-						? 'bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-gray-100'
-						: 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800'}"
+						? 'bg-white dark:bg-gray-800 shadow-sm text-gray-900 dark:text-gray-100 font-semibold'
+						: 'text-gray-600 dark:text-gray-400 hover:bg-gray-100/70 dark:hover:bg-gray-800/70'}"
 			>
 				Calendar
 			</a>
 		</FeatureHint>
 
 		<!-- Separator -->
-		<div class="border-t border-gray-200 dark:border-gray-700 my-2"></div>
+		<div class="border-t border-gray-200/50 dark:border-gray-700/30 my-2"></div>
 
 		<FeatureHint feature="settings" position="right">
 			<a
 				href="/settings"
-				class="block px-4 py-2 rounded-md text-sm font-medium transition-colors
+				class="block px-4 py-2 rounded-md text-sm font-medium transition-all duration-150
+					focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:ring-offset-1
 					{$page.url.pathname === '/settings'
-						? 'bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-gray-100'
-						: 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800'}"
+						? 'bg-white dark:bg-gray-800 shadow-sm text-gray-900 dark:text-gray-100 font-semibold'
+						: 'text-gray-600 dark:text-gray-400 hover:bg-gray-100/70 dark:hover:bg-gray-800/70'}"
 			>
 				Settings
 			</a>
@@ -170,7 +178,7 @@
 	</nav>
 
 	<!-- Theme Toggle Footer -->
-	<div class="p-4 border-t border-gray-200 dark:border-gray-800">
+	<div class="p-4 border-t border-gray-200/50 dark:border-gray-800/50">
 		<ThemeToggle />
 	</div>
 </aside>

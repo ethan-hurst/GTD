@@ -129,7 +129,8 @@
 		</span>
 		<button
 			onclick={handleAddClick}
-			class="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
+			class="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-all duration-150
+				focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:ring-offset-1 rounded"
 			title="Add context"
 		>
 			<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -141,14 +142,15 @@
 	<!-- All view -->
 	<button
 		onclick={() => { actionState.showAll(); goto('/actions'); }}
-		class="w-full flex items-center justify-between px-4 py-2 rounded-md text-sm font-medium transition-colors
+		class="w-full flex items-center justify-between px-4 py-2 rounded-md text-sm font-medium transition-all duration-150
+			focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:ring-offset-1
 			{actionState.isAllView
-				? 'bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-gray-100'
-				: 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800'}"
+				? 'bg-white dark:bg-gray-800 shadow-sm text-gray-900 dark:text-gray-100 font-semibold'
+				: 'text-gray-600 dark:text-gray-400 hover:bg-gray-100/70 dark:hover:bg-gray-800/70'}"
 	>
 		<span>All</span>
 		{#if totalActionCount > 0}
-			<span class="bg-blue-500 text-white text-xs font-medium px-2 py-0.5 rounded-full">
+			<span class="bg-blue-500 text-white text-xs font-medium px-2 py-0.5 rounded-full shadow-sm">
 				{totalActionCount}
 			</span>
 		{/if}
@@ -177,14 +179,15 @@
 				<!-- Normal display mode -->
 				<button
 					onclick={() => { actionState.toggleContext(context.name); goto('/actions'); }}
-					class="flex-1 flex items-center justify-between px-4 py-2 rounded-md text-sm font-medium transition-colors
+					class="flex-1 flex items-center justify-between px-4 py-2 rounded-md text-sm font-medium transition-all duration-150
+						focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:ring-offset-1
 						{isSelected
-							? 'bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-gray-100'
-							: 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800'}"
+							? 'bg-white dark:bg-gray-800 shadow-sm text-gray-900 dark:text-gray-100 font-semibold'
+							: 'text-gray-600 dark:text-gray-400 hover:bg-gray-100/70 dark:hover:bg-gray-800/70'}"
 				>
 					<span>{context.name}</span>
 					{#if count > 0}
-						<span class="bg-blue-500 text-white text-xs font-medium px-2 py-0.5 rounded-full">
+						<span class="bg-blue-500 text-white text-xs font-medium px-2 py-0.5 rounded-full shadow-sm">
 							{count}
 						</span>
 					{/if}
@@ -194,7 +197,8 @@
 				<div class="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity pr-2">
 					<button
 						onclick={(e) => startEditContext(context.id, context.name, e)}
-						class="p-1 hover:bg-gray-300 dark:hover:bg-gray-700 rounded transition-colors"
+						class="p-1 hover:bg-gray-300 dark:hover:bg-gray-700 rounded transition-all duration-150
+							focus:outline-none focus:ring-2 focus:ring-blue-500/40"
 						title="Rename context"
 					>
 						<svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -203,7 +207,8 @@
 					</button>
 					<button
 						onclick={(e) => handleDeleteContext(context.id, context.name, e)}
-						class="p-1 hover:bg-red-100 dark:hover:bg-red-900/30 hover:text-red-600 dark:hover:text-red-400 rounded transition-colors"
+						class="p-1 hover:bg-red-100 dark:hover:bg-red-900/30 hover:text-red-600 dark:hover:text-red-400 rounded transition-all duration-150
+							focus:outline-none focus:ring-2 focus:ring-blue-500/40"
 						title="Delete context"
 					>
 						<svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
