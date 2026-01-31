@@ -6,16 +6,16 @@ See: .planning/PROJECT.md (updated 2026-01-31)
 
 **Core value:** Nothing falls through the cracks — every commitment is captured, clarified, and surfaced at the right time so the user always knows what to do next.
 
-**Current focus:** Phase 08.2 - Storage Persistence Bug (URGENT fix)
+**Current focus:** Phase 08.3 - Left Nav Bar UX Improvement
 
 ## Current Position
 
-Phase: 08.2 (Storage Persistence Bug — inserted)
-Plan: 2 of 2 in current phase
-Status: Phase complete
-Last activity: 2026-01-31 — Completed 08.2-02-PLAN.md (Integrate Persistence UI with State Store)
+Phase: 08.3 (Left Nav Bar UX Improvement — inserted)
+Plan: 1 of 2 in current phase
+Status: In progress
+Last activity: 2026-01-31 — Completed 08.3-01-PLAN.md (Sidebar Spacing & Collapsible Context List)
 
-Progress: [██████████░░░░░░░░░░] 44% (44/TBD plans complete across all phases)
+Progress: [██████████░░░░░░░░░░] 45% (45/TBD plans complete across all phases)
 
 ## Performance Metrics
 
@@ -83,11 +83,15 @@ Recent decisions affecting current work:
 - 08.2-02: Detect browser type and provide specific guidance when persistence denied
 - 08.2-02: Only display storage quota in StatusBar when persistence is GRANTED
 - 08.2-02: Four-state StatusBar UI: green (GRANTED), amber (UNKNOWN), red (DENIED), gray (no API)
+- 08.3-01: Native details/summary for collapsible context list (zero-JS progressive enhancement)
+- 08.3-01: Replaced border separators with mt-3 spacing groups for cleaner hierarchy
+- 08.3-01: Context list collapsed by default to save ~150px vertical space
 
 ### Roadmap Evolution
 
 - Phase 08.1 inserted after Phase 8: UI/UX Review — comprehensive pass on visual consistency, design principles, and usability before starting v1.1 Outlook sync
 - Phase 8.2 inserted after Phase 8: how does storage work currently? If I click not persistent - click to request nothing actually happens in the app (URGENT)
+- Phase 08.3 inserted after Phase 08.2: Left nav bar has scrollbar on laptop — redesign nav UX while preserving all functionality
 
 ### Pending Todos
 
@@ -107,6 +111,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-01-31T12:14:31Z
-Stopped at: Completed 08.2-02-PLAN.md (Integrate Persistence UI with State Store) — Phase 08.2 COMPLETE
+Last session: 2026-01-31T04:35:00Z
+Stopped at: Completed 08.3-01-PLAN.md (Sidebar Spacing & Collapsible Context List)
 Resume file: None
