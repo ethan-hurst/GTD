@@ -68,10 +68,11 @@
 	}
 </script>
 
-<div class="fixed inset-0 z-50 bg-white dark:bg-gray-950 flex flex-col">
-	<!-- Progress Bar at top -->
-	<div class="border-b border-gray-200 dark:border-gray-700 p-4">
-		<div class="max-w-xl mx-auto">
+<div class="fixed inset-0 z-50 backdrop-blur-sm bg-black/50 flex items-center justify-center p-6">
+	<!-- Modal Container -->
+	<div class="w-full max-w-2xl bg-white dark:bg-gray-950 rounded-xl shadow-2xl flex flex-col max-h-[90vh]">
+		<!-- Progress Bar at top -->
+		<div class="border-b border-gray-200 dark:border-gray-700 p-6">
 			<div class="flex items-center justify-between mb-2">
 				<p class="text-sm font-medium text-gray-700 dark:text-gray-300">
 					Step {onboardingState.currentStepIndex + 1} of 5
@@ -82,60 +83,59 @@
 			</div>
 			<div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
 				<div
-					class="bg-blue-600 dark:bg-blue-500 h-2 rounded-full transition-all duration-300"
+					class="bg-blue-600 dark:bg-blue-500 h-2 rounded-full transition-all duration-200"
 					style="width: {((onboardingState.currentStepIndex + 1) / 5) * 100}%"
 				></div>
 			</div>
 		</div>
-	</div>
 
-	<!-- Central content area -->
-	<div class="flex-1 overflow-y-auto flex items-center justify-center p-6">
-		<div class="w-full max-w-xl mx-auto">
-			{#if onboardingState.currentStep === 'welcome'}
-				<!-- Step 1: Welcome -->
-				<div class="text-center">
-					<h1 class="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">
-						Welcome to GTD
-					</h1>
-					<p class="text-lg text-gray-600 dark:text-gray-300 mb-8 max-w-md mx-auto">
-						Getting Things Done is a methodology for managing everything on your plate. We'll walk through the 4 key concepts in about 60 seconds.
-					</p>
-					<div class="flex items-center justify-center gap-4">
-						<button
-							onclick={() => onboardingState.skipOnboarding()}
-							class="px-6 py-3 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
-						>
-							I know GTD — skip
-						</button>
-						<button
-							onclick={() => onboardingState.next()}
-							class="px-8 py-3 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 rounded-md transition-colors"
-						>
-							Let's go
-						</button>
+		<!-- Central content area -->
+		<div class="flex-1 overflow-y-auto p-6">
+			<div class="w-full mx-auto">
+				{#if onboardingState.currentStep === 'welcome'}
+					<!-- Step 1: Welcome -->
+					<div class="text-center">
+						<h1 class="text-4xl font-bold tracking-tight text-gray-900 dark:text-gray-100 mb-4">
+							Welcome to GTD
+						</h1>
+						<p class="text-lg text-gray-600 dark:text-gray-300 mb-8 max-w-md mx-auto">
+							Getting Things Done is a methodology for managing everything on your plate. We'll walk through the 4 key concepts in about 60 seconds.
+						</p>
+						<div class="flex items-center justify-center gap-4">
+							<button
+								onclick={() => onboardingState.skipOnboarding()}
+								class="px-6 py-3 text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400/40 focus:ring-offset-2 transition-all duration-150"
+							>
+								I know GTD — skip
+							</button>
+							<button
+								onclick={() => onboardingState.next()}
+								class="px-6 py-3 text-base font-medium text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 rounded-lg shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:ring-offset-2 active:scale-[0.98] transition-all duration-150"
+							>
+								Let's go
+							</button>
+						</div>
 					</div>
-				</div>
 
-			{:else if onboardingState.currentStep === 'capture'}
-				<!-- Step 2: Capture -->
-				<div>
-					<h2 class="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-4">
-						Step 1: Capture Everything
-					</h2>
-					<p class="text-base text-gray-600 dark:text-gray-300 mb-6">
-						GTD starts with getting everything out of your head. Anything on your mind — tasks, ideas, commitments — goes into your Inbox.
-					</p>
+				{:else if onboardingState.currentStep === 'capture'}
+					<!-- Step 2: Capture -->
+					<div>
+						<h2 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-100 mb-4">
+							Step 1: Capture Everything
+						</h2>
+						<p class="text-base text-gray-600 dark:text-gray-300 mb-6">
+							GTD starts with getting everything out of your head. Anything on your mind — tasks, ideas, commitments — goes into your Inbox.
+						</p>
 
-					<form onsubmit={handleCapture} class="mb-4">
-						<input
-							bind:value={captureInput}
-							type="text"
-							placeholder="Try it — type something on your mind..."
-							disabled={isSubmitting}
-							class="w-full px-4 py-3 text-base border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 disabled:opacity-50 disabled:cursor-not-allowed"
-						/>
-					</form>
+						<form onsubmit={handleCapture} class="mb-4">
+							<input
+								bind:value={captureInput}
+								type="text"
+								placeholder="Try it — type something on your mind..."
+								disabled={isSubmitting}
+								class="w-full px-4 py-3 text-base border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500/40 dark:focus:ring-blue-400/40 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-150"
+							/>
+						</form>
 
 					{#if showCaptureSuccess}
 						<p class="text-green-600 dark:text-green-400 font-medium text-center mb-4">
@@ -150,12 +150,12 @@
 					</div>
 				</div>
 
-			{:else if onboardingState.currentStep === 'process'}
-				<!-- Step 3: Process -->
-				<div>
-					<h2 class="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-4">
-						Step 2: Process to Zero
-					</h2>
+				{:else if onboardingState.currentStep === 'process'}
+					<!-- Step 3: Process -->
+					<div>
+						<h2 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-100 mb-4">
+							Step 2: Process to Zero
+						</h2>
 					<p class="text-base text-gray-600 dark:text-gray-300 mb-6">
 						Once captured, process each item: Is it actionable? Will it take less than 2 minutes? Can you delegate it? The Processing Flow guides you through these decisions.
 					</p>
@@ -214,12 +214,12 @@
 					</div>
 				</div>
 
-			{:else if onboardingState.currentStep === 'organize'}
-				<!-- Step 4: Organize -->
-				<div>
-					<h2 class="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-4">
-						Step 3: Organize by Lists
-					</h2>
+				{:else if onboardingState.currentStep === 'organize'}
+					<!-- Step 4: Organize -->
+					<div>
+						<h2 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-100 mb-4">
+							Step 3: Organize by Lists
+						</h2>
 					<p class="text-base text-gray-600 dark:text-gray-300 mb-6">
 						GTD organizes your work into clear lists so you always know what to do next:
 					</p>
@@ -272,56 +272,57 @@
 					</div>
 				</div>
 
-			{:else if onboardingState.currentStep === 'review-intro'}
-				<!-- Step 5: Review Intro -->
-				<div class="text-center">
-					<h2 class="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-4">
-						Step 4: Review Weekly
-					</h2>
-					<p class="text-base text-gray-600 dark:text-gray-300 mb-6 max-w-md mx-auto">
-						The Weekly Review is the secret to making GTD work. Once a week, review everything: empty your inbox, check all projects, follow up on delegations.
-					</p>
-					<p class="text-sm text-gray-500 dark:text-gray-400 mb-8">
-						We'll remind you when it's time for your weekly review.
-					</p>
-					<button
-						onclick={handleFinish}
-						class="px-8 py-3 text-sm font-medium text-white bg-green-600 hover:bg-green-700 dark:bg-green-500 dark:hover:bg-green-600 rounded-md transition-colors"
-					>
-						Get Started
-					</button>
-				</div>
-			{/if}
+				{:else if onboardingState.currentStep === 'review-intro'}
+					<!-- Step 5: Review Intro -->
+					<div class="text-center">
+						<h2 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-100 mb-4">
+							Step 4: Review Weekly
+						</h2>
+						<p class="text-base text-gray-600 dark:text-gray-300 mb-6 max-w-md mx-auto">
+							The Weekly Review is the secret to making GTD work. Once a week, review everything: empty your inbox, check all projects, follow up on delegations.
+						</p>
+						<p class="text-sm text-gray-500 dark:text-gray-400 mb-8">
+							We'll remind you when it's time for your weekly review.
+						</p>
+						<button
+							onclick={handleFinish}
+							class="px-6 py-3 text-base font-medium text-white bg-green-600 hover:bg-green-700 dark:bg-green-500 dark:hover:bg-green-600 rounded-lg shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-green-500/40 focus:ring-offset-2 active:scale-[0.98] transition-all duration-150"
+						>
+							Get Started
+						</button>
+					</div>
+				{/if}
+			</div>
 		</div>
-	</div>
 
-	<!-- Navigation buttons at bottom -->
-	<div class="border-t border-gray-200 dark:border-gray-700 p-4">
-		<div class="max-w-xl mx-auto flex items-center justify-between">
-			<button
-				onclick={() => onboardingState.back()}
-				disabled={!onboardingState.canGoBack}
-				class="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed rounded-md transition-colors"
-			>
-				← Back
-			</button>
+		<!-- Navigation buttons at bottom -->
+		<div class="border-t border-gray-200 dark:border-gray-700 p-6">
+			<div class="flex items-center justify-between">
+				<button
+					onclick={() => onboardingState.back()}
+					disabled={!onboardingState.canGoBack}
+					class="px-6 py-3 text-base font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 rounded-lg shadow-sm disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-gray-400/40 focus:ring-offset-2 transition-all duration-150"
+				>
+					← Back
+				</button>
 
-			{#if onboardingState.currentStep === 'capture'}
-				<button
-					onclick={() => onboardingState.next()}
-					disabled={!hasCapturedFirst}
-					class="px-6 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed rounded-md transition-colors"
-				>
-					Next →
-				</button>
-			{:else if onboardingState.currentStep !== 'welcome' && onboardingState.currentStep !== 'review-intro'}
-				<button
-					onclick={() => onboardingState.next()}
-					class="px-6 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 rounded-md transition-colors"
-				>
-					Next →
-				</button>
-			{/if}
+				{#if onboardingState.currentStep === 'capture'}
+					<button
+						onclick={() => onboardingState.next()}
+						disabled={!hasCapturedFirst}
+						class="px-6 py-3 text-base font-medium text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 rounded-lg shadow-sm hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:ring-offset-2 active:scale-[0.98] transition-all duration-150"
+					>
+						Next →
+					</button>
+				{:else if onboardingState.currentStep !== 'welcome' && onboardingState.currentStep !== 'review-intro'}
+					<button
+						onclick={() => onboardingState.next()}
+						class="px-6 py-3 text-base font-medium text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 rounded-lg shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:ring-offset-2 active:scale-[0.98] transition-all duration-150"
+					>
+						Next →
+					</button>
+				{/if}
+			</div>
 		</div>
 	</div>
 </div>
