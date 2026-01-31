@@ -85,39 +85,46 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| AUTH-01 | Pending | Pending |
-| AUTH-02 | Pending | Pending |
-| AUTH-03 | Pending | Pending |
-| AUTH-04 | Pending | Pending |
-| AUTH-05 | Pending | Pending |
-| READ-01 | Pending | Pending |
-| READ-02 | Pending | Pending |
-| READ-03 | Pending | Pending |
-| READ-04 | Pending | Pending |
-| READ-05 | Pending | Pending |
-| WRITE-01 | Pending | Pending |
-| WRITE-02 | Pending | Pending |
-| WRITE-03 | Pending | Pending |
-| WRITE-04 | Pending | Pending |
-| WRITE-05 | Pending | Pending |
-| WRITE-06 | Pending | Pending |
-| WRITE-07 | Pending | Pending |
-| SYNC-01 | Pending | Pending |
-| SYNC-02 | Pending | Pending |
-| SYNC-03 | Pending | Pending |
-| SYNC-04 | Pending | Pending |
-| SYNC-05 | Pending | Pending |
-| SYNC-06 | Pending | Pending |
-| SYNC-07 | Pending | Pending |
-| SYNC-08 | Pending | Pending |
-| SYNC-09 | Pending | Pending |
-| SYNC-10 | Pending | Pending |
+| AUTH-01 | Phase 9 | Pending |
+| AUTH-02 | Phase 9 | Pending |
+| AUTH-03 | Phase 9 | Pending |
+| AUTH-04 | Phase 9 | Pending |
+| AUTH-05 | Phase 9 | Pending |
+| READ-01 | Phase 10 | Pending |
+| READ-02 | Phase 10 | Pending |
+| READ-03 | Phase 10 | Pending |
+| READ-04 | Phase 10 | Pending |
+| READ-05 | Phase 10 | Pending |
+| WRITE-01 | Phase 11 | Pending |
+| WRITE-02 | Phase 11 | Pending |
+| WRITE-03 | Phase 11 | Pending |
+| WRITE-04 | Phase 11 | Pending |
+| WRITE-05 | Phase 11 | Pending |
+| WRITE-06 | Phase 11 | Pending |
+| WRITE-07 | Phase 11 | Pending |
+| SYNC-01 | Phase 10 | Pending |
+| SYNC-02 | Phase 10 | Pending |
+| SYNC-03 | Phase 11 | Pending |
+| SYNC-04 | Phase 12 | Pending |
+| SYNC-05 | Phase 13 | Pending |
+| SYNC-06 | Phase 13 | Pending |
+| SYNC-07 | Phase 12 | Pending |
+| SYNC-08 | Phase 11 | Pending |
+| SYNC-09 | Phase 10 | Pending |
+| SYNC-10 | Phase 11 | Pending |
 
 **Coverage:**
 - v1.1 requirements: 27 total
-- Mapped to phases: 0
-- Unmapped: 27 ⚠️
+- Mapped to phases: 27
+- Unmapped: 0 ✓
+
+**Coverage by phase:**
+- Phase 9 (OAuth Foundation): 5 requirements
+- Phase 10 (Read Calendar): 8 requirements
+- Phase 11 (Two-Way Sync): 10 requirements
+- Phase 12 (Offline Queue): 2 requirements
+- Phase 13 (Real-Time Sync): 2 requirements
 
 ---
 *Requirements defined: 2026-01-31*
-*Last updated: 2026-01-31 after initial definition*
+*Last updated: 2026-01-31 after roadmap creation*
