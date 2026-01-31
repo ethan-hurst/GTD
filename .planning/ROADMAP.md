@@ -164,11 +164,16 @@ Plans:
 6. Text remains readable without horizontal scrolling on any view
 7. No functionality is lost on mobile — all features accessible via touch
 
-**Plans:** TBD
+**Plans:** 7 plans
 
 Plans:
-- [ ] 08.4-01: TBD
-- [ ] 08.4-02: TBD
+- [ ] 08.4-01-PLAN.md — Foundation: custom breakpoints, viewport meta, mobile store, svelte-gestures
+- [ ] 08.4-02-PLAN.md — Mobile navigation: hamburger drawer, header bar, FAB, layout integration
+- [ ] 08.4-03-PLAN.md — List views responsive: Inbox, Actions, Projects, Waiting, Someday
+- [ ] 08.4-04-PLAN.md — Calendar responsive: mobile toolbar, day view default, side panel toggle
+- [ ] 08.4-05-PLAN.md — Forms and dialogs: ProcessingFlow, IcsImport, Settings, SearchBar
+- [ ] 08.4-06-PLAN.md — Wizards responsive: WeeklyReview, Onboarding, StatusBar
+- [ ] 08.4-07-PLAN.md — Touch interactions: swipe actions, calendar swipe nav, mobile DnD
 
 ---
 
@@ -313,7 +318,7 @@ Plans:
 | 08.1 UI/UX Review | v1.0+ | 7/7 | Complete | 2026-01-31 |
 | 08.2 Storage Persistence | v1.0+ | 2/2 | Complete | 2026-01-31 |
 | 08.3 Left Nav Bar UX | v1.0+ | 2/2 | Complete | 2026-01-31 |
-| 08.4 Mobile Responsive Pass | v1.0+ | 0/TBD | Not started | - |
+| 08.4 Mobile Responsive Pass | v1.0+ | 0/7 | Not started | - |
 | 9. OAuth Foundation | v1.1 | 0/TBD | Not started | - |
 | 10. Read Calendar | v1.1 | 0/TBD | Not started | - |
 | 11. Two-Way Sync | v1.1 | 0/TBD | Not started | - |
