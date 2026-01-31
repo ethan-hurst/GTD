@@ -11,9 +11,9 @@ See: .planning/PROJECT.md (updated 2026-01-31)
 ## Current Position
 
 Phase: 08.5 (Device Sync — in progress)
-Plan: 2 of 6 in current phase
+Plan: 1 of 7 in current phase
 Status: In progress
-Last activity: 2026-01-31 — Completed 08.5-02-PLAN.md (Client-Side Encryption & Pairing)
+Last activity: 2026-01-31 — Completed 08.5-01-PLAN.md (Soft-Delete Tombstones & Sync Types)
 
 Progress: [███████████░░░░░░░░░] 55% (55/TBD plans complete across all phases)
 
@@ -116,16 +116,9 @@ Recent decisions affecting current work:
 - 08.4-05: Settings cards use 2-column grid on tablet+, single column on mobile
 - 08.4-05: SearchBar results use max-h-[60vh] on mobile (viewport-relative) vs fixed 96 on desktop
 - 08.4-05: ProcessingFlow and IcsImport already mobile-responsive (completed in 08.4-04)
-- 08.5-02: Use Web Crypto API exclusively (no external crypto libraries) to avoid bundle bloat
-- 08.5-02: Counter-based IV generation with device-specific prefix to prevent nonce reuse
-- 08.5-02: Store only hashed pairing code in IndexedDB (never plaintext) for security
-- 08.5-02: Pairing code excludes ambiguous chars (0/O, 1/I/L) for better UX
-- 08.5-03: Device ID is SHA-256 hash of pairing code (sent from client)
-- 08.5-03: Server never sees plaintext - stores/retrieves opaque encrypted strings
-- 08.5-03: 10 MB payload limit as safety valve (typical GTD data less than 1 MB)
-- 08.5-03: No authentication beyond knowing device ID (security through encryption)
-- 08.5-03: sync-pull returns 200 with found:false when no data exists (not 404) for client error handling
-- 08.5-03: Validate deviceId format (64-char hex) to prevent abuse
+- 08.5-01: Soft-delete with tombstones - keep function signatures, change internal behavior (zero breaking changes)
+- 08.5-01: Use deleted?: boolean instead of deleted: boolean | null (cleaner Dexie pattern)
+- 08.5-01: 30-day tombstone retention default allows month-long sync window for paired devices
 
 ### Roadmap Evolution
 
@@ -154,5 +147,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-01-31
-Stopped at: Completed 08.5-02-PLAN.md (Client-Side Encryption & Pairing)
+Stopped at: Completed 08.5-01-PLAN.md (Soft-Delete Tombstones & Sync Types)
 Resume file: None
