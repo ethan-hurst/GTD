@@ -110,7 +110,7 @@ Plans:
 4. Light and dark modes are both visually coherent with proper contrast ratios
 5. Empty states, loading states, and error states are handled consistently
 6. Navigation and layout patterns are uniform across all GTD views
-7. Mobile/responsive behavior works correctly across breakpoints
+7. App remains usable at 1024px minimum width (desktop-first; no mobile layout requirement)
 
 **Plans**: 7 plans
 

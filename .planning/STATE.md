@@ -6,14 +6,14 @@ See: .planning/PROJECT.md (updated 2026-01-31)
 
 **Core value:** Nothing falls through the cracks — every commitment is captured, clarified, and surfaced at the right time so the user always knows what to do next.
 
-**Current focus:** Phase 9 - OAuth Foundation (v1.1 Outlook Calendar Sync)
+**Current focus:** Phase 08.1 - UI/UX Review (inserted before v1.1)
 
 ## Current Position
 
-Phase: 9 of 13 (OAuth Foundation)
+Phase: 08.1 (UI/UX Review — inserted)
 Plan: 0 of TBD in current phase
 Status: Ready to plan
-Last activity: 2026-01-31 — v1.1 milestone roadmap created
+Last activity: 2026-01-31 — Phase 08.1 inserted for comprehensive UI/UX review
 
 Progress: [████████░░░░░░░░░░░░] 40% (35/TBD plans complete across all phases)
 
@@ -55,6 +55,10 @@ Recent decisions affecting current work:
 - v1.0: Offline-first storage with service worker caching
 - v1.0: Schema extension over separate tables (optional fields on GTDItem)
 
+### Roadmap Evolution
+
+- Phase 08.1 inserted after Phase 8: UI/UX Review — comprehensive pass on visual consistency, design principles, and usability before starting v1.1 Outlook sync
+
 ### Pending Todos
 
 None yet.
@@ -74,5 +78,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-01-31
-Stopped at: v1.1 roadmap creation complete
-Resume file: None (ready to begin Phase 9 planning)
+Stopped at: Phase 08.1 inserted
+Resume file: None (ready to plan Phase 08.1)
