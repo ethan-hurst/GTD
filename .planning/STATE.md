@@ -6,16 +6,16 @@ See: .planning/PROJECT.md (updated 2026-01-31)
 
 **Core value:** Nothing falls through the cracks — every commitment is captured, clarified, and surfaced at the right time so the user always knows what to do next.
 
-**Current focus:** Phase 08.4 complete — next: Phase 9 (OAuth Foundation)
+**Current focus:** Phase 08.4 complete — next: Phase 08.5 (Device Sync)
 
 ## Current Position
 
-Phase: 08.4 (Mobile Responsive Pass — complete)
-Plan: 7 of 7 in current phase
-Status: Phase complete
-Last activity: 2026-01-31 — Phase 08.4 complete (all 7 plans, verification passed 10/10)
+Phase: 08.5 (Device Sync — in progress)
+Plan: 3 of 6 in current phase
+Status: In progress
+Last activity: 2026-01-31 — Completed 08.5-03-PLAN.md (Sync Functions)
 
-Progress: [███████████░░░░░░░░░] 54% (54/TBD plans complete across all phases)
+Progress: [███████████░░░░░░░░░] 57% (57/TBD plans complete across all phases)
 
 ## Performance Metrics
 
@@ -116,6 +116,12 @@ Recent decisions affecting current work:
 - 08.4-05: Settings cards use 2-column grid on tablet+, single column on mobile
 - 08.4-05: SearchBar results use max-h-[60vh] on mobile (viewport-relative) vs fixed 96 on desktop
 - 08.4-05: ProcessingFlow and IcsImport already mobile-responsive (completed in 08.4-04)
+- 08.5-03: Device ID is SHA-256 hash of pairing code (sent from client)
+- 08.5-03: Server never sees plaintext - stores/retrieves opaque encrypted strings
+- 08.5-03: 10 MB payload limit as safety valve (typical GTD data less than 1 MB)
+- 08.5-03: No authentication beyond knowing device ID (security through encryption)
+- 08.5-03: sync-pull returns 200 with found:false when no data exists (not 404) for client error handling
+- 08.5-03: Validate deviceId format (64-char hex) to prevent abuse
 
 ### Roadmap Evolution
 
@@ -123,6 +129,7 @@ Recent decisions affecting current work:
 - Phase 8.2 inserted after Phase 8: how does storage work currently? If I click not persistent - click to request nothing actually happens in the app (URGENT)
 - Phase 08.3 inserted after Phase 08.2: Left nav bar has scrollbar on laptop — redesign nav UX while preserving all functionality
 - Phase 08.4 inserted after Phase 08.3: Mobile responsive pass — ensure site works on mobile devices (URGENT)
+- Phase 08.5 inserted after Phase 08.4: Device sync — Netlify Functions + Blobs, pairing code, encrypted per-record merge (URGENT)
 
 ### Pending Todos
 
@@ -143,5 +150,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-01-31
-Stopped at: Phase 08.4 complete — all 7 plans executed, verification passed (10/10)
+Stopped at: Completed 08.5-03-PLAN.md (Sync Functions)
 Resume file: None
