@@ -18,6 +18,7 @@
 	let previousPath = $state('');
 
 	// Global keyboard shortcut handler
+	// [ : Toggle sidebar (handled in Sidebar.svelte)
 	function handleKeydown(event: KeyboardEvent) {
 		const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
 		const modifierKey = isMac ? event.metaKey : event.ctrlKey;
