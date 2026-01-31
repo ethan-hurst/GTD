@@ -102,9 +102,9 @@
 	}
 </script>
 
-<div class="flex h-full">
-	<!-- Step Sidebar -->
-	<div class="w-60 border-r border-gray-200/60 dark:border-gray-700/60 flex flex-col">
+<div class="flex h-full flex-col tablet:flex-row">
+	<!-- Step Sidebar - hidden on mobile, shown on tablet+ -->
+	<div class="hidden tablet:flex tablet:w-60 border-r border-gray-200/60 dark:border-gray-700/60 flex-col">
 		<!-- Progress Bar -->
 		<div class="p-4 border-b border-gray-200/60 dark:border-gray-700/60">
 			<div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 mb-2">
@@ -150,10 +150,23 @@
 
 	<!-- Step Content -->
 	<div class="flex-1 flex flex-col">
+		<!-- Mobile progress indicator -->
+		<div class="tablet:hidden border-b border-gray-200/60 dark:border-gray-700/60 p-4">
+			<div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 mb-2">
+				<div
+					class="bg-blue-600 dark:bg-blue-500 h-2 rounded-full transition-all duration-300"
+					style="width: {weeklyReviewState.progress}%"
+				></div>
+			</div>
+			<p class="text-xs text-gray-600 dark:text-gray-400 text-center tabular-nums">
+				Step {weeklyReviewState.stepOrder.indexOf(weeklyReviewState.currentStep) + 1} of 8 ({Math.round(weeklyReviewState.progress)}%)
+			</p>
+		</div>
+
 		<div class="flex-1 overflow-y-auto">
-			<div class="max-w-2xl mx-auto p-8">
+			<div class="max-w-2xl mx-auto p-4 tablet:p-6">
 				<!-- Current Step Title -->
-				<h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">
+				<h2 class="text-xl tablet:text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">
 					{weeklyReviewState.stepLabels[weeklyReviewState.currentStep]}
 				</h2>
 
@@ -173,7 +186,7 @@
 				{#if !weeklyReviewState.completedSteps.has(weeklyReviewState.currentStep)}
 					<button
 						onclick={handleCompleteStep}
-						class="px-6 py-3 text-sm font-medium text-white bg-green-600 hover:bg-green-700 dark:bg-green-500 dark:hover:bg-green-600 rounded-md transition-all shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 dark:focus:ring-offset-gray-950 active:scale-[0.98]"
+						class="w-full phablet:w-auto min-h-11 px-6 py-3 text-sm font-medium text-white bg-green-600 hover:bg-green-700 dark:bg-green-500 dark:hover:bg-green-600 rounded-md transition-all shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 dark:focus:ring-offset-gray-950 active:scale-[0.98]"
 					>
 						Mark Step Complete
 					</button>
@@ -189,32 +202,34 @@
 		</div>
 
 		<!-- Navigation Footer -->
-		<div class="border-t border-gray-200/60 dark:border-gray-700/60 p-4 flex items-center justify-between bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm">
-			<button
-				onclick={() => weeklyReviewState.back()}
-				disabled={!weeklyReviewState.canGoBack}
-				class="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-950"
-			>
-				← Back
-			</button>
-
-			<div class="flex gap-3">
+		<div class="border-t border-gray-200/60 dark:border-gray-700/60 p-4 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm pb-[env(safe-area-inset-bottom,0px)]">
+			<div class="flex flex-col gap-2 phablet:flex-row phablet:items-center phablet:justify-between">
 				<button
-					onclick={() => weeklyReviewState.next()}
-					disabled={!weeklyReviewState.canGoNext}
-					class="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-950"
+					onclick={() => weeklyReviewState.back()}
+					disabled={!weeklyReviewState.canGoBack}
+					class="w-full phablet:w-auto min-h-11 px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-950"
 				>
-					Next →
+					← Back
 				</button>
 
-				{#if weeklyReviewState.isComplete}
+				<div class="flex flex-col gap-2 phablet:flex-row phablet:gap-3">
 					<button
-						onclick={handleFinishReview}
-						class="px-6 py-2 text-sm font-medium text-white bg-green-600 hover:bg-green-700 dark:bg-green-500 dark:hover:bg-green-600 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 dark:focus:ring-offset-gray-950"
+						onclick={() => weeklyReviewState.next()}
+						disabled={!weeklyReviewState.canGoNext}
+						class="w-full phablet:w-auto min-h-11 px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-950"
 					>
-						Finish Review
+						Next →
 					</button>
-				{/if}
+
+					{#if weeklyReviewState.isComplete}
+						<button
+							onclick={handleFinishReview}
+							class="w-full phablet:w-auto min-h-11 px-6 py-2 text-sm font-medium text-white bg-green-600 hover:bg-green-700 dark:bg-green-500 dark:hover:bg-green-600 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 dark:focus:ring-offset-gray-950"
+						>
+							Finish Review
+						</button>
+					{/if}
+				</div>
 			</div>
 		</div>
 	</div>
