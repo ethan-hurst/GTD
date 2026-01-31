@@ -11,11 +11,11 @@ See: .planning/PROJECT.md (updated 2026-01-31)
 ## Current Position
 
 Phase: 08.1 (UI/UX Review — inserted)
-Plan: 4 of TBD in current phase
+Plan: 2 of TBD in current phase
 Status: In progress
-Last activity: 2026-01-31 — Completed 08.1-04-PLAN.md (Polish Actions & Projects)
+Last activity: 2026-01-31 — Completed 08.1-02-PLAN.md (Sidebar & Persistent UI Polish)
 
-Progress: [████████░░░░░░░░░░░░] 40% (36/TBD plans complete across all phases)
+Progress: [████████░░░░░░░░░░░░] 40% (37/TBD plans complete across all phases)
 
 ## Performance Metrics
 
@@ -57,6 +57,9 @@ Recent decisions affecting current work:
 - 08.1-01: Use shadows instead of borders for header separation (professional aesthetic)
 - 08.1-01: Gray-950 dark mode background (not pure black) for reduced eye strain
 - 08.1-01: Minimal utility class set to avoid over-engineering full design system
+- 08.1-02: Active nav links use white bg with shadow instead of gray-200 for elevated appearance
+- 08.1-02: Search results use blue-tinted hover/selected states for better visual feedback
+- 08.1-02: Translucent backgrounds with backdrop-blur-sm for depth perception
 - 08.1-04: Focus ring opacity at 40% for subtle but clear visual indicators
 - 08.1-04: Ring offset for buttons (ring-offset-2), ring inset for list items
 - 08.1-04: Transition duration standardized at 150ms for responsive feel
@@ -84,6 +87,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-01-31T00:43:10Z
-Stopped at: Completed 08.1-04-PLAN.md
+Last session: 2026-01-31T00:44:47Z
+Stopped at: Completed 08.1-02-PLAN.md
 Resume file: None
