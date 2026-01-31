@@ -7,6 +7,7 @@
 	import { calendarState } from '$lib/stores/calendar.svelte';
 	import { mobileState } from '$lib/stores/mobile.svelte';
 	import { expandAllRecurrences } from '$lib/utils/recurrence';
+	import { useSwipe, type SwipeCustomEvent } from 'svelte-gestures';
 	import toast from 'svelte-5-french-toast';
 	import type { CalendarEvent } from '$lib/db/schema';
 
@@ -228,6 +229,24 @@
 		await calendarState.loadEvents();
 		closeImport();
 	}
+
+	// Swipe navigation handler for mobile Day view
+	function handleCalendarSwipe(event: SwipeCustomEvent) {
+		// Only navigate when in Day view on mobile
+		if (!mobileState.isMobile || calendarState.currentView !== 'timeGridDay') return;
+
+		if (event.detail.direction === 'left') {
+			goForward(); // Next day
+		} else if (event.detail.direction === 'right') {
+			goBack(); // Previous day
+		}
+	}
+
+	const swipeGesture = useSwipe(handleCalendarSwipe, () => ({
+		timeframe: 300,
+		minSwipeDistance: 60,
+		touchAction: 'pan-y' // Allow vertical scrolling while capturing horizontal swipes
+	}));
 </script>
 
 <div class="flex h-full">
@@ -335,7 +354,10 @@
 		</div>
 
 		<!-- Calendar Container -->
-		<div class="flex-1 overflow-hidden relative">
+		<div
+			{...swipeGesture}
+			class="flex-1 overflow-hidden relative touch-pan-y"
+		>
 			{#if calendarState.events.length === 0 && !calendarState.isLoading}
 				<div class="absolute inset-0 flex items-center justify-center pointer-events-none">
 					<p class="text-sm text-gray-500 dark:text-gray-400">
