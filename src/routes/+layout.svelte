@@ -162,17 +162,21 @@
 
 		// Initialize sync state (non-blocking)
 		(async () => {
-			await syncState.init();
+			try {
+				await syncState.init();
 
-			// Auto-sync on app open if paired and has pairing code
-			if (syncState.isPaired && syncState.hasPairingCode()) {
-				await syncState.sync();
+				// Auto-sync on app open if paired and has pairing code
+				if (syncState.isPaired && syncState.hasPairingCode()) {
+					await syncState.sync();
+				}
+
+				// Run tombstone compaction (non-blocking, runs once on app open)
+				compactTombstones(30).catch(err => {
+					console.warn('Tombstone compaction failed:', err);
+				});
+			} catch (err) {
+				console.warn('Sync initialization failed:', err);
 			}
-
-			// Run tombstone compaction (non-blocking, runs once on app open)
-			compactTombstones(30).catch(err => {
-				console.warn('Tombstone compaction failed:', err);
-			});
 		})();
 
 		// Add visibility change listener to sync when app becomes visible

@@ -292,9 +292,6 @@
 	}
 
 	onMount(async () => {
-		// Initialize sync state
-		await syncState.init();
-
 		// Check persistence status on mount
 		storageStatus.checkPersistence();
 		storageStatus.updateQuota();

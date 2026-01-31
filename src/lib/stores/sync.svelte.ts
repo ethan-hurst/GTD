@@ -34,21 +34,26 @@ class SyncStore {
 	 * Initialize sync store from IndexedDB
 	 */
 	async init(): Promise<void> {
-		// Load pairing info
-		const pairingInfo = await loadPairingInfo();
-		if (pairingInfo) {
-			this.isPaired = true;
-			this.deviceId = pairingInfo.deviceId;
-		}
+		try {
+			// Load pairing info
+			const pairingInfo = await loadPairingInfo();
+			if (pairingInfo) {
+				this.isPaired = true;
+				this.deviceId = pairingInfo.deviceId;
+			}
 
-		// Load last sync time
-		const lastSyncStr = await getSetting('sync-last-sync-time');
-		if (lastSyncStr) {
-			this.lastSyncTime = new Date(lastSyncStr);
-		}
+			// Load last sync time
+			const lastSyncStr = await getSetting('sync-last-sync-time');
+			if (lastSyncStr) {
+				this.lastSyncTime = new Date(lastSyncStr);
+			}
 
-		// Wire up sync notifier for database changes
-		setSyncNotifier(() => this.queueSync());
+			// Wire up sync notifier for database changes
+			setSyncNotifier(() => this.queueSync());
+		} catch (err) {
+			console.error('Sync init failed:', err);
+			this.lastError = err instanceof Error ? err.message : String(err);
+		}
 	}
 
 	/**
@@ -57,6 +62,16 @@ class SyncStore {
 	 */
 	async pair(pairingCode: string): Promise<boolean> {
 		try {
+			// Check for required browser APIs
+			if (typeof indexedDB === 'undefined') {
+				this.lastError = 'IndexedDB is not available. Please open this app in your regular browser (Chrome, Safari, Firefox) — not an in-app browser.';
+				return false;
+			}
+			if (typeof crypto === 'undefined' || !crypto.subtle) {
+				this.lastError = 'Web Crypto API is not available. Please make sure you are accessing this site over HTTPS.';
+				return false;
+			}
+
 			// Validate code format
 			if (!validatePairingCode(pairingCode)) {
 				this.lastError = 'Invalid pairing code format';
@@ -86,7 +101,13 @@ class SyncStore {
 
 			return true;
 		} catch (err) {
-			this.lastError = err instanceof Error ? err.message : String(err);
+			const message = err instanceof Error ? err.message : String(err);
+			// Provide user-friendly message for common errors
+			if (message.includes('MissingAPI') || message.includes('indexedDB') || message.includes('IndexDB')) {
+				this.lastError = 'Database not available. Please open this app in your regular browser (Chrome, Safari, Firefox) — in-app browsers and some private/incognito modes may not support this feature.';
+			} else {
+				this.lastError = message;
+			}
 			return false;
 		}
 	}
