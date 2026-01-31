@@ -1,18 +1,33 @@
 import { db, type GTDItem, type Context, type AppSettings, type CalendarEvent } from './schema';
 
+// Sync notification callback - set by sync store to avoid circular imports
+let onDataChanged: (() => void) | null = null;
+
+export function setSyncNotifier(callback: () => void): void {
+	onDataChanged = callback;
+}
+
+function notifyDataChanged(): void {
+	if (onDataChanged) onDataChanged();
+}
+
 export async function addItem(item: Omit<GTDItem, 'id' | 'created' | 'modified'>): Promise<number> {
-	return await db.items.add({
+	const id = await db.items.add({
 		...item,
 		created: new Date(),
 		modified: new Date()
 	} as GTDItem);
+	notifyDataChanged();
+	return id;
 }
 
 export async function updateItem(id: number, changes: Partial<GTDItem>): Promise<number> {
-	return await db.items.update(id, {
+	const result = await db.items.update(id, {
 		...changes,
 		modified: new Date()
 	});
+	notifyDataChanged();
+	return result;
 }
 
 export async function deleteItem(id: number): Promise<void> {
@@ -21,6 +36,7 @@ export async function deleteItem(id: number): Promise<void> {
 		deletedAt: new Date(),
 		modified: new Date()
 	});
+	notifyDataChanged();
 }
 
 export async function getItem(id: number): Promise<GTDItem | undefined> {
@@ -54,6 +70,7 @@ export async function bulkDeleteItems(ids: number[]): Promise<void> {
 			})
 		)
 	);
+	notifyDataChanged();
 }
 
 // ============================================================================
@@ -77,16 +94,20 @@ export async function addContext(name: string): Promise<number> {
 	const contexts = await db.contexts.toArray();
 	const maxSortOrder = contexts.reduce((max, ctx) => Math.max(max, ctx.sortOrder), -1);
 
-	return await db.contexts.add({
+	const id = await db.contexts.add({
 		name,
 		sortOrder: maxSortOrder + 1,
 		isDefault: false,
 		created: new Date()
 	} as Context);
+	notifyDataChanged();
+	return id;
 }
 
 export async function updateContext(id: number, changes: Partial<Context>): Promise<number> {
-	return await db.contexts.update(id, changes);
+	const result = await db.contexts.update(id, changes);
+	notifyDataChanged();
+	return result;
 }
 
 export async function deleteContext(id: number): Promise<void> {
@@ -113,6 +134,7 @@ export async function deleteContext(id: number): Promise<void> {
 		deleted: true,
 		deletedAt: new Date()
 	});
+	notifyDataChanged();
 }
 
 // ============================================================================
@@ -171,6 +193,7 @@ export async function completeAction(id: number): Promise<() => Promise<void>> {
 		completedAt: new Date(),
 		modified: new Date()
 	});
+	notifyDataChanged();
 
 	// Return undo function
 	return async () => {
@@ -178,6 +201,7 @@ export async function completeAction(id: number): Promise<() => Promise<void>> {
 			completedAt: undefined,
 			modified: new Date()
 		});
+		notifyDataChanged();
 	};
 }
 
@@ -186,6 +210,7 @@ export async function undoCompleteAction(id: number): Promise<void> {
 		completedAt: undefined,
 		modified: new Date()
 	});
+	notifyDataChanged();
 }
 
 export async function reorderActions(orderedIds: number[]): Promise<void> {
@@ -197,6 +222,7 @@ export async function reorderActions(orderedIds: number[]): Promise<void> {
 			})
 		)
 	);
+	notifyDataChanged();
 }
 
 export async function bulkCompleteActions(ids: number[]): Promise<() => Promise<void>> {
@@ -210,6 +236,7 @@ export async function bulkCompleteActions(ids: number[]): Promise<() => Promise<
 			})
 		)
 	);
+	notifyDataChanged();
 
 	// Return undo function
 	return async () => {
@@ -221,6 +248,7 @@ export async function bulkCompleteActions(ids: number[]): Promise<() => Promise<
 				})
 			)
 		);
+		notifyDataChanged();
 	};
 }
 
@@ -272,6 +300,7 @@ export async function completeProject(id: number): Promise<() => Promise<void>> 
 		completedAt: new Date(),
 		modified: new Date()
 	});
+	notifyDataChanged();
 
 	// Return undo function
 	return async () => {
@@ -279,6 +308,7 @@ export async function completeProject(id: number): Promise<() => Promise<void>> 
 			completedAt: undefined,
 			modified: new Date()
 		});
+		notifyDataChanged();
 	};
 }
 
@@ -287,16 +317,19 @@ export async function moveProjectToSomeday(id: number): Promise<void> {
 		type: 'someday',
 		modified: new Date()
 	});
+	notifyDataChanged();
 }
 
 export async function addProject(title: string, notes?: string): Promise<number> {
-	return await db.items.add({
+	const id = await db.items.add({
 		title,
 		type: 'project',
 		notes: notes || '',
 		created: new Date(),
 		modified: new Date()
 	} as GTDItem);
+	notifyDataChanged();
+	return id;
 }
 
 // ============================================================================
@@ -330,6 +363,7 @@ export async function resolveWaitingFor(id: number): Promise<() => Promise<void>
 		completedAt: new Date(),
 		modified: new Date()
 	});
+	notifyDataChanged();
 
 	// Return undo function
 	return async () => {
@@ -337,6 +371,7 @@ export async function resolveWaitingFor(id: number): Promise<() => Promise<void>
 			completedAt: undefined,
 			modified: new Date()
 		});
+		notifyDataChanged();
 	};
 }
 
@@ -347,7 +382,7 @@ export async function addWaitingFor(
 	projectId?: number,
 	notes?: string
 ): Promise<number> {
-	return await db.items.add({
+	const id = await db.items.add({
 		title,
 		type: 'waiting',
 		delegatedTo,
@@ -357,6 +392,8 @@ export async function addWaitingFor(
 		created: new Date(),
 		modified: new Date()
 	} as GTDItem);
+	notifyDataChanged();
+	return id;
 }
 
 // ============================================================================
@@ -377,10 +414,11 @@ export async function promoteSomedayToActive(id: number, newType: 'project' | 'n
 		category: undefined,
 		modified: new Date()
 	});
+	notifyDataChanged();
 }
 
 export async function addSomedayItem(title: string, notes?: string, category?: string): Promise<number> {
-	return await db.items.add({
+	const id = await db.items.add({
 		title,
 		type: 'someday',
 		notes: notes || '',
@@ -388,6 +426,8 @@ export async function addSomedayItem(title: string, notes?: string, category?: s
 		created: new Date(),
 		modified: new Date()
 	} as GTDItem);
+	notifyDataChanged();
+	return id;
 }
 
 // ============================================================================
@@ -406,6 +446,10 @@ export async function setSetting(key: string, value: any): Promise<void> {
 	} else {
 		await db.settings.add({ key, value, updatedAt: new Date() } as AppSettings);
 	}
+	// Only notify if NOT a sync-related setting to prevent infinite loop
+	if (!key.startsWith('sync-')) {
+		notifyDataChanged();
+	}
 }
 
 // ============================================================================
@@ -413,18 +457,22 @@ export async function setSetting(key: string, value: any): Promise<void> {
 // ============================================================================
 
 export async function addEvent(event: Omit<CalendarEvent, 'id' | 'created' | 'modified'>): Promise<number> {
-	return await db.events.add({
+	const id = await db.events.add({
 		...event,
 		created: new Date(),
 		modified: new Date()
 	} as CalendarEvent);
+	notifyDataChanged();
+	return id;
 }
 
 export async function updateEvent(id: number, changes: Partial<CalendarEvent>): Promise<number> {
-	return await db.events.update(id, {
+	const result = await db.events.update(id, {
 		...changes,
 		modified: new Date()
 	});
+	notifyDataChanged();
+	return result;
 }
 
 export async function deleteEvent(id: number): Promise<void> {
@@ -433,6 +481,7 @@ export async function deleteEvent(id: number): Promise<void> {
 		deletedAt: new Date(),
 		modified: new Date()
 	});
+	notifyDataChanged();
 }
 
 export async function getEvent(id: number): Promise<CalendarEvent | undefined> {
@@ -464,7 +513,9 @@ export async function bulkAddEvents(events: Omit<CalendarEvent, 'id' | 'created'
 		created: now,
 		modified: now
 	})) as CalendarEvent[];
-	return await db.events.bulkAdd(withTimestamps, { allKeys: true }) as number[];
+	const ids = await db.events.bulkAdd(withTimestamps, { allKeys: true }) as number[];
+	notifyDataChanged();
+	return ids;
 }
 
 export async function getAllEvents(): Promise<CalendarEvent[]> {

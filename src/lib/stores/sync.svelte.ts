@@ -14,7 +14,7 @@ import {
 	hashPairingCode
 } from '$lib/sync/pair';
 import { initIVCounter } from '$lib/sync/crypto';
-import { getSetting, setSetting } from '$lib/db/operations';
+import { getSetting, setSetting, setSyncNotifier } from '$lib/db/operations';
 
 class SyncStore {
 	isPaired = $state(false);
@@ -46,6 +46,9 @@ class SyncStore {
 		if (lastSyncStr) {
 			this.lastSyncTime = new Date(lastSyncStr);
 		}
+
+		// Wire up sync notifier for database changes
+		setSyncNotifier(() => this.queueSync());
 	}
 
 	/**
