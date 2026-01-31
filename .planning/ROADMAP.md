@@ -137,6 +137,18 @@ Plans:
 
 ---
 
+### Phase 08.3: Left Nav Bar UX Improvement (INSERTED)
+
+**Goal:** Redesign the left navigation sidebar to eliminate the scrollbar and improve UX while preserving all existing functionality
+**Depends on:** Phase 8
+**Plans:** 2 plans
+
+Plans:
+- [ ] 08.3-01-PLAN.md — Optimize sidebar spacing, nav grouping, and collapsible context list
+- [ ] 08.3-02-PLAN.md — Add sidebar collapse toggle with icon-only mode
+
+---
+
 ### 🚧 v1.1 Outlook Calendar Sync (In Progress)
 
 **Milestone Goal:** Two-way calendar sync between GTD and Outlook so the user sees work commitments in GTD and GTD tasks appear on their Outlook calendar.
@@ -263,7 +275,7 @@ Plans:
 
 ## Progress
 
-**Execution Order:** Phases execute in numeric order: 08.1 → 08.2 → 9 → 10 → 11 → 12 → 13
+**Execution Order:** Phases execute in numeric order: 08.1 → 08.2 → 08.3 → 9 → 10 → 11 → 12 → 13
 
 | Phase | Milestone | Plans Complete | Status | Completed |
 |-------|-----------|----------------|--------|-----------|
@@ -277,6 +289,7 @@ Plans:
 | 8. Onboarding & Polish | v1.0 | 6/6 | Complete | 2026-01-31 |
 | 08.1 UI/UX Review | v1.0+ | 7/7 | Complete | 2026-01-31 |
 | 08.2 Storage Persistence | v1.0+ | 2/2 | Complete | 2026-01-31 |
+| 08.3 Left Nav Bar UX | v1.0+ | 0/2 | Not started | - |
 | 9. OAuth Foundation | v1.1 | 0/TBD | Not started | - |
 | 10. Read Calendar | v1.1 | 0/TBD | Not started | - |
 | 11. Two-Way Sync | v1.1 | 0/TBD | Not started | - |
