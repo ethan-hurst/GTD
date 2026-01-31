@@ -35,7 +35,7 @@
 	</div>
 
 	<!-- Navigation -->
-	<nav class="flex-1 p-4 space-y-1">
+	<nav class="flex-1 overflow-y-auto p-4 space-y-1">
 		<FeatureHint feature="inbox" position="right">
 			<a
 				href="/"
