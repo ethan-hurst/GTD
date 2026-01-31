@@ -6,6 +6,12 @@
 	/* Transition timing tokens */
 	--transition-fast: 150ms;
 	--transition-normal: 200ms;
+
+	/* Mobile-first breakpoints */
+	--breakpoint-phone: 22.5rem;    /* 360px - minimum supported */
+	--breakpoint-phablet: 40rem;    /* 640px - large phones */
+	--breakpoint-tablet: 48rem;     /* 768px - tablets */
+	--breakpoint-desktop: 64rem;    /* 1024px - desktop */
 }
 
 @layer base {
@@ -71,6 +77,19 @@
 	/* Rotate chevron when details is open */
 	.context-details[open] .context-chevron {
 		transform: rotate(180deg);
+	}
+
+	/* Mobile-specific optimizations */
+	/* Prevent iOS input zoom by ensuring minimum font size is 16px */
+	input,
+	select,
+	textarea {
+		font-size: max(1rem, 16px);
+	}
+
+	/* Safe area padding utility for devices with notches */
+	.safe-area-bottom {
+		padding-bottom: env(safe-area-inset-bottom, 0px);
 	}
 }
 
