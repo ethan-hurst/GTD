@@ -125,17 +125,15 @@ Plans:
 
 ---
 
-### Phase 08.2: how does storage work currently? If I click not persistent - click to request nothing actually happens in the app (INSERTED)
+### Phase 08.2: Storage Persistence Bug Fix (INSERTED)
 
-**Goal:** [Urgent work - to be planned]
+**Goal:** Fix broken "click to request" persistent storage flow — proper state management, user feedback, and Storage dashboard in Settings
 **Depends on:** Phase 8
-**Plans:** 0 plans
+**Plans:** 2 plans
 
 Plans:
-- [ ] TBD (run /gsd:plan-phase 8.2 to break down)
-
-**Details:**
-[To be added during planning]
+- [x] 08.2-01-PLAN.md — Refactor storage persistence state management (three-state tracking)
+- [x] 08.2-02-PLAN.md — Integrate persistence UI with state store (Settings dashboard + StatusBar + toasts)
 
 ---
 
@@ -265,7 +263,7 @@ Plans:
 
 ## Progress
 
-**Execution Order:** Phases execute in numeric order: 08.1 → 9 → 10 → 11 → 12 → 13
+**Execution Order:** Phases execute in numeric order: 08.1 → 08.2 → 9 → 10 → 11 → 12 → 13
 
 | Phase | Milestone | Plans Complete | Status | Completed |
 |-------|-----------|----------------|--------|-----------|
@@ -278,6 +276,7 @@ Plans:
 | 7. Calendar & ICS | v1.0 | 6/6 | Complete | 2026-01-31 |
 | 8. Onboarding & Polish | v1.0 | 6/6 | Complete | 2026-01-31 |
 | 08.1 UI/UX Review | v1.0+ | 7/7 | Complete | 2026-01-31 |
+| 08.2 Storage Persistence | v1.0+ | 2/2 | Complete | 2026-01-31 |
 | 9. OAuth Foundation | v1.1 | 0/TBD | Not started | - |
 | 10. Read Calendar | v1.1 | 0/TBD | Not started | - |
 | 11. Two-Way Sync | v1.1 | 0/TBD | Not started | - |
