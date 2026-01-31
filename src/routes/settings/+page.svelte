@@ -1,10 +1,14 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
 	import { exportDatabase, importDatabase, downloadJSON } from '$lib/db/export';
 	import { onboardingState } from '$lib/stores/onboarding.svelte';
+	import { storageStatus } from '$lib/stores/storage.svelte';
+	import { toast } from 'svelte-5-french-toast';
 
 	let isExporting = $state(false);
 	let isImporting = $state(false);
 	let isResettingOnboarding = $state(false);
+	let isRequestingPersistence = $state(false);
 	let statusMessage = $state('');
 	let statusType = $state<'success' | 'error' | ''>('');
 
@@ -72,6 +76,97 @@
 			isResettingOnboarding = false;
 		}
 	}
+
+	async function handleRequestPersistence() {
+		try {
+			isRequestingPersistence = true;
+			const granted = await storageStatus.requestPersistence();
+
+			if (granted) {
+				toast.success('Storage is now persistent! Your data is safe.');
+				await storageStatus.updateQuota();
+			} else {
+				// Denied - show browser-specific guidance
+				const browser = detectBrowser();
+				const guidance = getBrowserGuidance(browser);
+				toast.error(guidance, { duration: 8000 });
+			}
+		} catch (error) {
+			toast.error(`Failed to request persistence: ${error instanceof Error ? error.message : 'Unknown error'}`);
+		} finally {
+			isRequestingPersistence = false;
+		}
+	}
+
+	function detectBrowser(): string {
+		const ua = navigator.userAgent;
+		if (ua.includes('Chrome') && !ua.includes('Edg')) return 'chrome';
+		if (ua.includes('Safari') && !ua.includes('Chrome')) return 'safari';
+		if (ua.includes('Firefox')) return 'firefox';
+		if (ua.includes('Edg')) return 'edge';
+		return 'unknown';
+	}
+
+	function getBrowserGuidance(browser: string): string {
+		switch (browser) {
+			case 'chrome':
+				return 'Persistent storage denied. Try bookmarking this app (Ctrl/Cmd+D) or installing it as a PWA.';
+			case 'safari':
+				return 'Persistent storage denied. Try adding this app to your home screen for reliable storage.';
+			case 'firefox':
+				return 'Persistent storage denied. Firefox may deny persistence in private browsing mode.';
+			case 'edge':
+				return 'Persistent storage denied. Try bookmarking this app or installing it as a PWA.';
+			default:
+				return 'Persistent storage denied. Try bookmarking this app or using it more frequently.';
+		}
+	}
+
+	function formatBytes(bytes: number): string {
+		if (bytes === 0) return '0 B';
+		const k = 1024;
+		const sizes = ['B', 'KB', 'MB', 'GB'];
+		const i = Math.floor(Math.log(bytes) / Math.log(k));
+		return `${(bytes / Math.pow(k, i)).toFixed(1)} ${sizes[i]}`;
+	}
+
+	function formatLastSave(): string {
+		if (!storageStatus.lastSaveTime) return 'Never';
+		const now = Date.now();
+		const then = storageStatus.lastSaveTime.getTime();
+		const seconds = Math.floor((now - then) / 1000);
+
+		if (seconds < 60) return `${seconds}s ago`;
+		const minutes = Math.floor(seconds / 60);
+		if (minutes < 60) return `${minutes}m ago`;
+		const hours = Math.floor(minutes / 60);
+		if (hours < 24) return `${hours}h ago`;
+		const days = Math.floor(hours / 24);
+		return `${days}d ago`;
+	}
+
+	function getQuotaPercentage(): number {
+		if (storageStatus.quota === 0) return 0;
+		return (storageStatus.usage / storageStatus.quota) * 100;
+	}
+
+	function getQuotaColor(): string {
+		const percentage = getQuotaPercentage();
+		if (percentage > 90) return 'bg-red-500';
+		if (percentage > 75) return 'bg-amber-500';
+		return 'bg-green-500';
+	}
+
+	onMount(() => {
+		// Check persistence status on mount
+		storageStatus.checkPersistence();
+		storageStatus.updateQuota();
+
+		// Show persistent storage confirmation if granted
+		if (storageStatus.persistenceState === 'GRANTED') {
+			toast.success('Storage is persistent', { duration: 3000 });
+		}
+	});
 </script>
 
 <div class="max-w-2xl mx-auto p-6">
@@ -124,6 +219,100 @@
 		</button>
 	</div>
 
+	<!-- Storage Section -->
+	<div class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200 p-6 mb-6">
+		<h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">Storage</h2>
+		<p class="text-sm text-gray-600 dark:text-gray-400 mb-4">
+			Persistent storage ensures your data won't be deleted when the browser needs space.
+		</p>
+
+		<!-- Persistence Status -->
+		<div class="mb-4">
+			{#if storageStatus.persistenceState === 'GRANTED'}
+				<div class="flex items-center gap-2 text-green-700 dark:text-green-400">
+					<span class="w-3 h-3 rounded-full bg-green-500"></span>
+					<span class="font-medium">Storage is persistent</span>
+				</div>
+				<p class="text-xs text-gray-600 dark:text-gray-400 mt-1 ml-5">
+					Your data is protected from automatic deletion.
+				</p>
+			{:else if storageStatus.persistenceState === 'DENIED'}
+				<div class="flex items-center gap-2 text-red-700 dark:text-red-400">
+					<span class="w-3 h-3 rounded-full bg-red-500"></span>
+					<span class="font-medium">Persistent storage denied</span>
+				</div>
+				<p class="text-xs text-gray-600 dark:text-gray-400 mt-1 ml-5">
+					Your browser declined the request. Try bookmarking this app or using it more frequently.
+				</p>
+			{:else}
+				<div class="flex items-center gap-2 text-amber-700 dark:text-amber-400">
+					<span class="w-3 h-3 rounded-full bg-amber-500"></span>
+					<span class="font-medium">Storage is not persistent</span>
+				</div>
+				<p class="text-xs text-gray-600 dark:text-gray-400 mt-1 ml-5">
+					Your data may be deleted if the browser needs space.
+				</p>
+			{/if}
+		</div>
+
+		<!-- Storage Quota (only show when persistent) -->
+		{#if storageStatus.persistenceState === 'GRANTED' && storageStatus.quota > 0}
+			<div class="mb-4">
+				<div class="flex items-center justify-between text-sm mb-1">
+					<span class="text-gray-600 dark:text-gray-400">Storage Used</span>
+					<span class="text-gray-900 dark:text-gray-100 font-medium tabular-nums">
+						{formatBytes(storageStatus.usage)} / {formatBytes(storageStatus.quota)}
+						({getQuotaPercentage().toFixed(1)}%)
+					</span>
+				</div>
+				<div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 overflow-hidden">
+					<div
+						class="{getQuotaColor()} h-full transition-all duration-300"
+						style="width: {getQuotaPercentage()}%"
+					></div>
+				</div>
+			</div>
+		{/if}
+
+		<!-- Last Save Time -->
+		<div class="mb-4 text-sm">
+			<span class="text-gray-600 dark:text-gray-400">Last saved:</span>
+			<span class="text-gray-900 dark:text-gray-100 font-medium ml-1 tabular-nums">
+				{formatLastSave()}
+			</span>
+		</div>
+
+		<!-- Request/Retry Button -->
+		{#if storageStatus.persistenceState !== 'GRANTED'}
+			<button
+				onclick={handleRequestPersistence}
+				disabled={isRequestingPersistence}
+				class="px-4 py-2.5 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 rounded-md text-sm font-medium hover:bg-gray-800 dark:hover:bg-gray-200 transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 active:scale-[0.98]"
+			>
+				{#if isRequestingPersistence}
+					<span class="flex items-center gap-2">
+						<svg class="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+							<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+							<path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+						</svg>
+						Requesting...
+					</span>
+				{:else}
+					{storageStatus.persistenceState === 'DENIED' ? 'Retry Request' : 'Enable Persistent Storage'}
+				{/if}
+			</button>
+		{/if}
+
+		<!-- Explanation -->
+		<div class="mt-4 text-xs text-gray-500 dark:text-gray-500 bg-gray-50 dark:bg-gray-800/50 rounded-md p-3">
+			<p class="font-medium mb-1">What is persistent storage?</p>
+			<p>
+				Persistent storage prevents the browser from automatically deleting your data when disk space runs low.
+				Without it, all your tasks, projects, and settings could be lost.
+			</p>
+		</div>
+	</div>
+
 	<!-- Onboarding Section -->
 	<div class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200 p-6">
 		<h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">Onboarding</h2>
@@ -133,7 +322,7 @@
 		<button
 			onclick={handleResetOnboarding}
 			disabled={isResettingOnboarding}
-			class="px-4 py-2 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 rounded-md text-sm font-medium hover:bg-gray-800 dark:hover:bg-gray-200 transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 active:scale-[0.98]"
+			class="px-4 py-2.5 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 rounded-md text-sm font-medium hover:bg-gray-800 dark:hover:bg-gray-200 transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 active:scale-[0.98]"
 		>
 			{isResettingOnboarding ? 'Resetting...' : 'Reset Onboarding'}
 		</button>
