@@ -11,9 +11,9 @@ See: .planning/PROJECT.md (updated 2026-01-31)
 ## Current Position
 
 Phase: 08.1 (UI/UX Review — inserted)
-Plan: 1 of TBD in current phase
+Plan: 4 of TBD in current phase
 Status: In progress
-Last activity: 2026-01-31 — Completed 08.1-01-PLAN.md (Design Foundation)
+Last activity: 2026-01-31 — Completed 08.1-04-PLAN.md (Polish Actions & Projects)
 
 Progress: [████████░░░░░░░░░░░░] 40% (36/TBD plans complete across all phases)
 
@@ -57,6 +57,10 @@ Recent decisions affecting current work:
 - 08.1-01: Use shadows instead of borders for header separation (professional aesthetic)
 - 08.1-01: Gray-950 dark mode background (not pure black) for reduced eye strain
 - 08.1-01: Minimal utility class set to avoid over-engineering full design system
+- 08.1-04: Focus ring opacity at 40% for subtle but clear visual indicators
+- 08.1-04: Ring offset for buttons (ring-offset-2), ring inset for list items
+- 08.1-04: Transition duration standardized at 150ms for responsive feel
+- 08.1-04: Shadow-sm on inputs, shadow-lg on panels for visual hierarchy
 
 ### Roadmap Evolution
 
@@ -80,6 +84,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-01-31T00:37:18Z
-Stopped at: Completed 08.1-01-PLAN.md
+Last session: 2026-01-31T00:43:10Z
+Stopped at: Completed 08.1-04-PLAN.md
 Resume file: None
