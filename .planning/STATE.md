@@ -11,11 +11,11 @@ See: .planning/PROJECT.md (updated 2026-01-31)
 ## Current Position
 
 Phase: 08.1 (UI/UX Review — inserted)
-Plan: 6 of 7 in current phase
-Status: In progress
-Last activity: 2026-01-31 — Completed 08.1-06-PLAN.md (Polish Calendar & Weekly Review)
+Plan: 7 of 7 in current phase
+Status: Phase complete
+Last activity: 2026-01-31 — Completed 08.1-07-PLAN.md (OnboardingWizard + Visual Verification)
 
-Progress: [████████░░░░░░░░░░░░] 41% (39/TBD plans complete across all phases)
+Progress: [██████████░░░░░░░░░░] 42% (42/TBD plans complete across all phases)
 
 ## Performance Metrics
 
@@ -75,6 +75,7 @@ Recent decisions affecting current work:
 - 08.1-06: View switcher uses p-0.5 container with ring-1 on active segments
 - 08.1-06: Frosted glass footer with backdrop-blur-sm for Weekly Review wizard
 - 08.1-06: Tabular-nums for wizard progress percentage (stable layout)
+- 08.1-07: Sidebar nav needs overflow-y-auto to keep footer pinned when ContextList is expanded
 
 ### Roadmap Evolution
 
@@ -98,6 +99,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-01-31T00:46:06Z
-Stopped at: Completed 08.1-06-PLAN.md
+Last session: 2026-01-31T00:56:00Z
+Stopped at: Phase 08.1 complete — all 7 plans executed, visual verification approved
 Resume file: None
