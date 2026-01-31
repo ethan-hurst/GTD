@@ -74,14 +74,14 @@
 	}
 </script>
 
-<div class="max-w-2xl mx-auto p-8">
+<div class="max-w-2xl mx-auto p-6">
 	<!-- Header -->
-	<h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-8">Settings</h1>
+	<h1 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-8">Settings</h1>
 
 	<!-- Status Message -->
 	{#if statusMessage}
 		<div
-			class="mb-6 p-4 rounded-md {statusType === 'success'
+			class="mb-6 p-4 rounded-md shadow-sm {statusType === 'success'
 				? 'bg-green-50 dark:bg-green-900/20 text-green-800 dark:text-green-300 border border-green-200 dark:border-green-800'
 				: 'bg-red-50 dark:bg-red-900/20 text-red-800 dark:text-red-300 border border-red-200 dark:border-red-800'}"
 		>
@@ -90,7 +90,7 @@
 	{/if}
 
 	<!-- Export Section -->
-	<div class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg p-6 mb-6">
+	<div class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200 p-6 mb-6">
 		<h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">Data Export</h2>
 		<p class="text-sm text-gray-600 dark:text-gray-400 mb-4">
 			Download a backup of all your data in JSON format. This includes all tasks, lists, and settings.
@@ -98,20 +98,19 @@
 		<button
 			onclick={handleExport}
 			disabled={isExporting}
-			class="px-4 py-2 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 rounded-md text-sm font-medium
-				hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+			class="px-4 py-2 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 rounded-md text-sm font-medium hover:bg-gray-800 dark:hover:bg-gray-200 transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 active:scale-[0.98]"
 		>
 			{isExporting ? 'Exporting...' : 'Export Data'}
 		</button>
 	</div>
 
 	<!-- Import Section -->
-	<div class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg p-6 mb-6">
+	<div class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200 p-6 mb-6">
 		<h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">Data Import</h2>
 		<p class="text-sm text-gray-600 dark:text-gray-400 mb-2">
 			Restore data from a previously exported JSON file.
 		</p>
-		<div class="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-md p-3 mb-4">
+		<div class="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-md p-3 mb-4 shadow-sm">
 			<p class="text-sm text-amber-800 dark:text-amber-300 font-medium">
 				⚠️ Warning: This will replace all existing data
 			</p>
@@ -119,15 +118,14 @@
 		<button
 			onclick={handleImport}
 			disabled={isImporting}
-			class="px-4 py-2 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 rounded-md text-sm font-medium
-				hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+			class="px-4 py-2 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 rounded-md text-sm font-medium hover:bg-gray-800 dark:hover:bg-gray-200 transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 active:scale-[0.98]"
 		>
 			{isImporting ? 'Importing...' : 'Import Data'}
 		</button>
 	</div>
 
 	<!-- Onboarding Section -->
-	<div class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg p-6">
+	<div class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200 p-6">
 		<h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">Onboarding</h2>
 		<p class="text-sm text-gray-600 dark:text-gray-400 mb-4">
 			Reset the onboarding walkthrough and re-enable all contextual hints.
@@ -135,8 +133,7 @@
 		<button
 			onclick={handleResetOnboarding}
 			disabled={isResettingOnboarding}
-			class="px-4 py-2 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 rounded-md text-sm font-medium
-				hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+			class="px-4 py-2 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 rounded-md text-sm font-medium hover:bg-gray-800 dark:hover:bg-gray-200 transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 active:scale-[0.98]"
 		>
 			{isResettingOnboarding ? 'Resetting...' : 'Reset Onboarding'}
 		</button>

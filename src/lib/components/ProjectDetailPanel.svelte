@@ -70,7 +70,7 @@
 </script>
 
 <div
-	class="bg-gray-50 dark:bg-gray-800/50 p-4 rounded-b-lg border-t border-gray-200 dark:border-gray-700"
+	class="bg-gray-50 dark:bg-gray-800/50 p-4 rounded-lg border border-gray-200 dark:border-gray-800 shadow-lg"
 	transition:slide={{ duration: 200 }}
 >
 	<!-- Header with close button -->
@@ -80,7 +80,7 @@
 		</h4>
 		<button
 			onclick={onClose}
-			class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+			class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/40"
 			title="Close"
 		>
 			<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -99,7 +99,7 @@
 			<input
 				type="text"
 				bind:value={title}
-				class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+				class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-transparent"
 			/>
 		</div>
 
@@ -111,7 +111,7 @@
 			<textarea
 				bind:value={notes}
 				rows="3"
-				class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-y"
+				class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-transparent resize-y"
 				placeholder="Add notes..."
 			></textarea>
 		</div>
@@ -142,25 +142,25 @@
 		<div class="flex items-center gap-2 pt-2">
 			<button
 				onclick={handleSave}
-				class="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 rounded-md transition-colors"
+				class="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:ring-offset-2"
 			>
 				Save
 			</button>
 			<button
 				onclick={handleComplete}
-				class="px-4 py-2 text-sm font-medium text-white bg-green-600 hover:bg-green-700 rounded-md transition-colors"
+				class="px-4 py-2 text-sm font-medium text-white bg-green-600 hover:bg-green-700 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-green-500/40 focus:ring-offset-2"
 			>
 				Complete
 			</button>
 			<button
 				onclick={handleMoveToSomeday}
-				class="px-4 py-2 text-sm font-medium text-white bg-amber-600 hover:bg-amber-700 dark:bg-amber-500 rounded-md transition-colors"
+				class="px-4 py-2 text-sm font-medium text-white bg-amber-600 hover:bg-amber-700 dark:bg-amber-500 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-amber-500/40 focus:ring-offset-2"
 			>
 				Someday/Maybe
 			</button>
 			<button
 				onclick={handleDelete}
-				class="px-4 py-2 text-sm font-medium text-white bg-red-600 hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600 rounded-md transition-colors"
+				class="px-4 py-2 text-sm font-medium text-white bg-red-600 hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-red-500/40 focus:ring-offset-2"
 			>
 				Delete
 			</button>

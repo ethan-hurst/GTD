@@ -30,7 +30,7 @@
 >
 	<!-- Project row -->
 	<div
-		class="px-4 py-3 cursor-pointer"
+		class="px-4 py-3 cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:ring-inset transition-all duration-150"
 		onclick={onToggleExpand}
 		role="button"
 		tabindex="0"
