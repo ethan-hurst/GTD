@@ -104,13 +104,13 @@
 	<div
 		class={`rounded-lg border transition-shadow ${
 			isOverdue
-				? 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800'
+				? 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800 border-l-2 border-l-red-400'
 				: 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700'
 		}`}
 	>
 		<!-- Main row -->
 		<div
-			class="px-4 py-3 cursor-pointer"
+			class="px-4 py-3 cursor-pointer transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-inset rounded-lg"
 			onclick={onToggleExpand}
 			role="button"
 			tabindex="0"

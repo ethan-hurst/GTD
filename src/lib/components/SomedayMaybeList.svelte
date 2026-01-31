@@ -32,7 +32,7 @@
 
 <div class="flex h-full">
 	<!-- Category filter sidebar -->
-	<div class="w-48 border-r border-gray-200 dark:border-gray-800 p-4 space-y-1">
+	<div class="w-48 border-r border-gray-200 dark:border-gray-700 p-4 space-y-1">
 		<div class="mb-2">
 			<span class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
 				Categories
@@ -42,10 +42,10 @@
 		<!-- All button -->
 		<button
 			onclick={() => somedayMaybeState.selectCategory(null)}
-			class="w-full flex items-center justify-between px-3 py-2 rounded-md text-sm font-medium transition-colors
+			class="w-full flex items-center justify-between px-3 py-2 rounded-md text-sm transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1
 				{somedayMaybeState.selectedCategory === null
-					? 'bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-gray-100'
-					: 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800'}"
+					? 'bg-white dark:bg-gray-800 shadow-sm font-semibold text-gray-900 dark:text-gray-100'
+					: 'font-medium text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800'}"
 		>
 			<span>All</span>
 			{#if totalCount > 0}
@@ -61,10 +61,10 @@
 			{@const isActive = somedayMaybeState.selectedCategory === category}
 			<button
 				onclick={() => somedayMaybeState.selectCategory(category)}
-				class="w-full flex items-center justify-between px-3 py-2 rounded-md text-sm font-medium transition-colors
+				class="w-full flex items-center justify-between px-3 py-2 rounded-md text-sm transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1
 					{isActive
-						? 'bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-gray-100'
-						: 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800'}"
+						? 'bg-white dark:bg-gray-800 shadow-sm font-semibold text-gray-900 dark:text-gray-100'
+						: 'font-medium text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800'}"
 			>
 				<span>{category}</span>
 				{#if count > 0}
@@ -100,12 +100,12 @@
 					type="text"
 					bind:value={newItemTitle}
 					placeholder="Capture an idea..."
-					class="flex-1 px-4 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+					class="flex-1 px-4 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-sm"
 				/>
 				<button
 					type="submit"
 					disabled={isFormDisabled}
-					class="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+					class="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 rounded-md transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
 				>
 					Add
 				</button>

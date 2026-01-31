@@ -68,7 +68,7 @@
 	<div class="px-4 py-3 flex items-start justify-between">
 		<!-- Left side: title, category, date -->
 		<div
-			class="flex-1 min-w-0 cursor-pointer"
+			class="flex-1 min-w-0 cursor-pointer transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-inset rounded-lg"
 			onclick={onToggleExpand}
 			role="button"
 			tabindex="0"
@@ -102,7 +102,7 @@
 					e.stopPropagation();
 					handlePromoteToProject();
 				}}
-				class="px-3 py-1.5 text-xs font-medium text-purple-700 dark:text-purple-300 bg-purple-100 dark:bg-purple-900/30 hover:bg-purple-200 dark:hover:bg-purple-900/50 rounded-md transition-colors flex items-center gap-1"
+				class="px-3 py-1.5 text-xs font-medium text-purple-700 dark:text-purple-300 bg-purple-100 dark:bg-purple-900/30 hover:bg-purple-200 dark:hover:bg-purple-900/50 rounded-md transition-all duration-150 flex items-center gap-1 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-1"
 				title="Promote to Project"
 			>
 				<svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -115,7 +115,7 @@
 					e.stopPropagation();
 					handlePromoteToAction();
 				}}
-				class="px-3 py-1.5 text-xs font-medium text-blue-700 dark:text-blue-300 bg-blue-100 dark:bg-blue-900/30 hover:bg-blue-200 dark:hover:bg-blue-900/50 rounded-md transition-colors flex items-center gap-1"
+				class="px-3 py-1.5 text-xs font-medium text-blue-700 dark:text-blue-300 bg-blue-100 dark:bg-blue-900/30 hover:bg-blue-200 dark:hover:bg-blue-900/50 rounded-md transition-all duration-150 flex items-center gap-1 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1"
 				title="Promote to Next Action"
 			>
 				<svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -37,14 +37,14 @@
 	<div class="mb-4">
 		<h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100">
 			Waiting For
-			<span class="ml-2 px-2 py-0.5 text-sm font-normal text-gray-600 dark:text-gray-400 bg-gray-100 dark:bg-gray-800 rounded">
+			<span class="ml-2 px-2 py-0.5 text-sm font-normal text-gray-600 dark:text-gray-400 bg-gray-100 dark:bg-gray-800 rounded tabular-nums">
 				{waitingForState.itemCount} items
 			</span>
 		</h2>
 
 		<!-- Overdue count indicator -->
 		{#if waitingForState.overdueCount > 0}
-			<p class="text-sm text-red-600 dark:text-red-400 mt-1">
+			<p class="text-sm text-red-600 dark:text-red-400 mt-1 font-medium">
 				{waitingForState.overdueCount} overdue
 			</p>
 		{/if}
@@ -57,20 +57,20 @@
 				type="text"
 				bind:value={newTitle}
 				placeholder="What are you waiting for?"
-				class="flex-1 px-4 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+				class="flex-1 px-4 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-sm"
 			/>
 			<input
 				type="text"
 				bind:value={newPerson}
 				placeholder="Who from?"
-				class="w-48 px-4 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+				class="w-48 px-4 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-sm"
 			/>
 		</div>
 		<div class="flex gap-2">
 			<input
 				type="date"
 				bind:value={newFollowUpDate}
-				class="w-48 px-4 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+				class="w-48 px-4 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-sm"
 			/>
 			<label class="flex items-center text-sm text-gray-600 dark:text-gray-400">
 				Follow up by (optional)
@@ -79,7 +79,7 @@
 			<button
 				type="submit"
 				disabled={isFormDisabled}
-				class="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+				class="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 rounded-md transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
 			>
 				Add
 			</button>
