@@ -16,6 +16,8 @@ export interface GTDItem {
 	sortOrder?: number;
 	followUpDate?: Date;
 	category?: string;
+	deleted?: boolean;
+	deletedAt?: Date;
 }
 
 export interface Context {
@@ -26,6 +28,8 @@ export interface Context {
 	sortOrder: number;  // For sidebar ordering
 	isDefault: boolean; // GTD defaults can't be deleted
 	created: Date;
+	deleted?: boolean;
+	deletedAt?: Date;
 }
 
 export interface GTDList {
@@ -57,6 +61,8 @@ export interface CalendarEvent {
 	exceptionDates?: string[]; // ISO date strings for excluded occurrences
 	created: Date;
 	modified: Date;
+	deleted?: boolean;
+	deletedAt?: Date;
 }
 
 export const db = new Dexie("GTDDatabase") as Dexie & {
@@ -102,6 +108,14 @@ db.version(6).stores({
 	contexts: "++id, name, sortOrder",
 	settings: "++id, &key, updatedAt",
 	events: "++id, startTime, endTime, projectId, source, recurrenceId"
+});
+
+db.version(7).stores({
+	items: "++id, type, created, modified, *searchWords, context, projectId, sortOrder, completedAt, followUpDate, category, deleted",
+	lists: "++id, name, type",
+	contexts: "++id, name, sortOrder",
+	settings: "++id, &key, updatedAt",
+	events: "++id, startTime, endTime, projectId, source, recurrenceId, deleted"
 });
 
 // Hooks for automatic searchWords population
