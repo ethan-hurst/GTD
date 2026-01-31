@@ -11,11 +11,11 @@ See: .planning/PROJECT.md (updated 2026-01-31)
 ## Current Position
 
 Phase: 08.5 (Device Sync — in progress)
-Plan: 1 of 7 in current phase
+Plan: 4 of 7 in current phase
 Status: In progress
-Last activity: 2026-01-31 — Completed 08.5-01-PLAN.md (Soft-Delete Tombstones & Sync Types)
+Last activity: 2026-01-31 — Completed 08.5-04-PLAN.md (Merge & Sync Engine)
 
-Progress: [███████████░░░░░░░░░] 55% (55/TBD plans complete across all phases)
+Progress: [███████████░░░░░░░░░] 58% (58/TBD plans complete across all phases)
 
 ## Performance Metrics
 
@@ -119,6 +119,11 @@ Recent decisions affecting current work:
 - 08.5-01: Soft-delete with tombstones - keep function signatures, change internal behavior (zero breaking changes)
 - 08.5-01: Use deleted?: boolean instead of deleted: boolean | null (cleaner Dexie pattern)
 - 08.5-01: 30-day tombstone retention default allows month-long sync window for paired devices
+- 08.5-04: Last-Write-Wins uses modified timestamp as single source of truth (clock skew accepted)
+- 08.5-04: Tombstones preserved in merge output (filtered at query time, not merge time)
+- 08.5-04: Full-replace import strategy (clear + bulkPut) instead of incremental updates
+- 08.5-04: Pairing code held in memory only - re-prompt after page refresh for security
+- 08.5-04: Debouncer triggers after 2000ms delay OR 5 changes (whichever comes first)
 
 ### Roadmap Evolution
 
@@ -147,5 +152,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-01-31
-Stopped at: Completed 08.5-01-PLAN.md (Soft-Delete Tombstones & Sync Types)
+Stopped at: Completed 08.5-04-PLAN.md (Merge & Sync Engine)
 Resume file: None
