@@ -6,16 +6,16 @@ See: .planning/PROJECT.md (updated 2026-01-31)
 
 **Core value:** Nothing falls through the cracks — every commitment is captured, clarified, and surfaced at the right time so the user always knows what to do next.
 
-**Current focus:** Phase 08.4 - Mobile Responsive Pass
+**Current focus:** Phase 08.4 complete — next: Phase 9 (OAuth Foundation)
 
 ## Current Position
 
-Phase: 08.4 (Mobile Responsive Pass — inserted)
-Plan: 1 of TBD in current phase
-Status: In progress
-Last activity: 2026-01-31 — Completed 08.4-01-PLAN.md (Mobile Responsive Foundation)
+Phase: 08.4 (Mobile Responsive Pass — complete)
+Plan: 7 of 7 in current phase
+Status: Phase complete
+Last activity: 2026-01-31 — Phase 08.4 complete (all 7 plans, verification passed 10/10)
 
-Progress: [██████████░░░░░░░░░░] 48% (48/TBD plans complete across all phases)
+Progress: [███████████░░░░░░░░░] 54% (54/TBD plans complete across all phases)
 
 ## Performance Metrics
 
@@ -94,6 +94,28 @@ Recent decisions affecting current work:
 - 08.4-01: Custom Tailwind breakpoints (phone: 360px, phablet: 640px, tablet: 768px, desktop: 1024px)
 - 08.4-01: Separate JS-level detection (mobileState) from CSS breakpoints (Tailwind) for different use cases
 - 08.4-01: iOS input zoom prevention via min font-size 16px without blocking user zoom (WCAG compliant)
+- 08.4-02: Hamburger menu with slide-out drawer pattern for mobile navigation
+- 08.4-02: FAB positioned bottom-right with safe area insets for quick inbox capture
+- 08.4-02: Complete layout separation: mobile gets header+drawer+FAB, desktop unchanged
+- 08.4-02: Drawer closes on Escape, backdrop click, and nav link click
+- 08.4-02: Body scroll prevention when drawer is open
+- 08.4-02: Belt-and-suspenders approach: JS conditional + CSS hidden tablet:flex on Sidebar
+- 08.4-03: Detail panels become full-screen overlays on mobile (ActionDetailPanel, ProjectDetailPanel)
+- 08.4-03: Category filter tabs scroll horizontally on mobile instead of wrapping
+- 08.4-03: Truncate long titles instead of wrapping to preserve row height consistency
+- 08.4-03: Hide button text labels on smallest screens (show icons only) to save space
+- 08.4-04: Calendar defaults to Day view on mobile (not Week/Month)
+- 08.4-04: Toolbar uses 2-row stacked layout on mobile for adequate spacing
+- 08.4-04: Side panel and calendar toggle on mobile (not side-by-side)
+- 08.4-04: Event form renders as full-screen overlay on mobile
+- 08.4-04: All form inputs use text-base (16px) to prevent iOS zoom
+- 08.4-06: Hide WeeklyReviewWizard sidebar on mobile, show compact progress indicator instead
+- 08.4-06: OnboardingWizard full-screen on mobile to maximize space for content
+- 08.4-06: All wizard buttons stack on mobile (flex-col), side-by-side on phablet+
+- 08.4-06: Input font-size 16px to prevent iOS zoom on focus
+- 08.4-05: Settings cards use 2-column grid on tablet+, single column on mobile
+- 08.4-05: SearchBar results use max-h-[60vh] on mobile (viewport-relative) vs fixed 96 on desktop
+- 08.4-05: ProcessingFlow and IcsImport already mobile-responsive (completed in 08.4-04)
 
 ### Roadmap Evolution
 
@@ -121,5 +143,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-01-31
-Stopped at: Completed 08.4-01-PLAN.md (Mobile Responsive Foundation)
+Stopped at: Phase 08.4 complete — all 7 plans executed, verification passed (10/10)
 Resume file: None
