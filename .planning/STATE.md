@@ -11,11 +11,11 @@ See: .planning/PROJECT.md (updated 2026-01-31)
 ## Current Position
 
 Phase: 08.1 (UI/UX Review — inserted)
-Plan: 5 of TBD in current phase
+Plan: 3 of TBD in current phase
 Status: In progress
-Last activity: 2026-01-31 — Completed 08.1-05-PLAN.md (Secondary Views Polish)
+Last activity: 2026-01-31 — Completed 08.1-03-PLAN.md (Inbox & Processing Polish)
 
-Progress: [████████░░░░░░░░░░░░] 40% (38/TBD plans complete across all phases)
+Progress: [████████░░░░░░░░░░░░] 41% (39/TBD plans complete across all phases)
 
 ## Performance Metrics
 
@@ -64,6 +64,10 @@ Recent decisions affecting current work:
 - 08.1-04: Ring offset for buttons (ring-offset-2), ring inset for list items
 - 08.1-04: Transition duration standardized at 150ms for responsive feel
 - 08.1-04: Shadow-sm on inputs, shadow-lg on panels for visual hierarchy
+- 08.1-03: Changed outer page padding from p-8 to p-6 for consistency with other list views
+- 08.1-03: Made empty state celebratory (green icon circle) rather than just informational
+- 08.1-03: Back links changed from blue to gray to de-emphasize reverse navigation
+- 08.1-03: All buttons standardized to py-2.5 for consistent vertical rhythm
 - 08.1-05: Overdue items use border-l-2 for urgency without being alarming
 - 08.1-05: Active category buttons combine bg-white, shadow-sm, and font-semibold
 - 08.1-05: Settings cards use rounded-xl with hover:shadow-md for elevated feel
@@ -90,6 +94,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-01-31T00:47:00Z
-Stopped at: Completed 08.1-05-PLAN.md
+Last session: 2026-01-31T00:45:47Z
+Stopped at: Completed 08.1-03-PLAN.md
 Resume file: None
