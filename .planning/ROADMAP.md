@@ -196,12 +196,12 @@ Plans:
 **Plans:** 6 plans
 
 Plans:
-- [ ] 08.5-01-PLAN.md — Schema migration (soft-delete tombstones) + sync type definitions
-- [ ] 08.5-02-PLAN.md — Crypto module (AES-GCM + PBKDF2) + pairing code generation
-- [ ] 08.5-03-PLAN.md — Netlify Functions (sync-push + sync-pull) with Netlify Blobs
-- [ ] 08.5-04-PLAN.md — Merge logic (LWW) + sync orchestration engine + reactive store
-- [ ] 08.5-05-PLAN.md — Settings Device Sync UI + Sidebar/StatusBar sync indicators
-- [ ] 08.5-06-PLAN.md — Integration wiring (auto-sync on open, debounced push, verification)
+- [x] 08.5-01-PLAN.md — Schema migration (soft-delete tombstones) + sync type definitions
+- [x] 08.5-02-PLAN.md — Crypto module (AES-GCM + PBKDF2) + pairing code generation
+- [x] 08.5-03-PLAN.md — Netlify Functions (sync-push + sync-pull) with Netlify Blobs
+- [x] 08.5-04-PLAN.md — Merge logic (LWW) + sync orchestration engine + reactive store
+- [x] 08.5-05-PLAN.md — Settings Device Sync UI + Sidebar/StatusBar sync indicators
+- [x] 08.5-06-PLAN.md — Integration wiring (auto-sync on open, debounced push, verification)
 
 **Details:**
 - Netlify Functions: sync-push.mts + sync-pull.mts
@@ -354,7 +354,7 @@ Plans:
 | 08.2 Storage Persistence | v1.0+ | 2/2 | Complete | 2026-01-31 |
 | 08.3 Left Nav Bar UX | v1.0+ | 2/2 | Complete | 2026-01-31 |
 | 08.4 Mobile Responsive Pass | v1.0+ | 7/7 | Complete | 2026-01-31 |
-| 08.5 Device Sync | v1.0+ | 0/6 | Not started | - |
+| 08.5 Device Sync | v1.0+ | 6/6 | Complete | 2026-01-31 |
 | 9. OAuth Foundation | v1.1 | 0/TBD | Not started | - |
 | 10. Read Calendar | v1.1 | 0/TBD | Not started | - |
 | 11. Two-Way Sync | v1.1 | 0/TBD | Not started | - |
