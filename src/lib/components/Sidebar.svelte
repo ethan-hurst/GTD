@@ -26,7 +26,7 @@
 
 <aside class="w-60 border-r border-gray-200/70 dark:border-gray-800/50 bg-gray-50/80 dark:bg-gray-900/95 backdrop-blur-sm flex flex-col">
 	<!-- App Title -->
-	<div class="px-5 py-4 border-b border-gray-200/50 dark:border-gray-800/50">
+	<div class="px-5 py-3 border-b border-gray-200/50 dark:border-gray-800/50">
 		<h1 class="gtd-logo text-xl font-bold text-gray-900 dark:text-gray-100">
 			<span class="gtd-word">G<span class="gtd-expand gtd-expand-1">et</span></span>
 			<span class="gtd-word">T<span class="gtd-expand gtd-expand-2">hings</span></span>
@@ -35,11 +35,12 @@
 	</div>
 
 	<!-- Navigation -->
-	<nav class="flex-1 overflow-y-auto p-4 space-y-1">
+	<nav class="flex-1 overflow-y-auto px-3 py-3 space-y-1">
+		<!-- Capture group -->
 		<FeatureHint feature="inbox" position="right">
 			<a
 				href="/"
-				class="flex items-center justify-between px-4 py-2 rounded-md text-sm font-medium transition-all duration-150
+				class="flex items-center justify-between px-4 py-1.5 rounded-md text-sm font-medium transition-all duration-150
 					focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:ring-offset-1
 					{$page.url.pathname === '/'
 						? 'bg-white dark:bg-gray-800 shadow-sm text-gray-900 dark:text-gray-100 font-semibold'
@@ -54,14 +55,12 @@
 			</a>
 		</FeatureHint>
 
-		<!-- Separator -->
-		<div class="border-t border-gray-200/50 dark:border-gray-700/30 my-2"></div>
-
-		<!-- Next Actions section -->
+		<!-- Action group -->
+		<div class="mt-3">
 		<FeatureHint feature="next-actions" position="right">
 			<a
 				href="/actions"
-				class="block px-4 py-2 rounded-md text-sm font-medium transition-all duration-150
+				class="block px-4 py-1.5 rounded-md text-sm font-medium transition-all duration-150
 					focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:ring-offset-1
 					{$page.url.pathname.startsWith('/actions')
 						? 'bg-white dark:bg-gray-800 shadow-sm text-gray-900 dark:text-gray-100 font-semibold'
@@ -75,14 +74,14 @@
 		<div class="pl-2">
 			<ContextList />
 		</div>
+		</div>
 
-		<!-- Separator -->
-		<div class="border-t border-gray-200/50 dark:border-gray-700/30 my-2"></div>
-
+		<!-- Organize group -->
+		<div class="mt-3">
 		<FeatureHint feature="projects" position="right">
 			<a
 				href="/projects"
-				class="flex items-center justify-between px-4 py-2 rounded-md text-sm font-medium transition-all duration-150
+				class="flex items-center justify-between px-4 py-1.5 rounded-md text-sm font-medium transition-all duration-150
 					focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:ring-offset-1
 					{$page.url.pathname.startsWith('/projects')
 						? 'bg-white dark:bg-gray-800 shadow-sm text-gray-900 dark:text-gray-100 font-semibold'
@@ -97,13 +96,10 @@
 			</a>
 		</FeatureHint>
 
-		<!-- Separator -->
-		<div class="border-t border-gray-200/50 dark:border-gray-700/30 my-2"></div>
-
 		<FeatureHint feature="waiting" position="right">
 			<a
 				href="/waiting"
-				class="block px-4 py-2 rounded-md text-sm font-medium transition-all duration-150
+				class="block px-4 py-1.5 rounded-md text-sm font-medium transition-all duration-150
 					focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:ring-offset-1
 					{$page.url.pathname.startsWith('/waiting')
 						? 'bg-white dark:bg-gray-800 shadow-sm text-gray-900 dark:text-gray-100 font-semibold'
@@ -116,7 +112,7 @@
 		<FeatureHint feature="someday" position="right">
 			<a
 				href="/someday"
-				class="block px-4 py-2 rounded-md text-sm font-medium transition-all duration-150
+				class="block px-4 py-1.5 rounded-md text-sm font-medium transition-all duration-150
 					focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:ring-offset-1
 					{$page.url.pathname.startsWith('/someday')
 						? 'bg-white dark:bg-gray-800 shadow-sm text-gray-900 dark:text-gray-100 font-semibold'
@@ -125,14 +121,14 @@
 				Someday/Maybe
 			</a>
 		</FeatureHint>
+		</div>
 
-		<!-- Separator -->
-		<div class="border-t border-gray-200/50 dark:border-gray-700/30 my-2"></div>
-
+		<!-- Review group -->
+		<div class="mt-3">
 		<FeatureHint feature="review" position="right">
 			<a
 				href="/review"
-				class="flex items-center justify-between px-4 py-2 rounded-md text-sm font-medium transition-all duration-150
+				class="flex items-center justify-between px-4 py-1.5 rounded-md text-sm font-medium transition-all duration-150
 					focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:ring-offset-1
 					{$page.url.pathname.startsWith('/review')
 						? 'bg-white dark:bg-gray-800 shadow-sm text-gray-900 dark:text-gray-100 font-semibold'
@@ -150,7 +146,7 @@
 		<FeatureHint feature="calendar" position="right">
 			<a
 				href="/calendar"
-				class="block px-4 py-2 rounded-md text-sm font-medium transition-all duration-150
+				class="block px-4 py-1.5 rounded-md text-sm font-medium transition-all duration-150
 					focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:ring-offset-1
 					{$page.url.pathname.startsWith('/calendar')
 						? 'bg-white dark:bg-gray-800 shadow-sm text-gray-900 dark:text-gray-100 font-semibold'
@@ -159,14 +155,14 @@
 				Calendar
 			</a>
 		</FeatureHint>
+		</div>
 
-		<!-- Separator -->
-		<div class="border-t border-gray-200/50 dark:border-gray-700/30 my-2"></div>
-
+		<!-- System group -->
+		<div class="mt-3">
 		<FeatureHint feature="settings" position="right">
 			<a
 				href="/settings"
-				class="block px-4 py-2 rounded-md text-sm font-medium transition-all duration-150
+				class="block px-4 py-1.5 rounded-md text-sm font-medium transition-all duration-150
 					focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:ring-offset-1
 					{$page.url.pathname === '/settings'
 						? 'bg-white dark:bg-gray-800 shadow-sm text-gray-900 dark:text-gray-100 font-semibold'
@@ -175,10 +171,11 @@
 				Settings
 			</a>
 		</FeatureHint>
+		</div>
 	</nav>
 
 	<!-- Theme Toggle Footer -->
-	<div class="p-4 border-t border-gray-200/50 dark:border-gray-800/50">
+	<div class="px-3 py-2 border-t border-gray-200/50 dark:border-gray-800/50">
 		<ThemeToggle />
 	</div>
 </aside>
