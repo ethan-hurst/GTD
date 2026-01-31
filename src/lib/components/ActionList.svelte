@@ -127,7 +127,7 @@
 			<h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100">
 				{viewTitle}
 			</h2>
-			<p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
+			<p class="text-sm text-gray-500 dark:text-gray-400 mt-1 tabular-nums">
 				{actionState.itemCount} action{actionState.itemCount !== 1 ? 's' : ''}
 			</p>
 		</div>
@@ -140,13 +140,13 @@
 				</span>
 				<button
 					onclick={handleBulkComplete}
-					class="px-3 py-1.5 text-sm font-medium text-white bg-green-600 hover:bg-green-700 rounded-md transition-colors"
+					class="px-3 py-1.5 text-sm font-medium text-white bg-green-600 hover:bg-green-700 rounded-md transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-green-500/40 focus:ring-offset-2"
 				>
 					Complete selected
 				</button>
 				<button
 					onclick={() => actionState.clearSelection()}
-					class="px-3 py-1.5 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md transition-colors"
+					class="px-3 py-1.5 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-gray-500/40 focus:ring-offset-2"
 				>
 					Clear
 				</button>
@@ -172,7 +172,7 @@
 		<div class="space-y-6">
 			{#each [...contextGroups.entries()] as [contextName, items] (contextName)}
 				<div>
-					<h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2 px-2">
+					<h3 class="text-xs font-semibold uppercase tracking-wider text-gray-700 dark:text-gray-300 mb-2 px-2">
 						{contextName}
 						<span class="text-gray-400 font-normal">({items.length})</span>
 					</h3>

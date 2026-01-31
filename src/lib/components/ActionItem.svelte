@@ -76,7 +76,7 @@
 
 {#if !isCompleting}
 	<div
-		class="flex items-start gap-3 p-3 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors cursor-pointer rounded-md"
+		class="flex items-start gap-3 p-3 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors cursor-pointer rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:ring-inset"
 		onclick={handleRowClick}
 		role="button"
 		tabindex="0"
@@ -108,7 +108,7 @@
 				e.stopPropagation();
 				handleComplete();
 			}}
-			class="flex-shrink-0 mt-1 w-5 h-5 rounded-full border-2 border-gray-300 dark:border-gray-600 hover:border-blue-500 dark:hover:border-blue-400 transition-colors"
+			class="flex-shrink-0 mt-1 w-5 h-5 rounded-full border-2 border-gray-300 dark:border-gray-600 hover:border-blue-500 dark:hover:border-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:ring-offset-2"
 			title="Complete action"
 		>
 		</button>
@@ -128,7 +128,7 @@
 			{:else}
 				<h3
 					onclick={handleTitleClick}
-					class="font-medium text-gray-900 dark:text-gray-100 cursor-text hover:bg-gray-100 dark:hover:bg-gray-700 px-2 py-1 rounded inline-block"
+					class="font-medium text-gray-900 dark:text-gray-100 cursor-text hover:bg-gray-100/70 dark:hover:bg-gray-700/70 px-2 py-1 rounded inline-block"
 				>
 					{item.title}
 				</h3>
@@ -138,7 +138,7 @@
 			<div class="flex items-center gap-2 mt-1" onclick={(e) => e.stopPropagation()}>
 				<!-- Context badge -->
 				{#if item.context}
-					<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300">
+					<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 transition-all duration-150">
 						{item.context}
 					</span>
 				{/if}
@@ -147,7 +147,7 @@
 				{#if item.projectId}
 					<button
 						onclick={handleBadgeClick}
-						class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 hover:bg-purple-200 dark:hover:bg-purple-900/50 transition-colors"
+						class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 hover:bg-purple-200 dark:hover:bg-purple-900/50 transition-all duration-150"
 					>
 						Project
 					</button>
