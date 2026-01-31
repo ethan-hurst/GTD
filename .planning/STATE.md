@@ -11,11 +11,11 @@ See: .planning/PROJECT.md (updated 2026-01-31)
 ## Current Position
 
 Phase: 08.2 (Storage Persistence Bug — inserted)
-Plan: 1 of 2 in current phase
-Status: In progress
-Last activity: 2026-01-31 — Completed 08.2-01-PLAN.md (Refactor Storage Persistence State Management)
+Plan: 2 of 2 in current phase
+Status: Phase complete
+Last activity: 2026-01-31 — Completed 08.2-02-PLAN.md (Integrate Persistence UI with State Store)
 
-Progress: [██████████░░░░░░░░░░] 43% (43/TBD plans complete across all phases)
+Progress: [██████████░░░░░░░░░░] 44% (44/TBD plans complete across all phases)
 
 ## Performance Metrics
 
@@ -79,6 +79,10 @@ Recent decisions affecting current work:
 - 08.2-01: Use three discrete states (UNKNOWN, GRANTED, DENIED) instead of boolean for persistence
 - 08.2-01: Keep state as UNKNOWN when persisted() returns false (only set DENIED on explicit request rejection)
 - 08.2-01: Add console logs for all persistence state transitions
+- 08.2-02: Show success toast on every app load when storage is persistent (user confirmation)
+- 08.2-02: Detect browser type and provide specific guidance when persistence denied
+- 08.2-02: Only display storage quota in StatusBar when persistence is GRANTED
+- 08.2-02: Four-state StatusBar UI: green (GRANTED), amber (UNKNOWN), red (DENIED), gray (no API)
 
 ### Roadmap Evolution
 
@@ -103,6 +107,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-01-31T12:08:51Z
-Stopped at: Completed 08.2-01-PLAN.md (Refactor Storage Persistence State Management)
+Last session: 2026-01-31T12:14:31Z
+Stopped at: Completed 08.2-02-PLAN.md (Integrate Persistence UI with State Store) — Phase 08.2 COMPLETE
 Resume file: None
