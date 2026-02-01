@@ -540,6 +540,26 @@
 				<span class="text-sm font-medium text-green-700 dark:text-green-400">Paired</span>
 			</div>
 
+			<!-- Show generated code if it exists (just generated) -->
+			{#if generatedCode}
+				<div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-md p-4 mb-4">
+					<p class="text-sm text-gray-600 dark:text-gray-400 mb-2">
+						Enter this code on your other device to link them:
+					</p>
+					<div class="flex items-center gap-2">
+						<div class="text-2xl font-mono font-bold text-blue-700 dark:text-blue-300">
+							{generatedCode}
+						</div>
+						<button
+							onclick={handleCopyCode}
+							class="px-3 py-1.5 bg-blue-600 text-white rounded-md text-sm font-medium hover:bg-blue-700 transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+						>
+							Copy
+						</button>
+					</div>
+				</div>
+			{/if}
+
 			<!-- Pairing code re-entry if needed -->
 			{#if !syncState.hasPairingCode()}
 				<div class="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-md p-4 mb-4">
