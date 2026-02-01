@@ -69,23 +69,33 @@ function compareDates(a: Date | string, b: Date | string): number {
 /**
  * Merge two arrays of records using Last-Write-Wins strategy
  * Preserves tombstones (deleted=true) for propagation
+ *
+ * @param local Local records array
+ * @param remote Remote records array
+ * @param keyFn Function to extract merge key from record (defaults to using id field)
  */
-export function mergeTable<T extends SyncRecord>(local: T[], remote: T[]): T[] {
-	const merged = new Map<number, T>();
+export function mergeTable<T extends SyncRecord>(
+	local: T[],
+	remote: T[],
+	keyFn: (record: T) => string | number = (record) => record.id
+): T[] {
+	const merged = new Map<string | number, T>();
 
 	// Add all local records
 	for (const record of local) {
-		merged.set(record.id, deserializeDates(record));
+		const key = keyFn(record);
+		merged.set(key, deserializeDates(record));
 	}
 
 	// Merge remote records
 	for (const remoteRecord of remote) {
 		const deserialized = deserializeDates(remoteRecord);
-		const localRecord = merged.get(deserialized.id);
+		const key = keyFn(deserialized);
+		const localRecord = merged.get(key);
 
 		if (!localRecord) {
 			// New record from remote device
-			merged.set(deserialized.id, deserialized);
+			merged.set(key, deserialized);
 		} else {
 			// Conflict - use Last-Write-Wins based on best available timestamp
 			const remoteTime = getTimestamp(deserialized);
@@ -95,12 +105,12 @@ export function mergeTable<T extends SyncRecord>(local: T[], remote: T[]): T[] {
 				const comparison = compareDates(remoteTime, localTime);
 				if (comparison > 0) {
 					// Remote is newer
-					merged.set(deserialized.id, deserialized);
+					merged.set(key, deserialized);
 				}
 				// If comparison <= 0, keep local (already in map)
 			} else if (remoteTime && !localTime) {
 				// Only remote has a timestamp — prefer it
-				merged.set(deserialized.id, deserialized);
+				merged.set(key, deserialized);
 			}
 			// If neither has timestamps or only local does, keep local
 		}
@@ -139,7 +149,12 @@ export function mergePayloads(
 			result[tableName] = localTable;
 		} else {
 			// Both have data - merge
-			result[tableName] = mergeTable(localTable, remoteTable);
+			// Settings table uses 'key' field as unique identifier, not 'id'
+			if (tableName === 'settings') {
+				result[tableName] = mergeTable(localTable, remoteTable, (record: any) => record.key);
+			} else {
+				result[tableName] = mergeTable(localTable, remoteTable);
+			}
 		}
 	}
 
