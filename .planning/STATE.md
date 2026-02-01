@@ -151,6 +151,10 @@ Recent decisions affecting current work:
 - 08.7-01: Pre-aggregate daily metrics server-side (pageviews, events, unique visitors, referrers)
 - 08.7-01: sendBeacon with fetch keepalive fallback for reliability across browsers
 - 08.7-01: DNT respected on both client and server for privacy compliance
+- 08.7-02: Analytics calls placed after primary action completes (non-blocking pattern)
+- 08.7-02: Sync metrics include itemCount and duration for operational insight
+- 08.7-02: Task events include type property to differentiate creation paths
+- 08.7-02: All trackEvent calls are fail-safe (wrapped in try/catch inside client.ts)
 - 08.7-03: Basic auth with ANALYTICS_PASSWORD env var for query endpoint protection
 - 08.7-03: Opportunistic cleanup runs on each query (fire-and-forget) to enforce GDPR retention
 - 08.7-03: Default 30-day range, max 395 days (~13 months) for analytics queries
