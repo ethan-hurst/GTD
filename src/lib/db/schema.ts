@@ -66,12 +66,23 @@ export interface CalendarEvent {
 	deletedAt?: Date;
 }
 
+export interface QueuedFeedback {
+	id?: number;
+	type: 'bug' | 'feature';
+	description: string;
+	email?: string;
+	screenshot?: string;
+	timestamp: number;
+	retryCount: number;
+}
+
 export const db = new Dexie("GTDDatabase") as Dexie & {
 	items: EntityTable<GTDItem, "id">;
 	lists: EntityTable<GTDList, "id">;
 	contexts: EntityTable<Context, "id">;
 	settings: EntityTable<AppSettings, "id">;
 	events: EntityTable<CalendarEvent, "id">;
+	feedbackQueue: EntityTable<QueuedFeedback, "id">;
 };
 
 db.version(1).stores({
@@ -256,6 +267,16 @@ db.version(11).stores({
 	_tmp_lists: null as any,
 	_tmp_contexts: null as any,
 	_tmp_events: null as any
+});
+
+// Version 12: Add feedbackQueue table for offline feedback submissions
+db.version(12).stores({
+	items: "id, type, created, modified, *searchWords, context, projectId, sortOrder, completedAt, followUpDate, category, deleted",
+	lists: "id, name, type",
+	contexts: "id, name, sortOrder",
+	settings: "++id, &key, updatedAt",
+	events: "id, startTime, endTime, projectId, source, recurrenceId, deleted",
+	feedbackQueue: "++id, timestamp, retryCount"
 });
 
 // Hooks for automatic searchWords population
