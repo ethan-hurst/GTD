@@ -11,7 +11,7 @@ vi.mock('@netlify/blobs', () => ({
 }));
 
 import { getStore } from '@netlify/blobs';
-import handler from './sync-push.mts';
+import handler from '../../netlify/functions/sync-push.mts';
 
 // Helper to create mock context
 function mockContext(): Context {

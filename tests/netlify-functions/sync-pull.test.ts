@@ -10,7 +10,7 @@ vi.mock('@netlify/blobs', () => ({
 }));
 
 import { getStore } from '@netlify/blobs';
-import handler from './sync-check.mts';
+import handler from '../../netlify/functions/sync-pull.mts';
 
 // Helper to create mock context
 function mockContext(): Context {
@@ -21,7 +21,7 @@ function mockContext(): Context {
 
 // Helper to create Request object
 function makeRequest(method: string, deviceId?: string): Request {
-  const url = new URL('https://example.com/.netlify/functions/sync-check');
+  const url = new URL('https://example.com/.netlify/functions/sync-pull');
 
   if (deviceId !== undefined) {
     url.searchParams.set('deviceId', deviceId);
@@ -30,7 +30,7 @@ function makeRequest(method: string, deviceId?: string): Request {
   return new Request(url.toString(), { method });
 }
 
-describe('sync-check function', () => {
+describe('sync-pull function', () => {
   let mockStore: any;
 
   beforeEach(() => {
@@ -86,7 +86,7 @@ describe('sync-check function', () => {
     expect(data).toEqual({ error: 'Invalid deviceId format' });
   });
 
-  it('returns 200 found:false when hash not found', async () => {
+  it('returns 200 found:false when blob not found', async () => {
     mockStore.get.mockResolvedValueOnce(null);
 
     const req = makeRequest('GET', 'a'.repeat(64));
@@ -95,12 +95,13 @@ describe('sync-check function', () => {
     expect(res.status).toBe(200);
     const data = await res.json();
     expect(data.found).toBe(false);
+    expect(data.message).toBe('No sync data found for this device');
   });
 
-  it('returns 200 found:true with hash when found', async () => {
+  it('returns 200 found:true with encryptedBlob when found', async () => {
     const deviceId = 'a'.repeat(64);
-    const contentHash = 'hash123';
-    mockStore.get.mockResolvedValueOnce(contentHash);
+    const encryptedBlob = 'encrypted-data-here';
+    mockStore.get.mockResolvedValueOnce(encryptedBlob);
 
     const req = makeRequest('GET', deviceId);
     const res = await handler(req, mockContext());
@@ -108,17 +109,19 @@ describe('sync-check function', () => {
     expect(res.status).toBe(200);
     const data = await res.json();
     expect(data.found).toBe(true);
-    expect(data.hash).toBe(contentHash);
+    expect(data.encryptedBlob).toBe(encryptedBlob);
+    expect(data.timestamp).toBeDefined();
+    expect(typeof data.timestamp).toBe('string');
   });
 
-  it('calls store.get with correct deviceId and -hash suffix', async () => {
+  it('calls store.get with correct deviceId', async () => {
     const deviceId = 'a'.repeat(64);
 
     const req = makeRequest('GET', deviceId);
     await handler(req, mockContext());
 
     expect(getStore).toHaveBeenCalledWith('sync-data');
-    expect(mockStore.get).toHaveBeenCalledWith(deviceId + '-hash', { type: 'text' });
+    expect(mockStore.get).toHaveBeenCalledWith(deviceId, { type: 'text' });
   });
 
   it('returns 500 when store.get throws error', async () => {

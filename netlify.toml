@@ -4,4 +4,3 @@
 
 [functions]
   directory = "netlify/functions"
-  included_functions = ["analytics-track", "analytics-query", "sync-check", "sync-pull", "sync-push"]
