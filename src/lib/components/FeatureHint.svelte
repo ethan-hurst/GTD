@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { onMount, tick } from 'svelte';
 	import type { Snippet } from 'svelte';
 	import type { Feature } from '$lib/utils/featureTracking';
 	import { hasVisitedFeature } from '$lib/utils/featureTracking';
@@ -14,9 +14,10 @@
 
 	let { feature, children, position = 'right' }: Props = $props();
 
-	let showHint = $state(false);
 	let isHovered = $state(false);
 	let featureVisited = $state(false);
+	let wrapperEl: HTMLDivElement | undefined = $state();
+	let tooltipStyle = $state('');
 
 	// Only show hints if onboarding has been completed or skipped
 	const shouldShowHints = $derived(
@@ -34,22 +35,7 @@
 	// Show hint only if: onboarding done, feature not visited, and element is hovered
 	const displayHint = $derived(shouldShowHints && !featureVisited && isHovered);
 
-	// Position classes for the tooltip
-	const positionClasses = $derived.by(() => {
-		switch (position) {
-			case 'top':
-				return 'bottom-full left-1/2 -translate-x-1/2 mb-2';
-			case 'bottom':
-				return 'top-full left-1/2 -translate-x-1/2 mt-2';
-			case 'left':
-				return 'right-full top-1/2 -translate-y-1/2 mr-2';
-			case 'right':
-			default:
-				return 'left-full top-1/2 -translate-y-1/2 ml-2';
-		}
-	});
-
-	// Arrow position classes
+	// Arrow position classes (arrow is positioned inside the tooltip)
 	const arrowClasses = $derived.by(() => {
 		switch (position) {
 			case 'top':
@@ -64,8 +50,46 @@
 		}
 	});
 
+	// Compute tooltip position using viewport coordinates
+	function computeTooltipPosition() {
+		if (!wrapperEl) return;
+		const rect = wrapperEl.getBoundingClientRect();
+		const gap = 8; // spacing between trigger and tooltip
+
+		switch (position) {
+			case 'top':
+				tooltipStyle = `position:fixed; bottom:${window.innerHeight - rect.top + gap}px; left:${rect.left + rect.width / 2}px; transform:translateX(-50%);`;
+				break;
+			case 'bottom':
+				tooltipStyle = `position:fixed; top:${rect.bottom + gap}px; left:${rect.left + rect.width / 2}px; transform:translateX(-50%);`;
+				break;
+			case 'left':
+				tooltipStyle = `position:fixed; top:${rect.top + rect.height / 2}px; right:${window.innerWidth - rect.left + gap}px; transform:translateY(-50%);`;
+				break;
+			case 'right':
+			default:
+				tooltipStyle = `position:fixed; top:${rect.top + rect.height / 2}px; left:${rect.right + gap}px; transform:translateY(-50%);`;
+				break;
+		}
+	}
+
+	// Teleport tooltip to document.body to escape all overflow/stacking contexts
+	// This is necessary because the sidebar has overflow-y-auto on the nav and
+	// backdrop-filter on the aside, both of which clip or constrain child tooltips.
+	function portalToBody(node: HTMLElement) {
+		document.body.appendChild(node);
+		return {
+			destroy() {
+				if (node.parentNode) {
+					node.parentNode.removeChild(node);
+				}
+			}
+		};
+	}
+
 	function handleMouseEnter() {
 		isHovered = true;
+		tick().then(computeTooltipPosition);
 	}
 
 	function handleMouseLeave() {
@@ -81,6 +105,7 @@
 
 <div
 	class="relative inline-block"
+	bind:this={wrapperEl}
 	onmouseenter={handleMouseEnter}
 	onmouseleave={handleMouseLeave}
 	role="tooltip"
@@ -98,24 +123,25 @@
 			></div>
 		{/if}
 	</div>
-
-	<!-- Hint tooltip (shown on hover) -->
-	{#if displayHint}
-		<div
-			id="hint-{feature}"
-			class="absolute z-50 w-64 px-3 py-2 text-sm bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 rounded-lg shadow-lg {positionClasses}"
-			role="tooltip"
-			onkeydown={handleKeydown}
-		>
-			<!-- Arrow -->
-			<div
-				class="absolute w-0 h-0 border-4 {arrowClasses}"
-				aria-hidden="true"
-			></div>
-
-			<!-- Content -->
-			<div class="font-semibold mb-1">{hintContent.title}</div>
-			<div class="text-xs opacity-90">{hintContent.description}</div>
-		</div>
-	{/if}
 </div>
+
+<!-- Hint tooltip rendered via portal to document.body to escape overflow containers -->
+{#if displayHint}
+	<div
+		use:portalToBody
+		id="hint-{feature}"
+		class="z-50 w-64 px-3 py-2 text-sm bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 rounded-lg shadow-lg pointer-events-none"
+		style={tooltipStyle}
+		role="tooltip"
+	>
+		<!-- Arrow -->
+		<div
+			class="absolute w-0 h-0 border-4 {arrowClasses}"
+			aria-hidden="true"
+		></div>
+
+		<!-- Content -->
+		<div class="font-semibold mb-1">{hintContent.title}</div>
+		<div class="text-xs opacity-90">{hintContent.description}</div>
+	</div>
+{/if}
