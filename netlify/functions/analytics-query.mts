@@ -18,7 +18,7 @@ export default async (req: Request, context: Context) => {
 
 	try {
 		// Check if analytics password is configured
-		const analyticsPassword = process.env.ANALYTICS_PASSWORD || context.env.get?.('ANALYTICS_PASSWORD');
+		const analyticsPassword = process.env.ANALYTICS_PASSWORD;
 		if (!analyticsPassword) {
 			return new Response(JSON.stringify({ error: 'Analytics not configured' }), {
 				status: 503,
