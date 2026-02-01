@@ -52,7 +52,7 @@ export default defineConfig({
 		// Globals for describe/it/expect
 		globals: true,
 
-		// Include pattern for tests
-		include: ['**/*.test.ts'],
+		// Include pattern for tests (exclude Netlify Functions tests - those use vitest.node.config.ts)
+		include: ['src/**/*.test.ts'],
 	}
 });
