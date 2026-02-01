@@ -12,7 +12,7 @@ export default async (req: Request, context: Context) => {
 
   try {
     const body = await req.json();
-    const { deviceId, encryptedBlob } = body;
+    const { deviceId, encryptedBlob, contentHash } = body;
 
     // Validate required fields
     if (!deviceId || typeof deviceId !== 'string') {
@@ -40,6 +40,11 @@ export default async (req: Request, context: Context) => {
     // Store encrypted blob in Netlify Blobs
     const store = getStore('sync-data');
     await store.set(deviceId, encryptedBlob);
+
+    // Store content hash alongside blob (optional field for backwards compatibility)
+    if (contentHash && typeof contentHash === 'string') {
+      await store.set(deviceId + '-hash', contentHash);
+    }
 
     return new Response(JSON.stringify({
       success: true,

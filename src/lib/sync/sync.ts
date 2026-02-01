@@ -52,6 +52,33 @@ export async function importFromSync(mergedData: Record<string, any[]>): Promise
 }
 
 /**
+ * Compute a deterministic SHA-256 hash of sync data.
+ * Canonicalizes by sorting table names and records within each table
+ * so identical data always produces the same hash regardless of ordering.
+ */
+export async function computeContentHash(data: Record<string, any[]>): Promise<string> {
+	// Sort table names
+	const sortedTables = Object.keys(data).sort();
+
+	const canonical: Record<string, any[]> = {};
+	for (const tableName of sortedTables) {
+		// Sort records by 'id' (or 'key' for settings-like tables), then stringify each for stable ordering
+		const records = [...data[tableName]].sort((a, b) => {
+			const keyA = String(a.id ?? a.key ?? '');
+			const keyB = String(b.id ?? b.key ?? '');
+			return keyA.localeCompare(keyB);
+		});
+		canonical[tableName] = records;
+	}
+
+	const jsonStr = JSON.stringify(canonical);
+	const encoded = new TextEncoder().encode(jsonStr);
+	const hashBuffer = await crypto.subtle.digest('SHA-256', encoded);
+	const hashArray = Array.from(new Uint8Array(hashBuffer));
+	return hashArray.map((b) => b.toString(16).padStart(2, '0')).join('');
+}
+
+/**
  * Pull encrypted blob from Netlify Functions
  * Returns null if no data exists on server
  */
@@ -76,19 +103,52 @@ export async function pullFromCloud(deviceId: string): Promise<string | null> {
 }
 
 /**
+ * Lightweight check for remote changes.
+ * Returns the remote content hash or null if unavailable.
+ * Non-throwing — polling is best-effort.
+ */
+export async function checkForUpdates(deviceId: string): Promise<string | null> {
+	try {
+		const response = await fetch(
+			`/.netlify/functions/sync-check?deviceId=${encodeURIComponent(deviceId)}`
+		);
+
+		if (!response.ok) {
+			console.warn(`sync-check returned HTTP ${response.status}`);
+			return null;
+		}
+
+		const json = await response.json();
+		if (json.found && json.hash) {
+			return json.hash;
+		}
+		return null;
+	} catch (err) {
+		console.warn('sync-check failed:', err);
+		return null;
+	}
+}
+
+/**
  * Push encrypted blob to Netlify Functions
  */
-export async function pushToCloud(deviceId: string, encryptedBlob: string): Promise<boolean> {
+export async function pushToCloud(
+	deviceId: string,
+	encryptedBlob: string,
+	contentHash?: string
+): Promise<boolean> {
 	try {
+		const body: Record<string, string> = { deviceId, encryptedBlob };
+		if (contentHash) {
+			body.contentHash = contentHash;
+		}
+
 		const response = await fetch('/.netlify/functions/sync-push', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'
 			},
-			body: JSON.stringify({
-				deviceId,
-				encryptedBlob
-			})
+			body: JSON.stringify(body)
 		});
 
 		return response.ok;
@@ -99,22 +159,25 @@ export async function pushToCloud(deviceId: string, encryptedBlob: string): Prom
 
 /**
  * Full sync cycle: pull -> decrypt -> merge -> encrypt -> push
+ * Uses content hashing to skip unnecessary pushes (prevents sync loops)
  */
 export async function performSync(
 	pairingCode: string,
 	deviceId: string
-): Promise<{ success: boolean; error?: string }> {
+): Promise<{ success: boolean; error?: string; contentHash?: string }> {
 	try {
 		// Step 1: Pull from cloud
 		const encryptedRemote = await pullFromCloud(deviceId);
 
 		let remoteData: Record<string, any[]> | null = null;
+		let remoteHash: string | null = null;
 
-		// Step 2: If remote data exists, decrypt it
+		// Step 2: If remote data exists, decrypt it and compute its hash
 		if (encryptedRemote) {
 			const decryptedJson = await decrypt(encryptedRemote, pairingCode);
 			const remotePayload: SyncPayload = JSON.parse(decryptedJson);
 			remoteData = remotePayload.data;
+			remoteHash = await computeContentHash(remoteData);
 		}
 
 		// Step 3: Export local data
@@ -124,19 +187,23 @@ export async function performSync(
 		// Step 4: Merge (or use local only if no remote)
 		const mergedData = remoteData ? mergeData(localData, remoteData) : localData;
 
-		// Step 5: Encrypt merged data
-		const mergedPayload: SyncPayload = {
-			version: 1,
-			timestamp: new Date().toISOString(),
-			schemaVersion: db.verno,
-			data: mergedData
-		};
-		const encryptedMerged = await encrypt(JSON.stringify(mergedPayload), pairingCode);
+		// Step 5: Compute merged hash for change detection
+		const mergedHash = await computeContentHash(mergedData);
 
-		// Step 6: Push to cloud
-		const pushSuccess = await pushToCloud(deviceId, encryptedMerged);
-		if (!pushSuccess) {
-			throw new Error('Push to cloud failed');
+		// Step 6: Only push if merged data differs from remote
+		if (mergedHash !== remoteHash) {
+			const mergedPayload: SyncPayload = {
+				version: 1,
+				timestamp: new Date().toISOString(),
+				schemaVersion: db.verno,
+				data: mergedData
+			};
+			const encryptedMerged = await encrypt(JSON.stringify(mergedPayload), pairingCode);
+
+			const pushSuccess = await pushToCloud(deviceId, encryptedMerged, mergedHash);
+			if (!pushSuccess) {
+				throw new Error('Push to cloud failed');
+			}
 		}
 
 		// Step 7: Import merged data into local DB
@@ -153,7 +220,7 @@ export async function performSync(
 		// Step 9: Save lastSyncTime
 		await setSetting('sync-last-sync-time', new Date().toISOString());
 
-		return { success: true };
+		return { success: true, contentHash: mergedHash };
 	} catch (err) {
 		return {
 			success: false,

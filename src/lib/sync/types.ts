@@ -36,11 +36,13 @@ export interface SyncConfig {
 	debounceMs: number;
 	maxChangesBeforeSync: number;
 	tombstoneMaxAgeDays: number;
+	pollIntervalMs: number;
 }
 
 // Default sync configuration
 export const DEFAULT_SYNC_CONFIG: SyncConfig = {
 	debounceMs: 2000,
 	maxChangesBeforeSync: 5,
-	tombstoneMaxAgeDays: 30
+	tombstoneMaxAgeDays: 30,
+	pollIntervalMs: 30000
 };

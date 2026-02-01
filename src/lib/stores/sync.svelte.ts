@@ -4,7 +4,8 @@
  */
 
 import type { SyncState } from '$lib/sync/types';
-import { performSync, syncDebouncer } from '$lib/sync/sync';
+import { DEFAULT_SYNC_CONFIG } from '$lib/sync/types';
+import { performSync, checkForUpdates, syncDebouncer } from '$lib/sync/sync';
 import {
 	loadPairingInfo,
 	savePairingInfo,
@@ -25,6 +26,10 @@ class SyncStore {
 
 	// Private - pairing code held in memory only (not persisted)
 	private pairingCode: string | null = null;
+
+	// Polling state
+	private lastKnownHash: string | null = null;
+	private pollIntervalId: ReturnType<typeof setInterval> | null = null;
 
 	constructor() {
 		// Initialization happens in init()
@@ -50,6 +55,11 @@ class SyncStore {
 
 			// Wire up sync notifier for database changes
 			setSyncNotifier(() => this.queueSync());
+
+			// Start polling if already paired
+			if (this.isPaired) {
+				this.startPolling();
+			}
 		} catch (err) {
 			console.error('Sync init failed:', err);
 			this.lastError = err instanceof Error ? err.message : String(err);
@@ -99,6 +109,9 @@ class SyncStore {
 			// Trigger initial sync
 			await this.sync();
 
+			// Start polling for remote changes
+			this.startPolling();
+
 			return true;
 		} catch (err) {
 			const message = err instanceof Error ? err.message : String(err);
@@ -117,6 +130,9 @@ class SyncStore {
 	 * Clears all pairing info and resets state
 	 */
 	async unpair(): Promise<void> {
+		// Stop polling
+		this.stopPolling();
+
 		// Clear pairing info from IndexedDB
 		await clearPairingInfo();
 
@@ -130,6 +146,7 @@ class SyncStore {
 		this.lastSyncTime = null;
 		this.lastError = null;
 		this.syncState = 'idle';
+		this.lastKnownHash = null;
 
 		// Cancel any pending syncs
 		syncDebouncer.cancel();
@@ -195,6 +212,11 @@ class SyncStore {
 				this.syncState = 'idle';
 				this.lastSyncTime = new Date();
 				this.lastError = null;
+
+				// Track content hash for polling change detection
+				if (result.contentHash) {
+					this.lastKnownHash = result.contentHash;
+				}
 			} else {
 				this.syncState = 'error';
 				this.lastError = result.error || 'Sync failed';
@@ -228,6 +250,55 @@ class SyncStore {
 		syncDebouncer.queueSync(async () => {
 			await this.sync();
 		});
+	}
+
+	/**
+	 * Start periodic polling for remote changes
+	 */
+	private startPolling(): void {
+		// Don't start if already polling
+		if (this.pollIntervalId) return;
+
+		this.pollIntervalId = setInterval(
+			() => this.pollForChanges(),
+			DEFAULT_SYNC_CONFIG.pollIntervalMs
+		);
+	}
+
+	/**
+	 * Stop periodic polling
+	 */
+	private stopPolling(): void {
+		if (this.pollIntervalId) {
+			clearInterval(this.pollIntervalId);
+			this.pollIntervalId = null;
+		}
+	}
+
+	/**
+	 * Poll for remote changes via lightweight hash check.
+	 * Only triggers a full sync if the remote hash differs from lastKnownHash.
+	 */
+	private async pollForChanges(): Promise<void> {
+		// Guard: must be paired with code available
+		if (!this.isPaired || !this.deviceId || !this.pairingCode) return;
+
+		// Guard: don't poll while already syncing
+		if (this.syncState !== 'idle' && this.syncState !== 'error') return;
+
+		// Guard: skip if tab is hidden (save bandwidth)
+		if (typeof document !== 'undefined' && document.hidden) return;
+
+		const remoteHash = await checkForUpdates(this.deviceId);
+
+		// No hash available (endpoint error or no data yet) — skip
+		if (!remoteHash) return;
+
+		// Hash matches — no changes
+		if (remoteHash === this.lastKnownHash) return;
+
+		// Remote has changed — trigger full sync
+		await this.sync();
 	}
 }
 
