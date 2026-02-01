@@ -1,13 +1,20 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
 	import { onboardingState } from '$lib/stores/onboarding.svelte';
 	import { inboxState } from '$lib/stores/inbox.svelte';
 	import { addItem } from '$lib/db/operations';
+	import { analytics } from '$lib/analytics/events';
 	import confetti from 'canvas-confetti';
 
 	let captureInput = $state('');
 	let hasCapturedFirst = $state(false);
 	let isSubmitting = $state(false);
 	let showCaptureSuccess = $state(false);
+
+	onMount(() => {
+		// Track onboarding start
+		analytics.onboardingStarted();
+	});
 
 	async function handleCapture(e: Event) {
 		e.preventDefault();
@@ -54,6 +61,9 @@
 	}
 
 	async function handleFinish() {
+		// Track onboarding completion
+		analytics.onboardingCompleted();
+
 		// Fire completion confetti
 		confetti({
 			particleCount: 100,

@@ -4,6 +4,7 @@
 	import { addItem } from '../db/operations';
 	import { inboxState } from '../stores/inbox.svelte';
 	import { storageStatus } from '../stores/storage.svelte';
+	import { analytics } from '$lib/analytics/events';
 
 	let title = $state('');
 	let inputEl: HTMLInputElement;
@@ -32,6 +33,9 @@
 
 			// Update storage status
 			storageStatus.recordSave();
+
+			// Track task creation (activation event)
+			analytics.taskCreated('inbox');
 
 			// Clear input and show toast
 			title = '';

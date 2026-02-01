@@ -4,6 +4,7 @@
 	import { updateItem, deleteItem, getAllContexts, getAllProjects, addProject, addEvent } from '../db/operations';
 	import { storageStatus } from '../stores/storage.svelte';
 	import { toast } from 'svelte-5-french-toast';
+	import { analytics } from '$lib/analytics/events';
 
 	interface ProcessingFlowProps {
 		item: GTDItem;
@@ -65,6 +66,7 @@
 	async function doNow() {
 		await deleteItem(item.id);
 		storageStatus.recordSave();
+		analytics.taskCompleted();
 		toast.success('Done! Item completed.');
 		onProcessed();
 	}
@@ -72,6 +74,7 @@
 	async function trash() {
 		await deleteItem(item.id);
 		storageStatus.recordSave();
+		analytics.taskDeleted();
 		toast.success('Trashed.');
 		onProcessed();
 	}
