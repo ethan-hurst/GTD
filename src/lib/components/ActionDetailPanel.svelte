@@ -19,7 +19,7 @@
 	let title = $state(item.title);
 	let notes = $state(item.notes || '');
 	let context = $state(item.context || '');
-	let projectId = $state(item.projectId?.toString() || '');
+	let projectId = $state(item.projectId || '');
 	let projects = $state<GTDItemType[]>([]);
 
 	// Keep local state in sync with item prop
@@ -27,7 +27,7 @@
 		title = item.title;
 		notes = item.notes || '';
 		context = item.context || '';
-		projectId = item.projectId?.toString() || '';
+		projectId = item.projectId || '';
 	});
 
 	// Load projects when panel opens
@@ -40,7 +40,7 @@
 			title: title.trim(),
 			notes: notes.trim() || undefined,
 			context: context || undefined,
-			projectId: projectId ? parseInt(projectId) : undefined
+			projectId: projectId || undefined
 		};
 
 		await updateItem(item.id, updates);

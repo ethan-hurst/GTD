@@ -8,9 +8,9 @@ import { onSyncDataImported } from '$lib/sync/sync';
  */
 export class InboxState {
 	items = $state<GTDItem[]>([]);
-	expandedId = $state<number | null>(null);
+	expandedId = $state<string | null>(null);
 	isProcessing = $state(false);
-	selectedIds = $state<number[]>([]);
+	selectedIds = $state<string[]>([]);
 
 	// Derived count for sidebar badge
 	itemCount = $derived(this.items.length);
@@ -25,7 +25,7 @@ export class InboxState {
 	/**
 	 * Toggle selection of an item (for bulk actions).
 	 */
-	toggleSelection(id: number) {
+	toggleSelection(id: string) {
 		const index = this.selectedIds.indexOf(id);
 		if (index === -1) {
 			this.selectedIds = [...this.selectedIds, id];
@@ -52,7 +52,7 @@ export class InboxState {
 	 * Expand/collapse an item for viewing details.
 	 * Clicking the same item toggles it closed.
 	 */
-	expandItem(id: number) {
+	expandItem(id: string) {
 		if (this.expandedId === id) {
 			this.expandedId = null;
 		} else {

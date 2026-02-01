@@ -8,8 +8,8 @@ import { onSyncDataImported } from '$lib/sync/sync';
  */
 export class WaitingForState {
 	items = $state<GTDItem[]>([]);
-	overdueIds = $state<Set<number>>(new Set());
-	expandedId = $state<number | null>(null);
+	overdueIds = $state<Set<string>>(new Set());
+	expandedId = $state<string | null>(null);
 
 	// Derived state
 	itemCount = $derived(this.items.length);
@@ -33,7 +33,7 @@ export class WaitingForState {
 	/**
 	 * Check if a waiting-for item is overdue.
 	 */
-	isOverdue(id: number): boolean {
+	isOverdue(id: string): boolean {
 		return this.overdueIds.has(id);
 	}
 
@@ -41,7 +41,7 @@ export class WaitingForState {
 	 * Expand/collapse an item for viewing details.
 	 * Clicking the same item toggles it closed.
 	 */
-	expandItem(id: number) {
+	expandItem(id: string) {
 		if (this.expandedId === id) {
 			this.expandedId = null;
 		} else {

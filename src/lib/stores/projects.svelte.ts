@@ -8,9 +8,9 @@ import { onSyncDataImported } from '$lib/sync/sync';
  */
 export class ProjectState {
 	items = $state<GTDItem[]>([]);
-	stalledIds = $state<Set<number>>(new Set());
-	selectedIds = $state<number[]>([]);        // For batch operations
-	expandedId = $state<number | null>(null);  // For detail panel
+	stalledIds = $state<Set<string>>(new Set());
+	selectedIds = $state<string[]>([]);        // For batch operations
+	expandedId = $state<string | null>(null);  // For detail panel
 
 	// Derived state
 	itemCount = $derived(this.items.length);
@@ -37,7 +37,7 @@ export class ProjectState {
 	 * Expand/collapse a project for viewing details.
 	 * Clicking the same project toggles it closed.
 	 */
-	expandItem(id: number) {
+	expandItem(id: string) {
 		if (this.expandedId === id) {
 			this.expandedId = null;
 		} else {
@@ -48,7 +48,7 @@ export class ProjectState {
 	/**
 	 * Toggle selection of a project (for batch operations).
 	 */
-	toggleSelection(id: number) {
+	toggleSelection(id: string) {
 		const index = this.selectedIds.indexOf(id);
 		if (index === -1) {
 			this.selectedIds = [...this.selectedIds, id];

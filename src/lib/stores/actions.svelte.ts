@@ -10,8 +10,8 @@ export class ActionState {
 	items = $state<GTDItem[]>([]);
 	contexts = $state<Context[]>([]);
 	selectedContexts = $state<string[]>([]);  // Empty = "All" view
-	selectedIds = $state<number[]>([]);        // For batch operations
-	expandedId = $state<number | null>(null);  // For detail panel
+	selectedIds = $state<string[]>([]);        // For batch operations
+	expandedId = $state<string | null>(null);  // For detail panel
 
 	// Derived state
 	itemCount = $derived(this.items.length);
@@ -74,7 +74,7 @@ export class ActionState {
 	/**
 	 * Toggle selection of an item (for batch operations).
 	 */
-	toggleSelection(id: number) {
+	toggleSelection(id: string) {
 		const index = this.selectedIds.indexOf(id);
 		if (index === -1) {
 			this.selectedIds = [...this.selectedIds, id];
@@ -101,7 +101,7 @@ export class ActionState {
 	 * Expand/collapse an item for viewing details.
 	 * Clicking the same item toggles it closed.
 	 */
-	expandItem(id: number) {
+	expandItem(id: string) {
 		if (this.expandedId === id) {
 			this.expandedId = null;
 		} else {

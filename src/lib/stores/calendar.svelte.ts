@@ -40,12 +40,12 @@ class CalendarState {
 		await this.loadEvents();
 	}
 
-	async updateEvent(id: number, changes: Partial<CalendarEvent>) {
+	async updateEvent(id: string, changes: Partial<CalendarEvent>) {
 		await updateEvent(id, changes);
 		await this.loadEvents();
 	}
 
-	async deleteEvent(id: number) {
+	async deleteEvent(id: string) {
 		await deleteEvent(id);
 		await this.loadEvents();
 	}

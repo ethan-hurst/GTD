@@ -26,7 +26,7 @@ export type SomedayCategory = typeof SOMEDAY_CATEGORIES[number];
 export class SomedayMaybeState {
 	items = $state<GTDItem[]>([]);
 	selectedCategory = $state<string | null>(null);  // null = All view
-	expandedId = $state<number | null>(null);
+	expandedId = $state<string | null>(null);
 
 	// Derived state
 	itemCount = $derived(this.items.length);
@@ -55,7 +55,7 @@ export class SomedayMaybeState {
 	 * Expand/collapse an item for viewing details.
 	 * Clicking the same item toggles it closed.
 	 */
-	expandItem(id: number) {
+	expandItem(id: string) {
 		if (this.expandedId === id) {
 			this.expandedId = null;
 		} else {

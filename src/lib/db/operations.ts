@@ -1,4 +1,5 @@
 import { db, type GTDItem, type Context, type AppSettings, type CalendarEvent } from './schema';
+import { generateUUID } from '../utils/uuid';
 
 // Sync notification callback - set by sync store to avoid circular imports
 let onDataChanged: (() => void) | null = null;
@@ -11,17 +12,19 @@ function notifyDataChanged(): void {
 	if (onDataChanged) onDataChanged();
 }
 
-export async function addItem(item: Omit<GTDItem, 'id' | 'created' | 'modified'>): Promise<number> {
-	const id = await db.items.add({
+export async function addItem(item: Omit<GTDItem, 'id' | 'created' | 'modified'>): Promise<string> {
+	const newItem: GTDItem = {
 		...item,
+		id: generateUUID(),
 		created: new Date(),
 		modified: new Date()
-	} as GTDItem);
+	} as GTDItem;
+	await db.items.add(newItem);
 	notifyDataChanged();
-	return id;
+	return newItem.id;
 }
 
-export async function updateItem(id: number, changes: Partial<GTDItem>): Promise<number> {
+export async function updateItem(id: string, changes: Partial<GTDItem>): Promise<number> {
 	const result = await db.items.update(id, {
 		...changes,
 		modified: new Date()
@@ -30,7 +33,7 @@ export async function updateItem(id: number, changes: Partial<GTDItem>): Promise
 	return result;
 }
 
-export async function deleteItem(id: number): Promise<void> {
+export async function deleteItem(id: string): Promise<void> {
 	await db.items.update(id, {
 		deleted: true,
 		deletedAt: new Date(),
@@ -39,7 +42,7 @@ export async function deleteItem(id: number): Promise<void> {
 	notifyDataChanged();
 }
 
-export async function getItem(id: number): Promise<GTDItem | undefined> {
+export async function getItem(id: string): Promise<GTDItem | undefined> {
 	return await db.items.get(id);
 }
 
@@ -59,7 +62,7 @@ export async function getItemsByType(type: GTDItem['type']): Promise<GTDItem[]> 
 		.toArray();
 }
 
-export async function bulkDeleteItems(ids: number[]): Promise<void> {
+export async function bulkDeleteItems(ids: string[]): Promise<void> {
 	const now = new Date();
 	await Promise.all(
 		ids.map(id =>
@@ -84,7 +87,7 @@ export async function getAllContexts(): Promise<Context[]> {
 		.toArray();
 }
 
-export async function addContext(name: string): Promise<number> {
+export async function addContext(name: string): Promise<string> {
 	// Ensure name starts with @
 	if (!name.startsWith('@')) {
 		throw new Error('Context name must start with @');
@@ -94,23 +97,25 @@ export async function addContext(name: string): Promise<number> {
 	const contexts = await db.contexts.toArray();
 	const maxSortOrder = contexts.reduce((max, ctx) => Math.max(max, ctx.sortOrder), -1);
 
-	const id = await db.contexts.add({
+	const newContext: Context = {
+		id: generateUUID(),
 		name,
 		sortOrder: maxSortOrder + 1,
 		isDefault: false,
 		created: new Date()
-	} as Context);
+	};
+	await db.contexts.add(newContext);
 	notifyDataChanged();
-	return id;
+	return newContext.id;
 }
 
-export async function updateContext(id: number, changes: Partial<Context>): Promise<number> {
+export async function updateContext(id: string, changes: Partial<Context>): Promise<number> {
 	const result = await db.contexts.update(id, changes);
 	notifyDataChanged();
 	return result;
 }
 
-export async function deleteContext(id: number): Promise<void> {
+export async function deleteContext(id: string): Promise<void> {
 	// Get the context to find its name
 	const context = await db.contexts.get(id);
 	if (!context) return;
@@ -188,7 +193,7 @@ export async function getActionsByContext(contexts: string[]): Promise<GTDItem[]
 	});
 }
 
-export async function completeAction(id: number): Promise<() => Promise<void>> {
+export async function completeAction(id: string): Promise<() => Promise<void>> {
 	await db.items.update(id, {
 		completedAt: new Date(),
 		modified: new Date()
@@ -205,7 +210,7 @@ export async function completeAction(id: number): Promise<() => Promise<void>> {
 	};
 }
 
-export async function undoCompleteAction(id: number): Promise<void> {
+export async function undoCompleteAction(id: string): Promise<void> {
 	await db.items.update(id, {
 		completedAt: undefined,
 		modified: new Date()
@@ -213,7 +218,7 @@ export async function undoCompleteAction(id: number): Promise<void> {
 	notifyDataChanged();
 }
 
-export async function reorderActions(orderedIds: number[]): Promise<void> {
+export async function reorderActions(orderedIds: string[]): Promise<void> {
 	await Promise.all(
 		orderedIds.map((id, index) =>
 			db.items.update(id, {
@@ -225,7 +230,7 @@ export async function reorderActions(orderedIds: number[]): Promise<void> {
 	notifyDataChanged();
 }
 
-export async function bulkCompleteActions(ids: number[]): Promise<() => Promise<void>> {
+export async function bulkCompleteActions(ids: string[]): Promise<() => Promise<void>> {
 	const now = new Date();
 
 	await Promise.all(
@@ -264,7 +269,7 @@ export async function getAllProjects(): Promise<GTDItem[]> {
 		.sortBy('created');
 }
 
-export async function getActionsByProject(projectId: number): Promise<GTDItem[]> {
+export async function getActionsByProject(projectId: string): Promise<GTDItem[]> {
 	return await db.items
 		.where('type')
 		.equals('next-action')
@@ -295,7 +300,7 @@ export async function getStalledProjects(): Promise<GTDItem[]> {
 	return projects.filter(project => !activeProjectIds.has(project.id));
 }
 
-export async function completeProject(id: number): Promise<() => Promise<void>> {
+export async function completeProject(id: string): Promise<() => Promise<void>> {
 	await db.items.update(id, {
 		completedAt: new Date(),
 		modified: new Date()
@@ -312,7 +317,7 @@ export async function completeProject(id: number): Promise<() => Promise<void>> 
 	};
 }
 
-export async function moveProjectToSomeday(id: number): Promise<void> {
+export async function moveProjectToSomeday(id: string): Promise<void> {
 	await db.items.update(id, {
 		type: 'someday',
 		modified: new Date()
@@ -320,16 +325,18 @@ export async function moveProjectToSomeday(id: number): Promise<void> {
 	notifyDataChanged();
 }
 
-export async function addProject(title: string, notes?: string): Promise<number> {
-	const id = await db.items.add({
+export async function addProject(title: string, notes?: string): Promise<string> {
+	const newProject: GTDItem = {
+		id: generateUUID(),
 		title,
 		type: 'project',
 		notes: notes || '',
 		created: new Date(),
 		modified: new Date()
-	} as GTDItem);
+	} as GTDItem;
+	await db.items.add(newProject);
 	notifyDataChanged();
-	return id;
+	return newProject.id;
 }
 
 // ============================================================================
@@ -358,7 +365,7 @@ export async function getAllWaitingFor(): Promise<GTDItem[]> {
 	});
 }
 
-export async function resolveWaitingFor(id: number): Promise<() => Promise<void>> {
+export async function resolveWaitingFor(id: string): Promise<() => Promise<void>> {
 	await db.items.update(id, {
 		completedAt: new Date(),
 		modified: new Date()
@@ -379,10 +386,11 @@ export async function addWaitingFor(
 	title: string,
 	delegatedTo: string,
 	followUpDate?: Date,
-	projectId?: number,
+	projectId?: string,
 	notes?: string
-): Promise<number> {
-	const id = await db.items.add({
+): Promise<string> {
+	const newItem: GTDItem = {
+		id: generateUUID(),
 		title,
 		type: 'waiting',
 		delegatedTo,
@@ -391,9 +399,10 @@ export async function addWaitingFor(
 		notes: notes || '',
 		created: new Date(),
 		modified: new Date()
-	} as GTDItem);
+	} as GTDItem;
+	await db.items.add(newItem);
 	notifyDataChanged();
-	return id;
+	return newItem.id;
 }
 
 // ============================================================================
@@ -408,7 +417,7 @@ export async function getAllSomedayMaybe(): Promise<GTDItem[]> {
 		.sortBy('created');
 }
 
-export async function promoteSomedayToActive(id: number, newType: 'project' | 'next-action'): Promise<void> {
+export async function promoteSomedayToActive(id: string, newType: 'project' | 'next-action'): Promise<void> {
 	await db.items.update(id, {
 		type: newType,
 		category: undefined,
@@ -417,17 +426,19 @@ export async function promoteSomedayToActive(id: number, newType: 'project' | 'n
 	notifyDataChanged();
 }
 
-export async function addSomedayItem(title: string, notes?: string, category?: string): Promise<number> {
-	const id = await db.items.add({
+export async function addSomedayItem(title: string, notes?: string, category?: string): Promise<string> {
+	const newItem: GTDItem = {
+		id: generateUUID(),
 		title,
 		type: 'someday',
 		notes: notes || '',
 		category,
 		created: new Date(),
 		modified: new Date()
-	} as GTDItem);
+	} as GTDItem;
+	await db.items.add(newItem);
 	notifyDataChanged();
-	return id;
+	return newItem.id;
 }
 
 // ============================================================================
@@ -456,17 +467,19 @@ export async function setSetting(key: string, value: any): Promise<void> {
 // Calendar Event Operations
 // ============================================================================
 
-export async function addEvent(event: Omit<CalendarEvent, 'id' | 'created' | 'modified'>): Promise<number> {
-	const id = await db.events.add({
+export async function addEvent(event: Omit<CalendarEvent, 'id' | 'created' | 'modified'>): Promise<string> {
+	const newEvent: CalendarEvent = {
 		...event,
+		id: generateUUID(),
 		created: new Date(),
 		modified: new Date()
-	} as CalendarEvent);
+	} as CalendarEvent;
+	await db.events.add(newEvent);
 	notifyDataChanged();
-	return id;
+	return newEvent.id;
 }
 
-export async function updateEvent(id: number, changes: Partial<CalendarEvent>): Promise<number> {
+export async function updateEvent(id: string, changes: Partial<CalendarEvent>): Promise<number> {
 	const result = await db.events.update(id, {
 		...changes,
 		modified: new Date()
@@ -475,7 +488,7 @@ export async function updateEvent(id: number, changes: Partial<CalendarEvent>): 
 	return result;
 }
 
-export async function deleteEvent(id: number): Promise<void> {
+export async function deleteEvent(id: string): Promise<void> {
 	await db.events.update(id, {
 		deleted: true,
 		deletedAt: new Date(),
@@ -484,7 +497,7 @@ export async function deleteEvent(id: number): Promise<void> {
 	notifyDataChanged();
 }
 
-export async function getEvent(id: number): Promise<CalendarEvent | undefined> {
+export async function getEvent(id: string): Promise<CalendarEvent | undefined> {
 	return await db.events.get(id);
 }
 
@@ -506,16 +519,17 @@ export async function getRecurringEvents(): Promise<CalendarEvent[]> {
 		.toArray();
 }
 
-export async function bulkAddEvents(events: Omit<CalendarEvent, 'id' | 'created' | 'modified'>[]): Promise<number[]> {
+export async function bulkAddEvents(events: Omit<CalendarEvent, 'id' | 'created' | 'modified'>[]): Promise<string[]> {
 	const now = new Date();
 	const withTimestamps = events.map(e => ({
 		...e,
+		id: generateUUID(),
 		created: now,
 		modified: now
 	})) as CalendarEvent[];
-	const ids = await db.events.bulkAdd(withTimestamps, { allKeys: true }) as number[];
+	await db.events.bulkAdd(withTimestamps);
 	notifyDataChanged();
-	return ids;
+	return withTimestamps.map(e => e.id);
 }
 
 export async function getAllEvents(): Promise<CalendarEvent[]> {
@@ -537,7 +551,7 @@ export async function compactTombstones(maxAgeDays: number = 30): Promise<number
 		.filter(item => !!item.deleted && !!item.deletedAt && item.deletedAt < cutoff)
 		.toArray();
 	if (oldItems.length > 0) {
-		await db.items.bulkDelete(oldItems.map(i => i.id!));
+		await db.items.bulkDelete(oldItems.map(i => i.id));
 		count += oldItems.length;
 	}
 
@@ -546,7 +560,7 @@ export async function compactTombstones(maxAgeDays: number = 30): Promise<number
 		.filter(e => !!e.deleted && !!e.deletedAt && e.deletedAt < cutoff)
 		.toArray();
 	if (oldEvents.length > 0) {
-		await db.events.bulkDelete(oldEvents.map(e => e.id!));
+		await db.events.bulkDelete(oldEvents.map(e => e.id));
 		count += oldEvents.length;
 	}
 
@@ -555,7 +569,7 @@ export async function compactTombstones(maxAgeDays: number = 30): Promise<number
 		.filter(c => !!(c as any).deleted && !!(c as any).deletedAt && (c as any).deletedAt < cutoff)
 		.toArray();
 	if (oldContexts.length > 0) {
-		await db.contexts.bulkDelete(oldContexts.map(c => c.id!));
+		await db.contexts.bulkDelete(oldContexts.map(c => c.id));
 		count += oldContexts.length;
 	}
 
