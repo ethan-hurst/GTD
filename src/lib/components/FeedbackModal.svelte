@@ -111,18 +111,17 @@
 
 		try {
 			if (isOnline) {
-				// Online: POST to /feedback-form.html endpoint
-				const formData = new FormData();
-				formData.append('form-name', 'feedback');
-				formData.append('bot-field', ''); // Honeypot
-				formData.append('type', feedbackType);
-				formData.append('description', description);
-				if (email) formData.append('email', email);
-				if (screenshotData) formData.append('screenshot', screenshotData);
-
-				const response = await fetch('/feedback-form.html', {
+				// Online: POST JSON to Netlify Function
+				const response = await fetch('/.netlify/functions/feedback-submit', {
 					method: 'POST',
-					body: formData
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify({
+						type: feedbackType,
+						description,
+						email: email || undefined,
+						screenshot: screenshotData || undefined,
+						botField: ''
+					})
 				});
 
 				if (!response.ok) {

@@ -36,21 +36,19 @@ export async function syncQueuedFeedback(): Promise<number> {
 		}
 
 		try {
-			const formData = new URLSearchParams();
-			formData.append('form-name', 'feedback');
-			formData.append('bot-field', '');
-			formData.append('type', item.type);
-			formData.append('description', item.description);
-			if (item.email) formData.append('email', item.email);
-			if (item.screenshot) formData.append('screenshot', item.screenshot);
-
-			const response = await fetch('/feedback', {
+			const response = await fetch('/.netlify/functions/feedback-submit', {
 				method: 'POST',
-				headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-				body: formData.toString()
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({
+					type: item.type,
+					description: item.description,
+					email: item.email || undefined,
+					screenshot: item.screenshot || undefined,
+					botField: ''
+				})
 			});
 
-			if (response.ok || response.status === 302) {
+			if (response.ok) {
 				await db.feedbackQueue.delete(item.id!);
 				sentCount++;
 			} else {
