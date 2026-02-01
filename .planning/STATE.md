@@ -6,16 +6,16 @@ See: .planning/PROJECT.md (updated 2026-01-31)
 
 **Core value:** Nothing falls through the cracks — every commitment is captured, clarified, and surfaced at the right time so the user always knows what to do next.
 
-**Current focus:** Phase 08.7 (Site Analytics & Usage Metrics)
+**Current focus:** Phase 08.6 (Backend, Frontend & Integration Tests)
 
 ## Current Position
 
-Phase: 08.7 (Site Analytics & Usage Metrics)
-Plan: 1 of 3 in current phase
+Phase: 08.6 (Backend, Frontend & Integration Tests)
+Plan: 5 of 6 in current phase
 Status: In progress
-Last activity: 2026-02-01 — Completed 08.7-01-PLAN.md (Plausible Analytics Integration)
+Last activity: 2026-02-01 — Completed 08.6-05-PLAN.md (E2E Tests)
 
-Progress: [████████████░░░░░░░] 62% (62/TBD plans complete across all phases)
+Progress: [████████████░░░░░░░] 63% (63/TBD plans complete across all phases)
 
 ## Performance Metrics
 
@@ -143,6 +143,9 @@ Recent decisions affecting current work:
 - 08.6-06: Mock @netlify/blobs at module level, reset in beforeEach for test isolation
 - 08.6-06: Test deviceId validation with 64-char hex pattern (SHA-256 format)
 - 08.6-06: Helper functions mockContext() and makeRequest() for test setup reduce boilerplate
+- 08.6-05: Deferred inbox CRUD form submission tests due to Svelte 5 hydration issue requiring separate investigation
+- 08.6-05: Viewport-conditional assertions for responsive testing (desktop vs mobile navigation patterns)
+- 08.6-05: Graceful fallbacks in tests when UI state varies (empty state vs populated list)
 - 08.7-01: Manual Plausible integration instead of @accuser package (Svelte 5 incompatibility)
 - 08.7-01: Vanilla IndexedDB analytics queue in service worker (avoid Workbox dependency)
 - 08.7-01: 24-hour retention for queued analytics events (balance persistence vs storage efficiency)
@@ -176,6 +179,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-02-01T11:19:46Z
-Stopped at: Completed 08.7-01-PLAN.md (Plausible Analytics Integration)
+Last session: 2026-02-01
+Stopped at: Completed 08.6-05-PLAN.md (E2E Tests)
 Resume file: None
