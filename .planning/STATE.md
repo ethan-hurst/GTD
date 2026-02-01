@@ -6,16 +6,16 @@ See: .planning/PROJECT.md (updated 2026-01-31)
 
 **Core value:** Nothing falls through the cracks — every commitment is captured, clarified, and surfaced at the right time so the user always knows what to do next.
 
-**Current focus:** Phase 08.6 (Backend, Frontend & Integration Tests)
+**Current focus:** Phase 08.7 (Site Analytics & Usage Metrics)
 
 ## Current Position
 
-Phase: 08.6 (Backend, Frontend & Integration Tests)
-Plan: 3 of 6 in current phase
+Phase: 08.7 (Site Analytics & Usage Metrics)
+Plan: 1 of 3 in current phase
 Status: In progress
-Last activity: 2026-02-01 — Completed 08.6-03-PLAN.md (Data Layer Tests)
+Last activity: 2026-02-01 — Completed 08.7-01-PLAN.md (Plausible Analytics Integration)
 
-Progress: [████████████░░░░░░░] 61% (61/TBD plans complete across all phases)
+Progress: [████████████░░░░░░░] 62% (62/TBD plans complete across all phases)
 
 ## Performance Metrics
 
@@ -143,6 +143,9 @@ Recent decisions affecting current work:
 - 08.6-06: Mock @netlify/blobs at module level, reset in beforeEach for test isolation
 - 08.6-06: Test deviceId validation with 64-char hex pattern (SHA-256 format)
 - 08.6-06: Helper functions mockContext() and makeRequest() for test setup reduce boilerplate
+- 08.7-01: Manual Plausible integration instead of @accuser package (Svelte 5 incompatibility)
+- 08.7-01: Vanilla IndexedDB analytics queue in service worker (avoid Workbox dependency)
+- 08.7-01: 24-hour retention for queued analytics events (balance persistence vs storage efficiency)
 
 ### Roadmap Evolution
 
@@ -153,6 +156,7 @@ Recent decisions affecting current work:
 - Phase 08.5 inserted after Phase 08.4: Device sync — Netlify Functions + Blobs, pairing code, encrypted per-record merge (URGENT)
 - Phase 08.6 inserted after Phase 08.5: Backend, frontend & integration tests — establish test infrastructure before Outlook sync (URGENT)
 - Phase 08.7 inserted after Phase 08.6: Site analytics & usage metrics — no way to track users/usage over time, need visibility into signups and engagement (URGENT)
+- Phase 08.8 inserted after Phase 08.7: User feedback & bug reports — anonymous way to submit bugs and request features from within the app (URGENT)
 
 ### Pending Todos
 
@@ -172,6 +176,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-02-01T21:07:10Z
-Stopped at: Completed 08.6-03-PLAN.md (Data Layer Tests)
+Last session: 2026-02-01T11:19:46Z
+Stopped at: Completed 08.7-01-PLAN.md (Plausible Analytics Integration)
 Resume file: None

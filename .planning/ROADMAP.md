@@ -261,7 +261,7 @@ Plans:
 **Plans:** 3 plans
 
 Plans:
-- [ ] 08.7-01-PLAN.md — Analytics foundation: install Plausible, create analytics module, wire layout, offline queuing
+- [x] 08.7-01-PLAN.md — Analytics foundation: install Plausible, create analytics module, wire layout, offline queuing
 - [ ] 08.7-02-PLAN.md — Custom event instrumentation: onboarding funnel, task lifecycle, sync, review
 - [ ] 08.7-03-PLAN.md — End-to-end verification: dev build check + production Plausible dashboard verification
 
@@ -277,7 +277,7 @@ Plans:
 
 ### Phase 08.8: User Feedback & Bug Reports (INSERTED)
 
-**Goal:** Provide a way for users to submit bug reports and feature requests directly from the app — giving the team an anonymous, no-account-required feedback channel to prioritize improvements and fix issues
+**Goal:** Provide a way for users to submit bug reports and feature requests directly from the app — giving the team a feedback channel to prioritize improvements and have dialog with users
 
 **Depends on:** Phase 08.7
 
@@ -287,7 +287,7 @@ Plans:
 3. Submissions are collected in a manageable location for the team to review
 4. Feedback form is accessible from all views (not buried in settings)
 5. User experience is lightweight — doesn't interrupt workflow
-6. No user account or authentication required (anonymous submission)
+6. Optional contact info (email) so the team can follow up with users
 
 **Plans:** 0 plans
 
@@ -443,7 +443,7 @@ Plans:
 | 08.4 Mobile Responsive Pass | v1.0+ | 7/7 | Complete | 2026-01-31 |
 | 08.5 Device Sync | v1.0+ | 6/6 | Complete | 2026-01-31 |
 | 08.6 Backend/Frontend/Integration Tests | v1.0+ | 0/6 | Not started | - |
-| 08.7 Site Analytics & Usage Metrics | v1.0+ | 0/3 | Not started | - |
+| 08.7 Site Analytics & Usage Metrics | v1.0+ | 1/3 | In progress | 2026-02-01 |
 | 08.8 User Feedback & Bug Reports | v1.0+ | 0/TBD | Not started | - |
 | 9. OAuth Foundation | v1.1 | 0/TBD | Not started | - |
 | 10. Read Calendar | v1.1 | 0/TBD | Not started | - |
