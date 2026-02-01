@@ -11,11 +11,11 @@ See: .planning/PROJECT.md (updated 2026-01-31)
 ## Current Position
 
 Phase: 08.6 (Backend, Frontend & Integration Tests)
-Plan: 2 of 6 in current phase
+Plan: 4 of 6 in current phase
 Status: In progress
-Last activity: 2026-02-01 — Completed 08.6-06-PLAN.md (Netlify Functions Unit Tests)
+Last activity: 2026-02-01 — Completed 08.6-04-PLAN.md (Component Tests)
 
-Progress: [████████████░░░░░░░] 62% (62/TBD plans complete across all phases)
+Progress: [████████████░░░░░░░] 63% (63/TBD plans complete across all phases)
 
 ## Performance Metrics
 
@@ -131,6 +131,10 @@ Recent decisions affecting current work:
 - 08.6-01: Use real browser IndexedDB instead of fake-indexeddb (browser mode provides real implementation)
 - 08.6-01: Use raw svelte() plugin in vitest.config.ts instead of sveltekit() plugin to avoid browser mode interference
 - 08.6-01: Browser mode headless by default for CI-friendly test execution
+- 08.6-04: Add $lib and $app path aliases to vitest.config.ts for SvelteKit import resolution
+- 08.6-04: Create mock $app modules instead of using @sveltejs/kit mocks (browser mode compatibility)
+- 08.6-04: Exclude playwright from optimizeDeps to prevent bundling errors
+- 08.6-04: Use Date objects (not timestamps) in mock GTDItem data to match schema
 - 08.6-02: Use Date.now() - (days * 86400000) pattern for deterministic time-based tests
 - 08.6-02: Test date deserialization by checking instanceof Date and getTime() equality
 - 08.6-02: Test LWW with concrete dates (older/newer) rather than mock timestamps
@@ -149,7 +153,6 @@ Recent decisions affecting current work:
 - Phase 08.5 inserted after Phase 08.4: Device sync — Netlify Functions + Blobs, pairing code, encrypted per-record merge (URGENT)
 - Phase 08.6 inserted after Phase 08.5: Backend, frontend & integration tests — establish test infrastructure before Outlook sync (URGENT)
 - Phase 08.7 inserted after Phase 08.6: Site analytics & usage metrics — no way to track users/usage over time, need visibility into signups and engagement (URGENT)
-- Phase 08.8 inserted after Phase 08.7: User feedback & bug reports — users need a way to submit bugs and request features from within the app (URGENT)
 
 ### Pending Todos
 
@@ -169,6 +172,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-02-01T11:05:01Z
-Stopped at: Completed 08.6-06-PLAN.md (Netlify Functions Unit Tests)
+Last session: 2026-02-01T11:05:56Z
+Stopped at: Completed 08.6-04-PLAN.md (Component Tests)
 Resume file: None
