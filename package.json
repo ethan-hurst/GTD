@@ -15,6 +15,7 @@
     "test:e2e:ui": "playwright test --ui"
   },
   "devDependencies": {
+    "@playwright/test": "^1.58.1",
     "@sveltejs/adapter-netlify": "^5.2.4",
     "@sveltejs/adapter-static": "^3.0.1",
     "@sveltejs/kit": "^2.10.0",
