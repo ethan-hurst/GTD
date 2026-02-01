@@ -289,7 +289,7 @@ Plans:
 **Plans:** 2 plans
 
 Plans:
-- [ ] 08.8-01-PLAN.md — Feedback form foundation: prerendered route, Dexie schema, FeedbackModal component
+- [x] 08.8-01-PLAN.md — Feedback form foundation: prerendered route, Dexie schema, FeedbackModal component
 - [ ] 08.8-02-PLAN.md — Offline queue, service worker sync, navigation integration, human verification
 
 **Details:**
@@ -447,7 +447,7 @@ Plans:
 | 08.5 Device Sync | v1.0+ | 6/6 | Complete | 2026-01-31 |
 | 08.6 Backend/Frontend/Integration Tests | v1.0+ | 6/6 | Complete | 2026-02-01 |
 | 08.7 Site Analytics & Usage Metrics | v1.0+ | 0/TBD | Not started | - |
-| 08.8 User Feedback & Bug Reports | v1.0+ | 0/TBD | Not started | - |
+| 08.8 User Feedback & Bug Reports | v1.0+ | 1/2 | In progress | - |
 | 9. OAuth Foundation | v1.1 | 0/TBD | Not started | - |
 | 10. Read Calendar | v1.1 | 0/TBD | Not started | - |
 | 11. Two-Way Sync | v1.1 | 0/TBD | Not started | - |

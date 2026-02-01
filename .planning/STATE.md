@@ -6,16 +6,16 @@ See: .planning/PROJECT.md (updated 2026-01-31)
 
 **Core value:** Nothing falls through the cracks — every commitment is captured, clarified, and surfaced at the right time so the user always knows what to do next.
 
-**Current focus:** Phase 08.7 (Site Analytics & Usage Metrics) — re-planning with Netlify Blobs approach
+**Current focus:** Phase 08.8 (User Feedback & Bug Reports)
 
 ## Current Position
 
-Phase: 08.7 (Site Analytics & Usage Metrics)
-Plan: 0 of TBD in current phase
-Status: Re-planning (Plausible approach reverted, switching to self-built with Netlify Blobs)
-Last activity: 2026-02-01 — Reverted Plausible integration, needs /gsd:plan-phase 08.7
+Phase: 08.8 (User Feedback & Bug Reports)
+Plan: 1 of 2 in current phase
+Status: In progress
+Last activity: 2026-02-01 — Completed 08.8-01-PLAN.md (feedback form foundation)
 
-Progress: [████████████░░░░░░░] 61% (61/TBD plans complete across all phases)
+Progress: [████████████░░░░░░░] 62% (62/TBD plans complete across all phases)
 
 ## Performance Metrics
 
@@ -152,6 +152,10 @@ Recent decisions affecting current work:
 - 08.7-02: Analytics calls placed after primary action completes (non-blocking, fail-safe)
 - 08.7-02: Sync metrics include itemCount and duration for operational insight
 - 08.7-02: Single taskCompleted event for all completion paths (simpler than per-category events)
+- 08.8-01: Use static HTML file in addition to SvelteKit route for reliable Netlify Forms detection
+- 08.8-01: Screenshot with html2canvas instead of FeedbackPlus for simpler integration
+- 08.8-01: JPEG compression at 0.7 quality, 0.3 if > 500KB to balance quality and size
+- 08.8-01: Type selector as segmented buttons instead of dropdown for better mobile UX
 
 ### Roadmap Evolution
 
@@ -183,5 +187,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-01
-Stopped at: Reverted Plausible analytics — re-planning 08.7 with Netlify Blobs approach
+Stopped at: Completed 08.8-01 (feedback form foundation)
 Resume file: None
