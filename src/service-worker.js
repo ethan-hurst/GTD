@@ -49,21 +49,19 @@ async function syncFeedbackQueue() {
 			}
 
 			try {
-				const params = new URLSearchParams();
-				params.append('form-name', 'feedback');
-				params.append('bot-field', '');
-				params.append('type', item.type);
-				params.append('description', item.description);
-				if (item.email) params.append('email', item.email);
-				if (item.screenshot) params.append('screenshot', item.screenshot);
-
-				const response = await fetch('/feedback', {
+				const response = await fetch('/.netlify/functions/feedback-submit', {
 					method: 'POST',
-					headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-					body: params.toString()
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify({
+						type: item.type,
+						description: item.description,
+						email: item.email || undefined,
+						screenshot: item.screenshot || undefined,
+						botField: ''
+					})
 				});
 
-				if (response.ok || response.status === 302) {
+				if (response.ok) {
 					await deleteFeedbackItem(key);
 				}
 			} catch (err) {

@@ -10,12 +10,12 @@ See: .planning/PROJECT.md (updated 2026-01-31)
 
 ## Current Position
 
-Phase: 08.7 (Site Analytics & Usage Metrics)
-Plan: 4 of 4 in current phase
-Status: Phase complete
-Last activity: 2026-02-02 — Completed 08.7-04-PLAN.md (analytics dashboard)
+Phase: 08.8 (User Feedback & Bug Reports)
+Plan: 2 of 4 in current phase
+Status: In progress
+Last activity: 2026-02-02 — Completed 08.8-02-PLAN.md (feedback API endpoints)
 
-Progress: [████████████░░░░░░░] 66% (66/TBD plans complete across all phases)
+Progress: [████████████░░░░░░░] 67% (67/TBD plans complete across all phases)
 
 ## Performance Metrics
 
@@ -166,6 +166,11 @@ Recent decisions affecting current work:
 - 08.7-04: Chart.js dynamically imported inside $effect for code splitting
 - 08.7-04: Password held in memory only - re-prompt after page refresh for security
 - 08.7-04: Standalone admin page not using app sidebar layout
+- 08.8-02: Use ANALYTICS_PASSWORD env var for feedback admin auth (no new configuration needed)
+- 08.8-02: Store screenshots as separate blobs under screenshots/ prefix instead of embedding in items
+- 08.8-02: Honeypot field silently accepts but doesn't store bot submissions (UX-friendly anti-spam)
+- 08.8-02: CORS headers on all endpoints to support admin dashboard from different path
+- 08.8-02: Blobs metadata values must be strings (use 'true'/'false' not boolean true/false)
 
 ### Roadmap Evolution
 
@@ -197,5 +202,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-02
-Stopped at: Completed 08.7-04 (analytics dashboard) - Phase 08.7 complete
+Stopped at: Completed 08.8-02 (feedback API endpoints)
 Resume file: None
