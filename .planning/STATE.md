@@ -11,11 +11,11 @@ See: .planning/PROJECT.md (updated 2026-01-31)
 ## Current Position
 
 Phase: 08.7 (Site Analytics & Usage Metrics)
-Plan: 1 of 4 in current phase
+Plan: 3 of 4 in current phase
 Status: In progress
-Last activity: 2026-02-01 — Completed 08.7-01-PLAN.md (analytics foundation)
+Last activity: 2026-02-01 — Completed 08.7-03-PLAN.md (analytics query API)
 
-Progress: [████████████░░░░░░░] 63% (63/TBD plans complete across all phases)
+Progress: [████████████░░░░░░░] 65% (65/TBD plans complete across all phases)
 
 ## Performance Metrics
 
@@ -151,6 +151,10 @@ Recent decisions affecting current work:
 - 08.7-01: Pre-aggregate daily metrics server-side (pageviews, events, unique visitors, referrers)
 - 08.7-01: sendBeacon with fetch keepalive fallback for reliability across browsers
 - 08.7-01: DNT respected on both client and server for privacy compliance
+- 08.7-03: Basic auth with ANALYTICS_PASSWORD env var for query endpoint protection
+- 08.7-03: Opportunistic cleanup runs on each query (fire-and-forget) to enforce GDPR retention
+- 08.7-03: Default 30-day range, max 395 days (~13 months) for analytics queries
+- 08.7-03: Unique visitors not deduplicated across days (daily hash rotation by design)
 - 08.8-01: Use static HTML file in addition to SvelteKit route for reliable Netlify Forms detection
 - 08.8-01: Screenshot with html2canvas instead of FeedbackPlus for simpler integration
 - 08.8-01: JPEG compression at 0.7 quality, 0.3 if > 500KB to balance quality and size
@@ -186,5 +190,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-01
-Stopped at: Completed 08.7-01 (analytics foundation)
+Stopped at: Completed 08.7-03 (analytics query API)
 Resume file: None
