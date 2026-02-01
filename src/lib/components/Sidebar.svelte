@@ -259,11 +259,22 @@
 		{/if}
 	</nav>
 
-	<!-- Footer: Sync Status + Theme Toggle -->
+	<!-- Footer: Feedback Button + Sync Status + Theme Toggle -->
 	<div class="px-3 py-2 border-t border-gray-200/50 dark:border-gray-800/50">
 		{#if sidebarState.isCollapsed}
 			<!-- Collapsed mode: icon-only -->
 			<div class="flex flex-col gap-2">
+				<!-- Feedback button -->
+				<button
+					onclick={() => window.dispatchEvent(new CustomEvent('open-feedback-modal'))}
+					class="w-full p-2 rounded-md text-gray-500 dark:text-gray-400 hover:bg-gray-100/70 dark:hover:bg-gray-800/70 transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-blue-500/40 flex items-center justify-center"
+					title="Send Feedback"
+				>
+					<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+					</svg>
+				</button>
+
 				<!-- Sync indicator (if paired) -->
 				{#if syncState.isPaired}
 					<div class="w-full p-2 rounded-md flex items-center justify-center relative" title={syncState.syncState === 'error' && syncState.lastError ? syncState.lastError : formatSyncTime()}>
@@ -306,6 +317,17 @@
 		{:else}
 			<!-- Expanded mode: icon + text -->
 			<div class="flex flex-col gap-2">
+				<!-- Feedback button -->
+				<button
+					onclick={() => window.dispatchEvent(new CustomEvent('open-feedback-modal'))}
+					class="w-full flex items-center gap-2 px-2 py-1.5 text-sm text-gray-600 dark:text-gray-400 hover:bg-gray-100/70 dark:hover:bg-gray-800/70 rounded-md transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-blue-500/40"
+				>
+					<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+					</svg>
+					<span>Send Feedback</span>
+				</button>
+
 				<!-- Sync indicator (if paired) -->
 				{#if syncState.isPaired}
 					<div class="flex items-center gap-2 px-2 py-1.5 text-sm text-gray-600 dark:text-gray-400">

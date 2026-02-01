@@ -5,6 +5,7 @@
 	import SearchBar from '$lib/components/SearchBar.svelte';
 	import StatusBar from '$lib/components/StatusBar.svelte';
 	import OnboardingWizard from '$lib/components/OnboardingWizard.svelte';
+	import FeedbackModal from '$lib/components/FeedbackModal.svelte';
 	import MobileNav from '$lib/components/mobile/MobileNav.svelte';
 	import MobileHeader from '$lib/components/mobile/MobileHeader.svelte';
 	import FloatingActionButton from '$lib/components/mobile/FloatingActionButton.svelte';
@@ -23,6 +24,7 @@
 	let searchBarRef: any;
 	let previousPath = $state('');
 	let drawerOpen = $state(false);
+	let showFeedbackModal = $state(false);
 
 	// Global keyboard shortcut handler
 	// [ : Toggle sidebar (handled in Sidebar.svelte)
@@ -120,6 +122,13 @@
 			markFeatureVisited('keyboard-shortcuts').catch(() => {});
 			return;
 		}
+
+		// f: Open feedback modal
+		if (event.key === 'f') {
+			event.preventDefault();
+			showFeedbackModal = true;
+			return;
+		}
 	}
 
 	// Route-based feature tracking
@@ -140,6 +149,12 @@
 
 		// Set up theme listener for system preference changes
 		const cleanup = theme.listen();
+
+		// Global event listener for opening feedback modal
+		function handleOpenFeedback() {
+			showFeedbackModal = true;
+		}
+		window.addEventListener('open-feedback-modal', handleOpenFeedback);
 
 		// Check persistence status and show confirmation if granted (non-blocking)
 		(async () => {
@@ -191,6 +206,7 @@
 			mobileState.destroy();
 			cleanup();
 			document.removeEventListener('visibilitychange', handleVisibilityChange);
+			window.removeEventListener('open-feedback-modal', handleOpenFeedback);
 		};
 	});
 </script>
@@ -244,4 +260,9 @@
 <!-- Onboarding Wizard Overlay -->
 {#if onboardingState.isActive}
 	<OnboardingWizard />
+{/if}
+
+<!-- Feedback Modal -->
+{#if showFeedbackModal}
+	<FeedbackModal onclose={() => showFeedbackModal = false} />
 {/if}

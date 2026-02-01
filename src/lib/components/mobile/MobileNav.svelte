@@ -197,5 +197,19 @@
 				{/if}
 			{/if}
 		</a>
+
+		<!-- Feedback button (separated with border) -->
+		<button
+			onclick={() => {
+				closeDrawer();
+				window.dispatchEvent(new CustomEvent('open-feedback-modal'));
+			}}
+			class="flex items-center gap-3 px-4 py-3 border-t border-gray-200 dark:border-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-blue-500/40"
+		>
+			<svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+			</svg>
+			<span>Send Feedback</span>
+		</button>
 	</div>
 </nav>
