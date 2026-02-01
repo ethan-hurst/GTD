@@ -6,6 +6,7 @@
 	import StatusBar from '$lib/components/StatusBar.svelte';
 	import OnboardingWizard from '$lib/components/OnboardingWizard.svelte';
 	import FeedbackModal from '$lib/components/FeedbackModal.svelte';
+	import UpdateBanner from '$lib/components/UpdateBanner.svelte';
 	import MobileNav from '$lib/components/mobile/MobileNav.svelte';
 	import MobileHeader from '$lib/components/mobile/MobileHeader.svelte';
 	import FloatingActionButton from '$lib/components/mobile/FloatingActionButton.svelte';
@@ -275,3 +276,6 @@
 {#if showFeedbackModal}
 	<FeedbackModal onclose={() => showFeedbackModal = false} />
 {/if}
+
+<!-- PWA Update Banner -->
+<UpdateBanner />
