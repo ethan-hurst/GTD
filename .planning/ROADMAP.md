@@ -247,7 +247,7 @@ Plans:
 
 ### Phase 08.7: Site Analytics & Usage Metrics (INSERTED)
 
-**Goal:** Add analytics and usage tracking so the team can measure user engagement, track signups over time, and understand how the app is being used — providing the visibility needed to improve acquisition and retention
+**Goal:** Add analytics and usage tracking using existing Netlify Functions + Blobs infrastructure (no external service) so the team can measure user engagement, track signups over time, and understand how the app is being used
 
 **Depends on:** Phase 08.6
 
@@ -258,20 +258,17 @@ Plans:
 4. Privacy-respecting implementation (no PII leakage, GDPR-friendly)
 5. Metrics persist historically so trends can be analyzed week-over-week
 
-**Plans:** 3 plans
+**Plans:** 0 plans
 
 Plans:
-- [x] 08.7-01-PLAN.md — Analytics foundation: install Plausible, create analytics module, wire layout, offline queuing
-- [ ] 08.7-02-PLAN.md — Custom event instrumentation: onboarding funnel, task lifecycle, sync, review
-- [ ] 08.7-03-PLAN.md — End-to-end verification: dev build check + production Plausible dashboard verification
+- [ ] TBD (run `/gsd:plan-phase 08.7` to break down)
 
 **Details:**
-- Plausible Analytics (cloud, $9/month for <10k pageviews) via @accuser/svelte-plausible-analytics
+- Self-built analytics using existing Netlify Functions + Netlify Blobs infrastructure
+- No external service required (no Plausible, no account setup)
 - Cookie-free, GDPR-compliant, no consent banner needed
-- Custom events: activation funnel (onboarding start/complete, first task), feature usage (sync, review)
-- Offline queuing via lightweight IndexedDB queue in service worker
-- Plausible dashboard provides analytics reporting UI out of the box
-- Environment vars: VITE_PLAUSIBLE_DOMAIN, PLAUSIBLE_DOMAIN
+- Custom events: activation funnel, feature usage, engagement metrics
+- Re-planned to avoid adding external service dependency
 
 ---
 
@@ -449,8 +446,8 @@ Plans:
 | 08.4 Mobile Responsive Pass | v1.0+ | 7/7 | Complete | 2026-01-31 |
 | 08.5 Device Sync | v1.0+ | 6/6 | Complete | 2026-01-31 |
 | 08.6 Backend/Frontend/Integration Tests | v1.0+ | 6/6 | Complete | 2026-02-01 |
-| 08.7 Site Analytics & Usage Metrics | v1.0+ | 1/3 | In progress | 2026-02-01 |
-| 08.8 User Feedback & Bug Reports | v1.0+ | 0/2 | Not started | - |
+| 08.7 Site Analytics & Usage Metrics | v1.0+ | 0/TBD | Not started | - |
+| 08.8 User Feedback & Bug Reports | v1.0+ | 0/TBD | Not started | - |
 | 9. OAuth Foundation | v1.1 | 0/TBD | Not started | - |
 | 10. Read Calendar | v1.1 | 0/TBD | Not started | - |
 | 11. Two-Way Sync | v1.1 | 0/TBD | Not started | - |

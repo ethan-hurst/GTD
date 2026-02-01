@@ -8,7 +8,6 @@
 	import MobileNav from '$lib/components/mobile/MobileNav.svelte';
 	import MobileHeader from '$lib/components/mobile/MobileHeader.svelte';
 	import FloatingActionButton from '$lib/components/mobile/FloatingActionButton.svelte';
-	import PlausibleAnalytics from '$lib/components/PlausibleAnalytics.svelte';
 	import { Toaster } from 'svelte-5-french-toast';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
@@ -19,7 +18,6 @@
 	import { getFeatureFromRoute, markFeatureVisited } from '$lib/utils/featureTracking';
 	import { syncState } from '$lib/stores/sync.svelte';
 	import { compactTombstones } from '$lib/db/operations';
-	import { PLAUSIBLE_DOMAIN, PLAUSIBLE_API_HOST } from '$lib/analytics/config';
 
 	const { children } = $props();
 	let searchBarRef: any;
@@ -199,7 +197,6 @@
 
 <svelte:window onkeydown={handleKeydown} />
 
-<PlausibleAnalytics domain={PLAUSIBLE_DOMAIN} apiHost={PLAUSIBLE_API_HOST} />
 <Toaster position="top-center" />
 
 {#if mobileState.isMobile}

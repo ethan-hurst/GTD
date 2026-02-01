@@ -6,16 +6,16 @@ See: .planning/PROJECT.md (updated 2026-01-31)
 
 **Core value:** Nothing falls through the cracks — every commitment is captured, clarified, and surfaced at the right time so the user always knows what to do next.
 
-**Current focus:** Phase 08.7 (Site Analytics & Usage Metrics)
+**Current focus:** Phase 08.7 (Site Analytics & Usage Metrics) — re-planning with Netlify Blobs approach
 
 ## Current Position
 
 Phase: 08.7 (Site Analytics & Usage Metrics)
-Plan: 2 of 3 in current phase
-Status: In progress
-Last activity: 2026-02-01 — Completed 08.7-02-PLAN.md (Custom Event Instrumentation)
+Plan: 0 of TBD in current phase
+Status: Re-planning (Plausible approach reverted, switching to self-built with Netlify Blobs)
+Last activity: 2026-02-01 — Reverted Plausible integration, needs /gsd:plan-phase 08.7
 
-Progress: [████████████░░░░░░░] 64% (64/TBD plans complete across all phases)
+Progress: [████████████░░░░░░░] 61% (61/TBD plans complete across all phases)
 
 ## Performance Metrics
 
@@ -161,7 +161,7 @@ Recent decisions affecting current work:
 - Phase 08.4 inserted after Phase 08.3: Mobile responsive pass — ensure site works on mobile devices (URGENT)
 - Phase 08.5 inserted after Phase 08.4: Device sync — Netlify Functions + Blobs, pairing code, encrypted per-record merge (URGENT)
 - Phase 08.6 inserted after Phase 08.5: Backend, frontend & integration tests — establish test infrastructure before Outlook sync (URGENT)
-- Phase 08.7 inserted after Phase 08.6: Site analytics & usage metrics — no way to track users/usage over time, need visibility into signups and engagement (URGENT)
+- Phase 08.7 inserted after Phase 08.6: Site analytics & usage metrics — no way to track users/usage over time, need visibility into signups and engagement (URGENT). Plausible approach reverted — re-planning with self-built Netlify Blobs approach (no external service)
 - Phase 08.8 inserted after Phase 08.7: User feedback & bug reports — anonymous way to submit bugs and request features from within the app (URGENT)
 
 ### Pending Todos
@@ -182,6 +182,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-02-01T21:30:51Z
-Stopped at: Completed 08.7-02-PLAN.md (Custom Event Instrumentation)
+Last session: 2026-02-01
+Stopped at: Reverted Plausible analytics — re-planning 08.7 with Netlify Blobs approach
 Resume file: None

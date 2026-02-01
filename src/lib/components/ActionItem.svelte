@@ -4,7 +4,6 @@
 	import { formatRelativeTime } from '$lib/utils/time';
 	import { usePan, type PanCustomEvent, type GestureCustomEvent } from 'svelte-gestures';
 	import { mobileState } from '$lib/stores/mobile.svelte';
-	import { analytics } from '$lib/analytics/events';
 	import type { GTDItem } from '$lib/db/schema';
 
 	interface Props {
@@ -100,7 +99,6 @@
 			handleComplete();
 		} else if (swipeOffset < -SWIPE_THRESHOLD) {
 			// Swipe left: delete item
-			analytics.taskDeleted();
 			deleteItem(item.id);
 		}
 		swipeOffset = 0;
