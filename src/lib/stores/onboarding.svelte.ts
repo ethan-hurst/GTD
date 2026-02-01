@@ -1,5 +1,6 @@
 import { getSetting, setSetting } from '../db/operations';
 import { db } from '../db/schema';
+import { trackEvent } from '$lib/analytics/client';
 
 export type OnboardingStep = 'welcome' | 'capture' | 'process' | 'organize' | 'review-intro';
 
@@ -67,6 +68,7 @@ export class OnboardingState {
 		this.isActive = true;
 		this.currentStep = 'welcome';
 		this.completedSteps = new Set();
+		trackEvent('onboarding.started');
 	}
 
 	async completeStep(step: OnboardingStep) {
@@ -95,12 +97,14 @@ export class OnboardingState {
 		await setSetting('onboardingSkipped', true);
 		this.hasSkipped = true;
 		this.isActive = false;
+		trackEvent('onboarding.skipped');
 	}
 
 	async finishOnboarding() {
 		await setSetting('onboardingCompleted', new Date().toISOString());
 		this.hasCompleted = true;
 		this.isActive = false;
+		trackEvent('onboarding.completed');
 	}
 
 	async shouldShowOnboarding(): Promise<boolean> {

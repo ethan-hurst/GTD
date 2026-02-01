@@ -1,5 +1,6 @@
 import { getSetting, setSetting } from '../db/operations';
 import { onSyncDataImported } from '$lib/sync/sync';
+import { trackEvent } from '$lib/analytics/client';
 
 export type ReviewStep =
 	| 'inbox'
@@ -59,6 +60,7 @@ export class WeeklyReviewState {
 		this.isActive = true;
 		this.currentStep = 'inbox';
 		this.completedSteps = new Set();
+		trackEvent('review.started');
 	}
 
 	completeStep(step: ReviewStep) {
@@ -89,6 +91,7 @@ export class WeeklyReviewState {
 		await this.loadLastReview();
 		this.isActive = false;
 		this.completedSteps = new Set();
+		trackEvent('review.completed');
 	}
 }
 

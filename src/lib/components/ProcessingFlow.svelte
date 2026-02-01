@@ -4,6 +4,7 @@
 	import { updateItem, deleteItem, getAllContexts, getAllProjects, addProject, addEvent } from '../db/operations';
 	import { storageStatus } from '../stores/storage.svelte';
 	import { toast } from 'svelte-5-french-toast';
+	import { trackEvent } from '$lib/analytics/client';
 
 	interface ProcessingFlowProps {
 		item: GTDItem;
@@ -66,6 +67,7 @@
 		await deleteItem(item.id);
 		storageStatus.recordSave();
 		toast.success('Done! Item completed.');
+		trackEvent('task.completed', { type: item.type });
 		onProcessed();
 	}
 
@@ -80,6 +82,7 @@
 		await updateItem(item.id, { type: 'someday' });
 		storageStatus.recordSave();
 		toast.success('Moved to Someday/Maybe.');
+		trackEvent('task.created', { type: 'someday' });
 		onProcessed();
 	}
 
@@ -88,6 +91,7 @@
 		await updateItem(item.id, { type: 'someday' });
 		storageStatus.recordSave();
 		toast.success('Saved for reference.');
+		trackEvent('task.created', { type: 'reference' });
 		onProcessed();
 	}
 
@@ -95,6 +99,7 @@
 		await updateItem(item.id, { type: 'next-action', context });
 		storageStatus.recordSave();
 		toast.success('Added to Next Actions.');
+		trackEvent('task.created', { type: 'next-action' });
 		onProcessed();
 	}
 
@@ -102,6 +107,7 @@
 		await updateItem(item.id, { type: 'next-action', context, projectId: selectedProjectId });
 		storageStatus.recordSave();
 		toast.success(selectedProjectId ? 'Added to project as next action.' : 'Added to Next Actions.');
+		trackEvent('task.created', { type: 'project' });
 		onProcessed();
 	}
 
@@ -133,6 +139,7 @@
 		});
 		storageStatus.recordSave();
 		toast.success('Moved to Waiting For.');
+		trackEvent('task.created', { type: 'waiting' });
 		onProcessed();
 	}
 

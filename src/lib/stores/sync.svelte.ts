@@ -16,6 +16,8 @@ import {
 } from '$lib/sync/pair';
 import { initIVCounter } from '$lib/sync/crypto';
 import { getSetting, setSetting, setSyncNotifier } from '$lib/db/operations';
+import { trackEvent } from '$lib/analytics/client';
+import { db } from '$lib/db/schema';
 
 class SyncStore {
 	isPaired = $state(false);
@@ -233,6 +235,10 @@ class SyncStore {
 			this.syncState = 'pulling';
 			this.lastError = null;
 
+			// Track sync start and time
+			const syncStart = Date.now();
+			trackEvent('sync.initiated');
+
 			// Perform sync
 			const result = await performSync(this.pairingCode, this.deviceId);
 
@@ -245,6 +251,11 @@ class SyncStore {
 				if (result.contentHash) {
 					this.lastKnownHash = result.contentHash;
 				}
+
+				// Track sync completion with metrics
+				const duration = Math.round(Date.now() - syncStart);
+				const itemCount = await db.items.count();
+				trackEvent('sync.completed', { itemCount, duration });
 			} else {
 				this.syncState = 'error';
 				this.lastError = result.error || 'Sync failed';
