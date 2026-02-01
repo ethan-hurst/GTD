@@ -212,6 +212,38 @@ Plans:
 
 ---
 
+### Phase 08.6: Backend, Frontend & Integration Tests (INSERTED)
+
+**Goal:** Set up backend, frontend, and integration test infrastructure — ensuring the existing codebase has a solid test foundation before layering Outlook sync features
+
+**Depends on:** Phase 08.5
+
+**Success Criteria** (what must be TRUE):
+1. Test runner configured and working for unit tests (frontend components + stores)
+2. Backend/serverless function tests can exercise Netlify Functions locally
+3. Integration tests can verify end-to-end flows (e.g., sync, CRUD operations)
+4. CI-friendly test commands exist (can run in headless mode)
+5. Existing core functionality has baseline test coverage
+
+**Plans:** 5 plans
+
+Plans:
+- [ ] 08.6-01-PLAN.md — Test infrastructure: Vitest + Browser Mode + Playwright + fake-indexeddb setup
+- [ ] 08.6-02-PLAN.md — Pure logic unit tests: merge (LWW), search tokenization, time utilities
+- [ ] 08.6-03-PLAN.md — Data layer tests: DB operations, crypto round-trip, export/import
+- [ ] 08.6-04-PLAN.md — Component tests: Svelte 5 components with vitest-browser-svelte
+- [ ] 08.6-05-PLAN.md — E2E tests: Playwright smoke test + inbox CRUD flow
+
+**Details:**
+- Vitest 6.x with Browser Mode + Playwright provider (Svelte 5 runes require real browser)
+- vitest-browser-svelte for component rendering
+- fake-indexeddb for Dexie/IndexedDB mocking in unit tests
+- Playwright for E2E tests against dev server
+- Co-located tests (*.test.ts next to source files)
+- E2E tests in tests/e2e/ directory
+
+---
+
 ### 🚧 v1.1 Outlook Calendar Sync (In Progress)
 
 **Milestone Goal:** Two-way calendar sync between GTD and Outlook so the user sees work commitments in GTD and GTD tasks appear on their Outlook calendar.
@@ -338,7 +370,7 @@ Plans:
 
 ## Progress
 
-**Execution Order:** Phases execute in numeric order: 08.1 → 08.2 → 08.3 → 08.4 → 08.5 → 9 → 10 → 11 → 12 → 13
+**Execution Order:** Phases execute in numeric order: 08.1 → 08.2 → 08.3 → 08.4 → 08.5 → 08.6 → 9 → 10 → 11 → 12 → 13
 
 | Phase | Milestone | Plans Complete | Status | Completed |
 |-------|-----------|----------------|--------|-----------|
@@ -355,6 +387,7 @@ Plans:
 | 08.3 Left Nav Bar UX | v1.0+ | 2/2 | Complete | 2026-01-31 |
 | 08.4 Mobile Responsive Pass | v1.0+ | 7/7 | Complete | 2026-01-31 |
 | 08.5 Device Sync | v1.0+ | 6/6 | Complete | 2026-01-31 |
+| 08.6 Backend/Frontend/Integration Tests | v1.0+ | 0/5 | Not started | - |
 | 9. OAuth Foundation | v1.1 | 0/TBD | Not started | - |
 | 10. Read Calendar | v1.1 | 0/TBD | Not started | - |
 | 11. Two-Way Sync | v1.1 | 0/TBD | Not started | - |
