@@ -114,7 +114,6 @@
 	onMount(async () => {
 		storageStatus.checkPersistence();
 		storageStatus.updateQuota();
-		await syncState.init();
 
 		intervalId = window.setInterval(() => {
 			storageStatus.updateQuota();

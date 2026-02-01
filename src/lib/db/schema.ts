@@ -118,105 +118,143 @@ db.version(7).stores({
 	events: "++id, startTime, endTime, projectId, source, recurrenceId, deleted"
 });
 
-// Version 8: Change to UUID-based IDs for multi-device sync compatibility
-// Auto-increment IDs cause conflicts when multiple devices create records independently
+// Versions 8-11: Multi-step migration to UUID-based IDs for sync compatibility.
+// IndexedDB does not support changing primary keys in-place, so we use a
+// temp-table strategy: copy → delete → recreate → cleanup.
+
+// Version 8: Copy data from original tables into temporary tables
 db.version(8).stores({
+	items: "++id, type, created, modified, *searchWords, context, projectId, sortOrder, completedAt, followUpDate, category, deleted",
+	lists: "++id, name, type",
+	contexts: "++id, name, sortOrder",
+	settings: "++id, &key, updatedAt",
+	events: "++id, startTime, endTime, projectId, source, recurrenceId, deleted",
+	// Temp tables with UUID primary keys
+	_tmp_items: "id, type",
+	_tmp_lists: "id, name",
+	_tmp_contexts: "id, name",
+	_tmp_events: "id, startTime"
+}).upgrade(async (trans) => {
+	const { generateUUID } = await import('../utils/uuid');
+
+	// Build ID maps for foreign key remapping
+	const itemIdMap = new Map<number, string>();
+	const eventIdMap = new Map<number, string>();
+
+	// Copy items → _tmp_items
+	const items = await trans.table('items').toArray();
+	for (const item of items) {
+		const newId = generateUUID();
+		itemIdMap.set(item.id as number, newId);
+		await trans.table('_tmp_items').add({ ...item, id: newId, projectId: item.projectId });
+	}
+
+	// Copy contexts → _tmp_contexts
+	const contexts = await trans.table('contexts').toArray();
+	for (const ctx of contexts) {
+		await trans.table('_tmp_contexts').add({ ...ctx, id: generateUUID() });
+	}
+
+	// Copy lists → _tmp_lists
+	const lists = await trans.table('lists').toArray();
+	for (const list of lists) {
+		await trans.table('_tmp_lists').add({ ...list, id: generateUUID() });
+	}
+
+	// Copy events → _tmp_events
+	const events = await trans.table('events').toArray();
+	for (const event of events) {
+		const newId = generateUUID();
+		eventIdMap.set(event.id as number, newId);
+		await trans.table('_tmp_events').add({ ...event, id: newId });
+	}
+
+	// Fix foreign key references in temp tables
+	const tmpItems = await trans.table('_tmp_items').toArray();
+	for (const item of tmpItems) {
+		if (item.projectId && typeof item.projectId === 'number') {
+			const newProjectId = itemIdMap.get(item.projectId as number);
+			if (newProjectId) {
+				await trans.table('_tmp_items').update(item.id, { projectId: newProjectId });
+			}
+		}
+	}
+
+	const tmpEvents = await trans.table('_tmp_events').toArray();
+	for (const event of tmpEvents) {
+		const updates: any = {};
+		if (event.projectId && typeof event.projectId === 'number') {
+			const newProjId = itemIdMap.get(event.projectId as number);
+			if (newProjId) updates.projectId = newProjId;
+		}
+		if (event.recurrenceId && typeof event.recurrenceId === 'number') {
+			const newRecId = eventIdMap.get(event.recurrenceId as number);
+			if (newRecId) updates.recurrenceId = newRecId;
+		}
+		if (Object.keys(updates).length > 0) {
+			await trans.table('_tmp_events').update(event.id, updates);
+		}
+	}
+});
+
+// Version 9: Delete original tables (set to null)
+db.version(9).stores({
+	items: null as any,
+	lists: null as any,
+	contexts: null as any,
+	events: null as any,
+	settings: "++id, &key, updatedAt",
+	_tmp_items: "id, type",
+	_tmp_lists: "id, name",
+	_tmp_contexts: "id, name",
+	_tmp_events: "id, startTime"
+});
+
+// Version 10: Recreate original tables with UUID primary keys (no ++), copy data back
+db.version(10).stores({
 	items: "id, type, created, modified, *searchWords, context, projectId, sortOrder, completedAt, followUpDate, category, deleted",
 	lists: "id, name, type",
 	contexts: "id, name, sortOrder",
-	settings: "++id, &key, updatedAt",  // Settings unchanged - uses 'key' for uniqueness
-	events: "id, startTime, endTime, projectId, source, recurrenceId, deleted"
+	settings: "++id, &key, updatedAt",
+	events: "id, startTime, endTime, projectId, source, recurrenceId, deleted",
+	_tmp_items: "id, type",
+	_tmp_lists: "id, name",
+	_tmp_contexts: "id, name",
+	_tmp_events: "id, startTime"
 }).upgrade(async (trans) => {
-	// Migrate existing records from auto-increment IDs to UUIDs
-	// This is a one-way migration - cannot be undone
-	const { generateUUID } = await import('../utils/uuid');
-
-	// Map old numeric IDs to new UUID IDs for foreign key updates
-	const itemIdMap = new Map<number, string>();
-	const contextIdMap = new Map<number, string>();
-	const eventIdMap = new Map<number, string>();
-	const listIdMap = new Map<number, string>();
-
-	// Migrate items table
-	const items = await trans.table('items').toArray();
-	await trans.table('items').clear();
+	// Copy data back from temp tables to recreated tables
+	const items = await trans.table('_tmp_items').toArray();
 	for (const item of items) {
-		const oldId = item.id;
-		const newId = generateUUID();
-		itemIdMap.set(oldId as number, newId);
-		await trans.table('items').add({
-			...item,
-			id: newId,
-			projectId: item.projectId ? undefined : undefined  // Will be updated in second pass
-		});
+		await trans.table('items').add(item);
 	}
 
-	// Migrate contexts table
-	const contexts = await trans.table('contexts').toArray();
-	await trans.table('contexts').clear();
-	for (const context of contexts) {
-		const oldId = context.id;
-		const newId = generateUUID();
-		contextIdMap.set(oldId as number, newId);
-		await trans.table('contexts').add({
-			...context,
-			id: newId
-		});
-	}
-
-	// Migrate lists table
-	const lists = await trans.table('lists').toArray();
-	await trans.table('lists').clear();
+	const lists = await trans.table('_tmp_lists').toArray();
 	for (const list of lists) {
-		const oldId = list.id;
-		const newId = generateUUID();
-		listIdMap.set(oldId as number, newId);
-		await trans.table('lists').add({
-			...list,
-			id: newId
-		});
+		await trans.table('lists').add(list);
 	}
 
-	// Migrate events table
-	const events = await trans.table('events').toArray();
-	await trans.table('events').clear();
+	const contexts = await trans.table('_tmp_contexts').toArray();
+	for (const ctx of contexts) {
+		await trans.table('contexts').add(ctx);
+	}
+
+	const events = await trans.table('_tmp_events').toArray();
 	for (const event of events) {
-		const oldId = event.id;
-		const newId = generateUUID();
-		eventIdMap.set(oldId as number, newId);
-		await trans.table('events').add({
-			...event,
-			id: newId,
-			projectId: event.projectId ? undefined : undefined,  // Will be updated below
-			recurrenceId: event.recurrenceId ? undefined : undefined  // Will be updated below
-		});
+		await trans.table('events').add(event);
 	}
+});
 
-	// Second pass: Update foreign key references
-	const updatedItems = await trans.table('items').toArray();
-	for (const item of updatedItems) {
-		const updates: any = {};
-		if (item.projectId && typeof item.projectId === 'number') {
-			updates.projectId = itemIdMap.get(item.projectId as number) || null;
-		}
-		if (Object.keys(updates).length > 0) {
-			await trans.table('items').update(item.id, updates);
-		}
-	}
-
-	const updatedEvents = await trans.table('events').toArray();
-	for (const event of updatedEvents) {
-		const updates: any = {};
-		if (event.projectId && typeof event.projectId === 'number') {
-			updates.projectId = itemIdMap.get(event.projectId as number) || null;
-		}
-		if (event.recurrenceId && typeof event.recurrenceId === 'number') {
-			updates.recurrenceId = eventIdMap.get(event.recurrenceId as number) || null;
-		}
-		if (Object.keys(updates).length > 0) {
-			await trans.table('events').update(event.id, updates);
-		}
-	}
+// Version 11: Clean up temp tables
+db.version(11).stores({
+	items: "id, type, created, modified, *searchWords, context, projectId, sortOrder, completedAt, followUpDate, category, deleted",
+	lists: "id, name, type",
+	contexts: "id, name, sortOrder",
+	settings: "++id, &key, updatedAt",
+	events: "id, startTime, endTime, projectId, source, recurrenceId, deleted",
+	_tmp_items: null as any,
+	_tmp_lists: null as any,
+	_tmp_contexts: null as any,
+	_tmp_events: null as any
 });
 
 // Hooks for automatic searchWords population

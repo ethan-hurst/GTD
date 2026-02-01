@@ -45,7 +45,6 @@
 		await inboxState.loadItems();
 		await projectState.loadProjects();
 		await weeklyReviewState.loadLastReview();
-		await syncState.init();
 	});
 </script>
 

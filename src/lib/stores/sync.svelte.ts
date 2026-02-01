@@ -31,14 +31,42 @@ class SyncStore {
 	private lastKnownHash: string | null = null;
 	private pollIntervalId: ReturnType<typeof setInterval> | null = null;
 
+	// Init guard - prevents concurrent/duplicate init calls
+	private initPromise: Promise<void> | null = null;
+
 	constructor() {
 		// Initialization happens in init()
 	}
 
 	/**
-	 * Initialize sync store from IndexedDB
+	 * Extract a readable error message from potentially minified errors.
+	 * Dexie errors have .name and .message even when constructor is minified.
+	 */
+	private static formatError(err: unknown): string {
+		if (err instanceof Error) {
+			// Use name + message for better debugging (works even with minified constructors)
+			const name = err.name || err.constructor?.name || 'Error';
+			return err.message ? `${name}: ${err.message}` : name;
+		}
+		return String(err);
+	}
+
+	/**
+	 * Initialize sync store from IndexedDB.
+	 * Safe to call multiple times - subsequent calls return the same promise.
 	 */
 	async init(): Promise<void> {
+		// Return existing init promise if already initializing/initialized
+		if (this.initPromise) return this.initPromise;
+
+		this.initPromise = this.doInit();
+		return this.initPromise;
+	}
+
+	/**
+	 * Internal init implementation (called once)
+	 */
+	private async doInit(): Promise<void> {
 		try {
 			// Load pairing info
 			const pairingInfo = await loadPairingInfo();
@@ -61,8 +89,8 @@ class SyncStore {
 				this.startPolling();
 			}
 		} catch (err) {
-			console.error('Sync init failed:', err);
-			this.lastError = err instanceof Error ? err.message : String(err);
+			console.error('Sync init failed:', SyncStore.formatError(err));
+			this.lastError = SyncStore.formatError(err);
 		}
 	}
 
@@ -260,7 +288,11 @@ class SyncStore {
 		if (this.pollIntervalId) return;
 
 		this.pollIntervalId = setInterval(
-			() => this.pollForChanges(),
+			() => {
+				this.pollForChanges().catch(err => {
+					console.warn('Poll for changes failed:', SyncStore.formatError(err));
+				});
+			},
 			DEFAULT_SYNC_CONFIG.pollIntervalMs
 		);
 	}
