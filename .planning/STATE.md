@@ -6,16 +6,16 @@ See: .planning/PROJECT.md (updated 2026-01-31)
 
 **Core value:** Nothing falls through the cracks — every commitment is captured, clarified, and surfaced at the right time so the user always knows what to do next.
 
-**Current focus:** Phase 08.5 complete — next: Phase 9 (OAuth Foundation)
+**Current focus:** Phase 08.6 (Backend, Frontend & Integration Tests)
 
 ## Current Position
 
-Phase: 08.5 (Device Sync — complete)
-Plan: 6 of 6 in current phase
-Status: Phase complete
-Last activity: 2026-01-31 — Phase 08.5 complete (all 6 plans, verification passed 8/8)
+Phase: 08.6 (Backend, Frontend & Integration Tests)
+Plan: 1 of 6 in current phase
+Status: In progress
+Last activity: 2026-02-01 — Completed 08.6-01-PLAN.md
 
-Progress: [████████████░░░░░░░] 60% (60/TBD plans complete across all phases)
+Progress: [████████████░░░░░░░] 61% (61/TBD plans complete across all phases)
 
 ## Performance Metrics
 
@@ -128,6 +128,9 @@ Recent decisions affecting current work:
 - 08.5-05: Auto-format pairing code input as XXX-XXX for improved UX
 - 08.5-05: Sync status indicators only visible when paired (don't clutter UI for non-sync users)
 - 08.5-05: StatusBar sync status clickable to navigate to Settings page
+- 08.6-01: Use real browser IndexedDB instead of fake-indexeddb (browser mode provides real implementation)
+- 08.6-01: Use raw svelte() plugin in vitest.config.ts instead of sveltekit() plugin to avoid browser mode interference
+- 08.6-01: Browser mode headless by default for CI-friendly test execution
 
 ### Roadmap Evolution
 
@@ -136,6 +139,8 @@ Recent decisions affecting current work:
 - Phase 08.3 inserted after Phase 08.2: Left nav bar has scrollbar on laptop — redesign nav UX while preserving all functionality
 - Phase 08.4 inserted after Phase 08.3: Mobile responsive pass — ensure site works on mobile devices (URGENT)
 - Phase 08.5 inserted after Phase 08.4: Device sync — Netlify Functions + Blobs, pairing code, encrypted per-record merge (URGENT)
+- Phase 08.6 inserted after Phase 08.5: Backend, frontend & integration tests — establish test infrastructure before Outlook sync (URGENT)
+- Phase 08.7 inserted after Phase 08.6: Site analytics & usage metrics — no way to track users/usage over time, need visibility into signups and engagement (URGENT)
 
 ### Pending Todos
 
@@ -155,6 +160,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-01-31
-Stopped at: Phase 08.5 complete — all 6 plans executed, verification passed (8/8)
+Last session: 2026-02-01T20:57:34Z
+Stopped at: Completed 08.6-01-PLAN.md (Test Infrastructure)
 Resume file: None
