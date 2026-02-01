@@ -68,9 +68,9 @@
 				}
 
 				// Prepare data
-				const labels = data.dailyMetrics.map((d: any) => d.date);
-				const uniqueVisitors = data.dailyMetrics.map((d: any) => d.uniqueVisitors);
-				const pageviews = data.dailyMetrics.map((d: any) => d.pageviews);
+				const labels = data.summary.dailyMetrics.map((d: any) => d.date);
+				const uniqueVisitors = data.summary.dailyMetrics.map((d: any) => d.uniqueVisitors);
+				const pageviews = data.summary.dailyMetrics.map((d: any) => d.pageviews);
 
 				// Create new chart
 				chartInstance = new ChartJS(chartCanvas, {
@@ -249,7 +249,7 @@
 								>
 									<span class="text-sm text-gray-700 dark:text-gray-300 truncate">{page.path}</span>
 									<span class="text-sm font-medium text-gray-900 dark:text-gray-100 ml-2"
-										>{page.count.toLocaleString()}</span
+										>{page.views.toLocaleString()}</span
 									>
 								</div>
 							{/each}
@@ -270,7 +270,7 @@
 										? 'bg-gray-50 dark:bg-gray-700'
 										: ''}"
 								>
-									<span class="text-sm text-gray-700 dark:text-gray-300 truncate">{event.name}</span>
+									<span class="text-sm text-gray-700 dark:text-gray-300 truncate">{event.event}</span>
 									<span class="text-sm font-medium text-gray-900 dark:text-gray-100 ml-2"
 										>{event.count.toLocaleString()}</span
 									>
