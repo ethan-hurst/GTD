@@ -262,7 +262,7 @@ Plans:
 
 Plans:
 - [x] 08.7-01-PLAN.md — Analytics foundation: install Plausible, create analytics module, wire layout, offline queuing
-- [x] 08.7-02-PLAN.md — Custom event instrumentation: onboarding funnel, task lifecycle, sync, review
+- [ ] 08.7-02-PLAN.md — Custom event instrumentation: onboarding funnel, task lifecycle, sync, review
 - [ ] 08.7-03-PLAN.md — End-to-end verification: dev build check + production Plausible dashboard verification
 
 **Details:**
@@ -289,13 +289,19 @@ Plans:
 5. User experience is lightweight — doesn't interrupt workflow
 6. Optional contact info (email) so the team can follow up with users
 
-**Plans:** 0 plans
+**Plans:** 2 plans
 
 Plans:
-- [ ] TBD (run `/gsd:plan-phase 08.8` to break down)
+- [ ] 08.8-01-PLAN.md — Feedback form foundation: prerendered route, Dexie schema, FeedbackModal component
+- [ ] 08.8-02-PLAN.md — Offline queue, service worker sync, navigation integration, human verification
 
 **Details:**
-[To be added during planning]
+- Netlify Forms for submission collection (built-in spam protection via Akismet + honeypot)
+- html2canvas for screenshot capture (optional, compressed to <500KB)
+- Dexie feedbackQueue table for offline submissions
+- Background Sync API for automatic retry when online
+- FeedbackModal accessible from sidebar footer, mobile drawer, and 'f' keyboard shortcut
+- Prerendered /feedback route for Netlify Forms detection at build time
 
 ---
 
@@ -444,7 +450,7 @@ Plans:
 | 08.5 Device Sync | v1.0+ | 6/6 | Complete | 2026-01-31 |
 | 08.6 Backend/Frontend/Integration Tests | v1.0+ | 6/6 | Complete | 2026-02-01 |
 | 08.7 Site Analytics & Usage Metrics | v1.0+ | 1/3 | In progress | 2026-02-01 |
-| 08.8 User Feedback & Bug Reports | v1.0+ | 0/TBD | Not started | - |
+| 08.8 User Feedback & Bug Reports | v1.0+ | 0/2 | Not started | - |
 | 9. OAuth Foundation | v1.1 | 0/TBD | Not started | - |
 | 10. Read Calendar | v1.1 | 0/TBD | Not started | - |
 | 11. Two-Way Sync | v1.1 | 0/TBD | Not started | - |
