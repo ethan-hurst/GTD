@@ -6,6 +6,7 @@
 	import { projectState } from '$lib/stores/projects.svelte';
 	import { waitingForState } from '$lib/stores/waiting.svelte';
 	import { somedayMaybeState } from '$lib/stores/someday.svelte';
+	import { analytics } from '$lib/analytics/events';
 	import type { ReviewStep } from '$lib/stores/review.svelte';
 
 	interface WeeklyReviewWizardProps {
@@ -16,6 +17,9 @@
 
 	// Load all state stores on mount
 	onMount(async () => {
+		// Track review start
+		analytics.reviewStarted();
+
 		await Promise.all([
 			inboxState.loadItems(),
 			actionState.loadActions(),
@@ -96,6 +100,9 @@
 	}
 
 	function handleFinishReview() {
+		// Track review completion
+		analytics.reviewCompleted();
+
 		if (onfinish) {
 			onfinish();
 		}

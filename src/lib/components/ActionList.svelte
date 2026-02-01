@@ -4,6 +4,7 @@
 	import toast from 'svelte-5-french-toast';
 	import { actionState } from '$lib/stores/actions.svelte';
 	import { completeAction, reorderActions, bulkCompleteActions } from '$lib/db/operations';
+	import { analytics } from '$lib/analytics/events';
 	import ActionItem from './ActionItem.svelte';
 	import ActionDetailPanel from './ActionDetailPanel.svelte';
 	import type { GTDItem } from '$lib/db/schema';
@@ -38,6 +39,9 @@
 		// Call completeAction and get undo function
 		const undo = await completeAction(id);
 		undoFunctions.set(id, undo);
+
+		// Track task completion
+		analytics.taskCompleted();
 
 		// Create custom toast with undo button
 		const toastId = toast.success(

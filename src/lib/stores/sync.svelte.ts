@@ -16,6 +16,7 @@ import {
 } from '$lib/sync/pair';
 import { initIVCounter } from '$lib/sync/crypto';
 import { getSetting, setSetting, setSyncNotifier } from '$lib/db/operations';
+import { analytics } from '$lib/analytics/events';
 
 class SyncStore {
 	isPaired = $state(false);
@@ -228,10 +229,16 @@ class SyncStore {
 			return;
 		}
 
+		// Track sync start time
+		const syncStartTime = Date.now();
+
 		try {
 			// Update state to pulling
 			this.syncState = 'pulling';
 			this.lastError = null;
+
+			// Track sync initiation
+			analytics.syncInitiated();
 
 			// Perform sync
 			const result = await performSync(this.pairingCode, this.deviceId);
@@ -240,6 +247,13 @@ class SyncStore {
 				this.syncState = 'idle';
 				this.lastSyncTime = new Date();
 				this.lastError = null;
+
+				// Calculate sync duration
+				const duration = Date.now() - syncStartTime;
+
+				// Track sync completion with metrics
+				const itemCount = result.mergedCount || 0;
+				analytics.syncCompleted(itemCount, duration);
 
 				// Track content hash for polling change detection
 				if (result.contentHash) {
