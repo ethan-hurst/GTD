@@ -8,7 +8,7 @@
 	let isAddingContext = $state(false);
 	let newContextName = $state('');
 	let inputElement = $state<HTMLInputElement | undefined>();
-	let editingContextId = $state<number | null>(null);
+	let editingContextId = $state<string | null>(null);
 	let editingContextName = $state('');
 
 	onMount(async () => {
@@ -75,7 +75,7 @@
 		).length;
 	}
 
-	function startEditContext(id: number, name: string, e: MouseEvent) {
+	function startEditContext(id: string, name: string, e: MouseEvent) {
 		e.stopPropagation();
 		editingContextId = id;
 		editingContextName = name;
@@ -110,7 +110,7 @@
 		}
 	}
 
-	async function handleDeleteContext(id: number, name: string, e: MouseEvent) {
+	async function handleDeleteContext(id: string, name: string, e: MouseEvent) {
 		e.stopPropagation();
 
 		if (confirm(`Delete ${name}? Actions will keep their text but lose this filter.`)) {

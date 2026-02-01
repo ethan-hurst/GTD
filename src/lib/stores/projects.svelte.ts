@@ -29,7 +29,7 @@ export class ProjectState {
 	/**
 	 * Check if a project is stalled (has no active next actions).
 	 */
-	isStalled(id: number): boolean {
+	isStalled(id: string): boolean {
 		return this.stalledIds.has(id);
 	}
 

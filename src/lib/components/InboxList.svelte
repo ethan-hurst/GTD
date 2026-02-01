@@ -30,11 +30,11 @@
 	);
 
 	// Swipe gesture state per item (using Map to track by item ID)
-	let swipeOffsets = $state(new Map<number, number>());
-	let revealingItems = $state(new Set<number>());
+	let swipeOffsets = $state(new Map<string, number>());
+	let revealingItems = $state(new Set<string>());
 	const SWIPE_THRESHOLD = 80;
 
-	function createPanHandlers(itemId: number) {
+	function createPanHandlers(itemId: string) {
 		function handlePan(event: PanCustomEvent) {
 			if (!mobileState.isMobile) return;
 			const offset = Math.max(-120, Math.min(120, event.detail.x));

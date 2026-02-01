@@ -42,7 +42,7 @@
 		return result;
 	});
 
-	async function handleComplete(id: number, title: string) {
+	async function handleComplete(id: string, title: string) {
 		try {
 			const undo = await completeAction(id);
 			await actionState.loadActions();

@@ -20,7 +20,7 @@
 	let eventEndTime = $state('');
 	let contexts = $state<Context[]>([]);
 	let projects = $state<GTDItem[]>([]);
-	let selectedProjectId = $state<number | undefined>(undefined);
+	let selectedProjectId = $state<string | undefined>(undefined);
 	let newProjectTitle = $state('');
 	let afterContext: 'nextAction' | 'project' | null = null;
 

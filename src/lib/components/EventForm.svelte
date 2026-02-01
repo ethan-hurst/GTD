@@ -68,7 +68,7 @@
 	let location = $state(event?.location || '');
 	let notes = $state(event?.notes || '');
 	let selectedColor = $state(event?.color || '#3b82f6');
-	let projectId = $state(event?.projectId?.toString() || '');
+	let projectId = $state(event?.projectId || '');
 	let rrule = $state<string | null>(event?.rrule || null);
 
 	let projects = $state<GTDItem[]>([]);
@@ -118,7 +118,7 @@
 			location: location.trim() || undefined,
 			notes: notes.trim() || undefined,
 			color: selectedColor,
-			projectId: projectId ? parseInt(projectId) : undefined,
+			projectId: projectId || undefined,
 			source: 'manual' as const,
 			rrule: rrule || undefined
 		};

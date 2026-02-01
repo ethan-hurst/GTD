@@ -9,7 +9,7 @@ import type { GTDItem, CalendarEvent, Context } from '$lib/db/schema';
  * Generic sync record with required fields for LWW merge
  */
 export type SyncRecord = {
-	id: number;
+	id: string | number;
 	modified: Date;
 	deleted?: boolean;
 	[key: string]: any;

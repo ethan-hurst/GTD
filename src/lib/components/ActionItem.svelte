@@ -8,11 +8,11 @@
 
 	interface Props {
 		item: GTDItem;
-		onComplete: (id: number) => void;
-		onExpand: (id: number) => void;
+		onComplete: (id: string) => void;
+		onExpand: (id: string) => void;
 		isExpanded: boolean;
 		isSelected: boolean;
-		onToggleSelect: (id: number) => void;
+		onToggleSelect: (id: string) => void;
 	}
 
 	let { item, onComplete, onExpand, isExpanded, isSelected, onToggleSelect }: Props = $props();

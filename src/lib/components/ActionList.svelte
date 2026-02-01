@@ -18,7 +18,7 @@
 	});
 
 	// Track undo functions for toasts
-	let undoFunctions = new Map<number, () => Promise<void>>();
+	let undoFunctions = new Map<string, () => Promise<void>>();
 
 	async function handleDndConsider(e: CustomEvent) {
 		dragItems = e.detail.items;
@@ -31,7 +31,7 @@
 		await actionState.loadActions();
 	}
 
-	async function handleComplete(id: number) {
+	async function handleComplete(id: string) {
 		const item = actionState.items.find(i => i.id === id);
 		if (!item) return;
 
@@ -57,7 +57,7 @@
 		}, 1000);
 	}
 
-	async function handleUndo(id: number) {
+	async function handleUndo(id: string) {
 		const undo = undoFunctions.get(id);
 		if (!undo) return;
 
