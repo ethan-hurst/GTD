@@ -1,14 +1,26 @@
 import { defineConfig } from 'vitest/config';
 import { svelte } from '@sveltejs/vite-plugin-svelte';
 import { playwright } from '@vitest/browser-playwright';
+import path from 'path';
 
 export default defineConfig({
 	plugins: [svelte()],
 
 	// Ensure browser conditions for Svelte imports
 	resolve: process.env.VITEST
-		? { conditions: ['browser'] }
+		? {
+			conditions: ['browser'],
+			alias: {
+				'$lib': path.resolve('./src/lib'),
+				'$app': path.resolve('./src/tests/mocks/$app'),
+			}
+		}
 		: undefined,
+
+	// Optimize deps - exclude playwright from bundling
+	optimizeDeps: {
+		exclude: ['playwright', 'playwright-core']
+	},
 
 	test: {
 		// Global test setup
