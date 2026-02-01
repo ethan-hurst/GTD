@@ -262,7 +262,7 @@ Plans:
 
 Plans:
 - [x] 08.7-01-PLAN.md — Analytics foundation: install Plausible, create analytics module, wire layout, offline queuing
-- [ ] 08.7-02-PLAN.md — Custom event instrumentation: onboarding funnel, task lifecycle, sync, review
+- [x] 08.7-02-PLAN.md — Custom event instrumentation: onboarding funnel, task lifecycle, sync, review
 - [ ] 08.7-03-PLAN.md — End-to-end verification: dev build check + production Plausible dashboard verification
 
 **Details:**

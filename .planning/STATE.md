@@ -6,16 +6,16 @@ See: .planning/PROJECT.md (updated 2026-01-31)
 
 **Core value:** Nothing falls through the cracks — every commitment is captured, clarified, and surfaced at the right time so the user always knows what to do next.
 
-**Current focus:** Phase 08.6 (Backend, Frontend & Integration Tests)
+**Current focus:** Phase 08.7 (Site Analytics & Usage Metrics)
 
 ## Current Position
 
-Phase: 08.6 (Backend, Frontend & Integration Tests)
-Plan: 5 of 6 in current phase
+Phase: 08.7 (Site Analytics & Usage Metrics)
+Plan: 2 of 3 in current phase
 Status: In progress
-Last activity: 2026-02-01 — Completed 08.6-05-PLAN.md (E2E Tests)
+Last activity: 2026-02-01 — Completed 08.7-02-PLAN.md (Custom Event Instrumentation)
 
-Progress: [████████████░░░░░░░] 63% (63/TBD plans complete across all phases)
+Progress: [████████████░░░░░░░] 64% (64/TBD plans complete across all phases)
 
 ## Performance Metrics
 
@@ -149,6 +149,9 @@ Recent decisions affecting current work:
 - 08.7-01: Manual Plausible integration instead of @accuser package (Svelte 5 incompatibility)
 - 08.7-01: Vanilla IndexedDB analytics queue in service worker (avoid Workbox dependency)
 - 08.7-01: 24-hour retention for queued analytics events (balance persistence vs storage efficiency)
+- 08.7-02: Analytics calls placed after primary action completes (non-blocking, fail-safe)
+- 08.7-02: Sync metrics include itemCount and duration for operational insight
+- 08.7-02: Single taskCompleted event for all completion paths (simpler than per-category events)
 
 ### Roadmap Evolution
 
@@ -179,6 +182,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-02-01
-Stopped at: Completed 08.6-05-PLAN.md (E2E Tests)
+Last session: 2026-02-01T21:30:51Z
+Stopped at: Completed 08.7-02-PLAN.md (Custom Event Instrumentation)
 Resume file: None
