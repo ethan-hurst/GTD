@@ -19,6 +19,7 @@
 	import { getFeatureFromRoute, markFeatureVisited } from '$lib/utils/featureTracking';
 	import { syncState } from '$lib/stores/sync.svelte';
 	import { compactTombstones } from '$lib/db/operations';
+	import { trackPageView } from '$lib/analytics/client';
 
 	const { children } = $props();
 	let searchBarRef: any;
@@ -140,6 +141,14 @@
 			if (feature) {
 				markFeatureVisited(feature).catch(() => {});
 			}
+		}
+	});
+
+	// Analytics: track page views on navigation
+	$effect(() => {
+		const currentPath = $page.url.pathname;
+		if (currentPath) {
+			trackPageView(currentPath);
 		}
 	});
 
