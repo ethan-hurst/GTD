@@ -44,6 +44,7 @@
     "@netlify/blobs": "^10.5.0",
     "@tailwindcss/vite": "^4.1.18",
     "canvas-confetti": "^1.9.4",
+    "chart.js": "^4.5.1",
     "dexie": "^4.2.1",
     "html2canvas": "^1.4.1",
     "ical.js": "^2.2.1",
