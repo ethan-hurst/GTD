@@ -10,12 +10,12 @@ See: .planning/PROJECT.md (updated 2026-01-31)
 
 ## Current Position
 
-Phase: 08.8 (User Feedback & Bug Reports)
-Plan: 1 of 2 in current phase
+Phase: 08.7 (Site Analytics & Usage Metrics)
+Plan: 1 of 4 in current phase
 Status: In progress
-Last activity: 2026-02-01 — Completed 08.8-01-PLAN.md (feedback form foundation)
+Last activity: 2026-02-01 — Completed 08.7-01-PLAN.md (analytics foundation)
 
-Progress: [████████████░░░░░░░] 62% (62/TBD plans complete across all phases)
+Progress: [████████████░░░░░░░] 63% (63/TBD plans complete across all phases)
 
 ## Performance Metrics
 
@@ -146,12 +146,11 @@ Recent decisions affecting current work:
 - 08.6-05: Deferred inbox CRUD form submission tests due to Svelte 5 hydration issue requiring separate investigation
 - 08.6-05: Viewport-conditional assertions for responsive testing (desktop vs mobile navigation patterns)
 - 08.6-05: Graceful fallbacks in tests when UI state varies (empty state vs populated list)
-- 08.7-01: Manual Plausible integration instead of @accuser package (Svelte 5 incompatibility)
-- 08.7-01: Vanilla IndexedDB analytics queue in service worker (avoid Workbox dependency)
-- 08.7-01: 24-hour retention for queued analytics events (balance persistence vs storage efficiency)
-- 08.7-02: Analytics calls placed after primary action completes (non-blocking, fail-safe)
-- 08.7-02: Sync metrics include itemCount and duration for operational insight
-- 08.7-02: Single taskCompleted event for all completion paths (simpler than per-category events)
+- 08.7-01: Plausible-style visitor hashing (daily-rotating salt + SHA-256 over IP + User-Agent + siteDomain)
+- 08.7-01: Arrays instead of Sets for visitor tracking (JSON serialization compatibility)
+- 08.7-01: Pre-aggregate daily metrics server-side (pageviews, events, unique visitors, referrers)
+- 08.7-01: sendBeacon with fetch keepalive fallback for reliability across browsers
+- 08.7-01: DNT respected on both client and server for privacy compliance
 - 08.8-01: Use static HTML file in addition to SvelteKit route for reliable Netlify Forms detection
 - 08.8-01: Screenshot with html2canvas instead of FeedbackPlus for simpler integration
 - 08.8-01: JPEG compression at 0.7 quality, 0.3 if > 500KB to balance quality and size
@@ -187,5 +186,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-01
-Stopped at: Completed 08.8-01 (feedback form foundation)
+Stopped at: Completed 08.7-01 (analytics foundation)
 Resume file: None
