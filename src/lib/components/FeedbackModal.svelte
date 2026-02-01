@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { queueFeedback, registerFeedbackSync } from '$lib/db/feedback-queue';
 
 	// Props (Svelte 5 pattern)
 	let { onclose } = $props<{ onclose: () => void }>();
@@ -7,6 +8,7 @@
 	// State ($state runes)
 	let submitting = $state(false);
 	let submitted = $state(false);
+	let submittedOffline = $state(false);
 	let feedbackType = $state<'bug' | 'feature'>('bug');
 	let description = $state('');
 	let email = $state('');
@@ -17,7 +19,13 @@
 
 	// Online/offline detection
 	$effect(() => {
-		const handleOnline = () => { isOnline = true; };
+		const handleOnline = () => {
+			isOnline = true;
+			// Attempt to sync queued items when coming back online
+			if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
+				navigator.serviceWorker.controller.postMessage('replay-feedback');
+			}
+		};
 		const handleOffline = () => { isOnline = false; };
 
 		window.addEventListener('online', handleOnline);
@@ -122,14 +130,28 @@
 				}
 
 				submitted = true;
+				submittedOffline = false;
 				setTimeout(() => {
 					onclose();
 				}, 2000);
 			} else {
-				// Offline: Queue for later (TODO: Plan 02 will add offline queue integration)
-				console.log('Offline submission - queuing for later');
-				// TODO: Import and call queueFeedback from '$lib/db/feedback-queue'
+				// Offline: Queue for later
+				await queueFeedback({
+					type: feedbackType,
+					description,
+					email: email || undefined,
+					screenshot: screenshotData || undefined
+				});
+
+				// Register background sync (progressive enhancement)
+				await registerFeedbackSync();
+
+				// Show toast notification
+				const { toast } = await import('svelte-5-french-toast');
+				toast.success("Feedback queued - will send when you're back online", { duration: 4000 });
+
 				submitted = true;
+				submittedOffline = true;
 				setTimeout(() => {
 					onclose();
 				}, 2000);

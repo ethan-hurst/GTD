@@ -1,0 +1,84 @@
+import { db, type QueuedFeedback } from './schema';
+
+/**
+ * Queue a feedback submission for later sending (offline support)
+ */
+export async function queueFeedback(feedback: Omit<QueuedFeedback, 'id' | 'timestamp' | 'retryCount'>): Promise<number> {
+	const id = await db.feedbackQueue.add({
+		...feedback,
+		timestamp: Date.now(),
+		retryCount: 0
+	});
+	return id as number;
+}
+
+/**
+ * Get count of queued (unsent) feedback items
+ */
+export async function getQueuedCount(): Promise<number> {
+	return db.feedbackQueue.count();
+}
+
+/**
+ * Attempt to send all queued feedback submissions.
+ * Called by service worker on sync event or manually on reconnect.
+ * Returns number of successfully sent items.
+ */
+export async function syncQueuedFeedback(): Promise<number> {
+	const queued = await db.feedbackQueue.toArray();
+	let sentCount = 0;
+
+	for (const item of queued) {
+		// Skip items with too many retries (> 5)
+		if (item.retryCount > 5) {
+			await db.feedbackQueue.delete(item.id!);
+			continue;
+		}
+
+		try {
+			const formData = new URLSearchParams();
+			formData.append('form-name', 'feedback');
+			formData.append('bot-field', '');
+			formData.append('type', item.type);
+			formData.append('description', item.description);
+			if (item.email) formData.append('email', item.email);
+			if (item.screenshot) formData.append('screenshot', item.screenshot);
+
+			const response = await fetch('/feedback', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+				body: formData.toString()
+			});
+
+			if (response.ok || response.status === 302) {
+				await db.feedbackQueue.delete(item.id!);
+				sentCount++;
+			} else {
+				await db.feedbackQueue.update(item.id!, {
+					retryCount: item.retryCount + 1
+				});
+			}
+		} catch (err) {
+			console.warn('Failed to sync feedback item:', item.id, err);
+			await db.feedbackQueue.update(item.id!, {
+				retryCount: item.retryCount + 1
+			});
+		}
+	}
+
+	return sentCount;
+}
+
+/**
+ * Register for background sync (Chrome/Edge only - progressive enhancement)
+ */
+export async function registerFeedbackSync(): Promise<void> {
+	if ('serviceWorker' in navigator && 'SyncManager' in window) {
+		try {
+			const registration = await navigator.serviceWorker.ready;
+			await (registration as any).sync.register('sync-feedback');
+		} catch (err) {
+			console.warn('Background sync registration failed:', err);
+		}
+	}
+}

@@ -10,6 +10,91 @@ const ASSETS = [
 	...files  // static files from /static directory
 ];
 
+// Feedback queue configuration
+const FEEDBACK_DB_NAME = 'GTDDatabase';
+const FEEDBACK_STORE_NAME = 'feedbackQueue';
+
+async function syncFeedbackQueue() {
+	try {
+		const db = await new Promise((resolve, reject) => {
+			const request = indexedDB.open(FEEDBACK_DB_NAME);
+			request.onerror = () => reject(request.error);
+			request.onsuccess = () => resolve(request.result);
+		});
+
+		const transaction = db.transaction([FEEDBACK_STORE_NAME], 'readwrite');
+		const store = transaction.objectStore(FEEDBACK_STORE_NAME);
+
+		const items = await new Promise((resolve, reject) => {
+			const request = store.getAll();
+			request.onsuccess = () => resolve(request.result);
+			request.onerror = () => reject(request.error);
+		});
+
+		const keys = await new Promise((resolve, reject) => {
+			const request = store.getAllKeys();
+			request.onsuccess = () => resolve(request.result);
+			request.onerror = () => reject(request.error);
+		});
+
+		db.close();
+
+		for (let i = 0; i < items.length; i++) {
+			const item = items[i];
+			const key = keys[i];
+
+			if (item.retryCount > 5) {
+				await deleteFeedbackItem(key);
+				continue;
+			}
+
+			try {
+				const params = new URLSearchParams();
+				params.append('form-name', 'feedback');
+				params.append('bot-field', '');
+				params.append('type', item.type);
+				params.append('description', item.description);
+				if (item.email) params.append('email', item.email);
+				if (item.screenshot) params.append('screenshot', item.screenshot);
+
+				const response = await fetch('/feedback', {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+					body: params.toString()
+				});
+
+				if (response.ok || response.status === 302) {
+					await deleteFeedbackItem(key);
+				}
+			} catch (err) {
+				console.warn('SW: Failed to sync feedback:', err);
+			}
+		}
+	} catch (err) {
+		console.warn('SW: Failed to access feedback queue:', err);
+	}
+}
+
+async function deleteFeedbackItem(key) {
+	try {
+		const db = await new Promise((resolve, reject) => {
+			const request = indexedDB.open(FEEDBACK_DB_NAME);
+			request.onerror = () => reject(request.error);
+			request.onsuccess = () => resolve(request.result);
+		});
+		const transaction = db.transaction([FEEDBACK_STORE_NAME], 'readwrite');
+		const store = transaction.objectStore(FEEDBACK_STORE_NAME);
+		await new Promise((resolve, reject) => {
+			const request = store.delete(key);
+			request.onsuccess = () => resolve();
+			request.onerror = () => reject(request.error);
+		});
+		db.close();
+	} catch (err) {
+		console.warn('SW: Failed to delete feedback item:', err);
+	}
+}
+
 // Install event - cache all assets
 self.addEventListener('install', (event) => {
 	async function addFilesToCache() {
@@ -79,4 +164,18 @@ self.addEventListener('fetch', (event) => {
 	}
 
 	event.respondWith(respond());
+});
+
+// Sync event - background sync for feedback queue
+self.addEventListener('sync', (event) => {
+	if (event.tag === 'sync-feedback') {
+		event.waitUntil(syncFeedbackQueue());
+	}
+});
+
+// Message event - replay feedback queue on demand
+self.addEventListener('message', (event) => {
+	if (event.data === 'replay-feedback') {
+		syncFeedbackQueue().catch(() => {});
+	}
 });
