@@ -225,7 +225,7 @@ Plans:
 4. CI-friendly test commands exist (can run in headless mode)
 5. Existing core functionality has baseline test coverage
 
-**Plans:** 5 plans
+**Plans:** 6 plans
 
 Plans:
 - [ ] 08.6-01-PLAN.md — Test infrastructure: Vitest + Browser Mode + Playwright + fake-indexeddb setup
@@ -233,6 +233,7 @@ Plans:
 - [ ] 08.6-03-PLAN.md — Data layer tests: DB operations, crypto round-trip, export/import
 - [ ] 08.6-04-PLAN.md — Component tests: Svelte 5 components with vitest-browser-svelte
 - [ ] 08.6-05-PLAN.md — E2E tests: Playwright smoke test + inbox CRUD flow
+- [ ] 08.6-06-PLAN.md — Netlify Functions unit tests: sync-push, sync-pull, sync-check with mocked Blobs
 
 **Details:**
 - Vitest 6.x with Browser Mode + Playwright provider (Svelte 5 runes require real browser)
@@ -387,7 +388,7 @@ Plans:
 | 08.3 Left Nav Bar UX | v1.0+ | 2/2 | Complete | 2026-01-31 |
 | 08.4 Mobile Responsive Pass | v1.0+ | 7/7 | Complete | 2026-01-31 |
 | 08.5 Device Sync | v1.0+ | 6/6 | Complete | 2026-01-31 |
-| 08.6 Backend/Frontend/Integration Tests | v1.0+ | 0/5 | Not started | - |
+| 08.6 Backend/Frontend/Integration Tests | v1.0+ | 0/6 | Not started | - |
 | 9. OAuth Foundation | v1.1 | 0/TBD | Not started | - |
 | 10. Read Calendar | v1.1 | 0/TBD | Not started | - |
 | 11. Two-Way Sync | v1.1 | 0/TBD | Not started | - |
