@@ -261,10 +261,10 @@ Plans:
 **Plans:** 4 plans
 
 Plans:
-- [ ] 08.7-01-PLAN.md — Event types, client tracker (sendBeacon + DNT), ingestion function (visitor hashing + daily aggregation)
-- [ ] 08.7-02-PLAN.md — Wire page view tracking into layout + instrument custom events (sync, review, onboarding)
-- [ ] 08.7-03-PLAN.md — Query API function with auth + GDPR data retention cleanup
-- [ ] 08.7-04-PLAN.md — Analytics dashboard UI with Chart.js (lazy-loaded) + password protection
+- [x] 08.7-01-PLAN.md — Event types, client tracker (sendBeacon + DNT), ingestion function (visitor hashing + daily aggregation)
+- [x] 08.7-02-PLAN.md — Wire page view tracking into layout + instrument custom events (sync, review, onboarding)
+- [x] 08.7-03-PLAN.md — Query API function with auth + GDPR data retention cleanup
+- [x] 08.7-04-PLAN.md — Analytics dashboard UI with Chart.js (lazy-loaded) + password protection
 
 **Details:**
 - Self-built analytics using existing Netlify Functions + Netlify Blobs infrastructure
@@ -449,7 +449,7 @@ Plans:
 | 08.4 Mobile Responsive Pass | v1.0+ | 7/7 | Complete | 2026-01-31 |
 | 08.5 Device Sync | v1.0+ | 6/6 | Complete | 2026-01-31 |
 | 08.6 Backend/Frontend/Integration Tests | v1.0+ | 6/6 | Complete | 2026-02-01 |
-| 08.7 Site Analytics & Usage Metrics | v1.0+ | 0/4 | Not started | - |
+| 08.7 Site Analytics & Usage Metrics | v1.0+ | 4/4 | Complete | 2026-02-02 |
 | 08.8 User Feedback & Bug Reports | v1.0+ | 1/2 | In progress | - |
 | 9. OAuth Foundation | v1.1 | 0/TBD | Not started | - |
 | 10. Read Calendar | v1.1 | 0/TBD | Not started | - |
