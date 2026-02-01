@@ -277,35 +277,40 @@ Plans:
 
 ### Phase 08.8: User Feedback & Bug Reports (INSERTED)
 
-**Goal:** Provide a way for users to submit bug reports and feature requests directly from the app — giving the team a feedback channel to prioritize improvements and have dialog with users
+**Goal:** Provide a way for users to submit bug reports and feature requests directly from the app — giving the team a feedback channel to prioritize improvements and have dialog with users, with an admin dashboard for managing submissions
 
 **Depends on:** Phase 08.7
 
 **Success Criteria** (what must be TRUE):
 1. Users can submit bug reports from within the app with relevant context
 2. Users can request features or suggest improvements
-3. Submissions are collected in a manageable location for the team to review
+3. Submissions are stored in Netlify Blobs with an admin dashboard for review
 4. Feedback form is accessible from all views (not buried in settings)
 5. User experience is lightweight — doesn't interrupt workflow
 6. Optional contact info (email) so the team can follow up with users
+7. Admin can view, filter, and manage feedback status (new/reviewed/resolved/archived)
 
-**Plans:** 2 plans
+**Plans:** 4 plans
 
 Plans:
-- [x] 08.8-01-PLAN.md — Feedback form foundation: prerendered route, Dexie schema, FeedbackModal component
-- [ ] 08.8-02-PLAN.md — Offline queue, service worker sync, navigation integration, human verification
+- [x] 08.8-01-PLAN.md — Feedback form foundation: Dexie schema, FeedbackModal component, navigation wiring
+- [ ] 08.8-02-PLAN.md — Netlify Functions: feedback-submit, feedback-query, feedback-update (Blobs storage)
+- [ ] 08.8-03-PLAN.md — Endpoint migration: update FeedbackModal, feedback-queue, service worker to new JSON API + cleanup Netlify Forms artifacts
+- [ ] 08.8-04-PLAN.md — Admin dashboard at /admin/feedback: password auth, list/detail views, status management
 
 **Details:**
-- Netlify Forms for submission collection (built-in spam protection via Akismet + honeypot)
+- Netlify Blobs for submission storage (replaced Netlify Forms approach)
+- Three Netlify Functions: feedback-submit (public), feedback-query + feedback-update (auth-protected)
 - html2canvas for screenshot capture (optional, compressed to <500KB)
 - Dexie feedbackQueue table for offline submissions
 - Background Sync API for automatic retry when online
 - FeedbackModal accessible from sidebar footer, mobile drawer, and 'f' keyboard shortcut
-- Prerendered /feedback route for Netlify Forms detection at build time
+- Admin dashboard at /admin/feedback with ANALYTICS_PASSWORD auth
+- Screenshots stored as separate blobs (not inline with item JSON)
 
 ---
 
-### 🚧 v1.1 Outlook Calendar Sync (In Progress)
+### v1.1 Outlook Calendar Sync (In Progress)
 
 **Milestone Goal:** Two-way calendar sync between GTD and Outlook so the user sees work commitments in GTD and GTD tasks appear on their Outlook calendar.
 
@@ -373,7 +378,7 @@ Plans:
 6. Synced events display task title with "(GTD)" indicator in Outlook
 7. Task metadata (project, context) syncs to Outlook via extended properties
 8. User sees warning when scheduling task that conflicts with existing calendar event
-9. Correlation IDs prevent infinite sync loops (GTD → Outlook → webhook → GTD)
+9. Correlation IDs prevent infinite sync loops (GTD -> Outlook -> webhook -> GTD)
 
 **Plans**: TBD
 
@@ -431,7 +436,7 @@ Plans:
 
 ## Progress
 
-**Execution Order:** Phases execute in numeric order: 08.1 → 08.2 → 08.3 → 08.4 → 08.5 → 08.6 → 08.7 → 08.8 → 9 → 10 → 11 → 12 → 13
+**Execution Order:** Phases execute in numeric order: 08.1 -> 08.2 -> 08.3 -> 08.4 -> 08.5 -> 08.6 -> 08.7 -> 08.8 -> 9 -> 10 -> 11 -> 12 -> 13
 
 | Phase | Milestone | Plans Complete | Status | Completed |
 |-------|-----------|----------------|--------|-----------|
@@ -450,7 +455,7 @@ Plans:
 | 08.5 Device Sync | v1.0+ | 6/6 | Complete | 2026-01-31 |
 | 08.6 Backend/Frontend/Integration Tests | v1.0+ | 6/6 | Complete | 2026-02-01 |
 | 08.7 Site Analytics & Usage Metrics | v1.0+ | 4/4 | Complete | 2026-02-02 |
-| 08.8 User Feedback & Bug Reports | v1.0+ | 1/2 | In progress | - |
+| 08.8 User Feedback & Bug Reports | v1.0+ | 1/4 | In progress | - |
 | 9. OAuth Foundation | v1.1 | 0/TBD | Not started | - |
 | 10. Read Calendar | v1.1 | 0/TBD | Not started | - |
 | 11. Two-Way Sync | v1.1 | 0/TBD | Not started | - |
