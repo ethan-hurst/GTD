@@ -11,11 +11,11 @@ See: .planning/PROJECT.md (updated 2026-01-31)
 ## Current Position
 
 Phase: 08.6 (Backend, Frontend & Integration Tests)
-Plan: 1 of 6 in current phase
+Plan: 2 of 6 in current phase
 Status: In progress
-Last activity: 2026-02-01 — Completed 08.6-01-PLAN.md
+Last activity: 2026-02-01 — Completed 08.6-02-PLAN.md (Pure Logic Unit Tests)
 
-Progress: [████████████░░░░░░░] 61% (61/TBD plans complete across all phases)
+Progress: [████████████░░░░░░░] 62% (62/TBD plans complete across all phases)
 
 ## Performance Metrics
 
@@ -131,6 +131,10 @@ Recent decisions affecting current work:
 - 08.6-01: Use real browser IndexedDB instead of fake-indexeddb (browser mode provides real implementation)
 - 08.6-01: Use raw svelte() plugin in vitest.config.ts instead of sveltekit() plugin to avoid browser mode interference
 - 08.6-01: Browser mode headless by default for CI-friendly test execution
+- 08.6-02: Use Date.now() - (days * 86400000) pattern for deterministic time-based tests
+- 08.6-02: Test date deserialization by checking instanceof Date and getTime() equality
+- 08.6-02: Test LWW with concrete dates (older/newer) rather than mock timestamps
+- 08.6-02: Flexible assertions for locale-dependent time formatting (regex matching)
 
 ### Roadmap Evolution
 
@@ -160,6 +164,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-02-01T20:57:34Z
-Stopped at: Completed 08.6-01-PLAN.md (Test Infrastructure)
+Last session: 2026-02-01T11:04:08Z
+Stopped at: Completed 08.6-02-PLAN.md (Pure Logic Unit Tests)
 Resume file: None
