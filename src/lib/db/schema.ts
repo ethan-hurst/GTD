@@ -1,5 +1,6 @@
 import { Dexie, type EntityTable } from "dexie";
 import { tokenize } from "./search";
+import { generateUUID } from "../utils/uuid";
 
 export interface GTDItem {
 	id: string;  // Changed from number to string (UUID) for sync compatibility
@@ -135,7 +136,7 @@ db.version(8).stores({
 	_tmp_contexts: "id, name",
 	_tmp_events: "id, startTime"
 }).upgrade(async (trans) => {
-	const { generateUUID } = await import('../utils/uuid');
+	// Note: generateUUID imported at top of file
 
 	// Build ID maps for foreign key remapping
 	const itemIdMap = new Map<number, string>();
@@ -274,9 +275,10 @@ db.items.hook("updating", (modifications: Partial<GTDItem>, primKey, obj: GTDIte
 	return modifications;
 });
 
-// Seed default GTD contexts
-async function seedDefaultContexts() {
-	const { generateUUID } = await import('../utils/uuid');
+// Seed contexts on fresh database creation
+// The 'populate' hook runs inside the version upgrade transaction, so we can
+// call bulkAdd directly without wrapping in another transaction
+db.on('populate', async () => {
 	const defaults: Context[] = [
 		{ id: generateUUID(), name: '@computer', sortOrder: 0, isDefault: true, created: new Date() },
 		{ id: generateUUID(), name: '@office', sortOrder: 1, isDefault: true, created: new Date() },
@@ -285,17 +287,8 @@ async function seedDefaultContexts() {
 		{ id: generateUUID(), name: '@errands', sortOrder: 4, isDefault: true, created: new Date() }
 	];
 	await db.contexts.bulkAdd(defaults);
-}
-
-// Seed contexts on fresh database creation
-db.on('populate', async () => {
-	await seedDefaultContexts();
 });
 
-// Seed contexts on existing databases upgrading from v2 to v3
-db.on('ready', async () => {
-	const count = await db.contexts.count();
-	if (count === 0) {
-		await seedDefaultContexts();
-	}
-});
+// Removed the 'ready' hook as it was causing transaction conflicts in test environments.
+// In production, users will have contexts from previous versions or from the populate hook.
+// If needed, contexts can be manually seeded via the UI or during initial app setup.

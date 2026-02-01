@@ -26,6 +26,10 @@ export default defineConfig({
 		// Global test setup
 		setupFiles: ['./src/tests/setup.ts'],
 
+		// Run tests sequentially to avoid IndexedDB race conditions
+		// Multiple tests accessing the same 'GTDDatabase' in parallel causes transaction conflicts
+		fileParallelism: false,
+
 		// Browser mode for Svelte 5 runes support
 		browser: {
 			enabled: true,
