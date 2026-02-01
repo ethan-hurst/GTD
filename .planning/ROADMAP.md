@@ -245,6 +245,60 @@ Plans:
 
 ---
 
+### Phase 08.7: Site Analytics & Usage Metrics (INSERTED)
+
+**Goal:** Add analytics and usage tracking so the team can measure user engagement, track signups over time, and understand how the app is being used — providing the visibility needed to improve acquisition and retention
+
+**Depends on:** Phase 08.6
+
+**Success Criteria** (what must be TRUE):
+1. Anonymous usage metrics are collected (page views, feature usage, session duration)
+2. User signup/activation funnel is trackable over time
+3. Analytics dashboard or reporting is accessible to the team
+4. Privacy-respecting implementation (no PII leakage, GDPR-friendly)
+5. Metrics persist historically so trends can be analyzed week-over-week
+
+**Plans:** 3 plans
+
+Plans:
+- [ ] 08.7-01-PLAN.md — Analytics foundation: install Plausible, create analytics module, wire layout, offline queuing
+- [ ] 08.7-02-PLAN.md — Custom event instrumentation: onboarding funnel, task lifecycle, sync, review
+- [ ] 08.7-03-PLAN.md — End-to-end verification: dev build check + production Plausible dashboard verification
+
+**Details:**
+- Plausible Analytics (cloud, $9/month for <10k pageviews) via @accuser/svelte-plausible-analytics
+- Cookie-free, GDPR-compliant, no consent banner needed
+- Custom events: activation funnel (onboarding start/complete, first task), feature usage (sync, review)
+- Offline queuing via lightweight IndexedDB queue in service worker
+- Plausible dashboard provides analytics reporting UI out of the box
+- Environment vars: VITE_PLAUSIBLE_DOMAIN, PLAUSIBLE_DOMAIN
+
+---
+
+### Phase 08.8: User Feedback & Bug Reports (INSERTED)
+
+**Goal:** Provide a way for users to submit bug reports and feature requests directly from the app — giving the team an anonymous, no-account-required feedback channel to prioritize improvements and fix issues
+
+**Depends on:** Phase 08.7
+
+**Success Criteria** (what must be TRUE):
+1. Users can submit bug reports from within the app with relevant context
+2. Users can request features or suggest improvements
+3. Submissions are collected in a manageable location for the team to review
+4. Feedback form is accessible from all views (not buried in settings)
+5. User experience is lightweight — doesn't interrupt workflow
+6. No user account or authentication required (anonymous submission)
+
+**Plans:** 0 plans
+
+Plans:
+- [ ] TBD (run `/gsd:plan-phase 08.8` to break down)
+
+**Details:**
+[To be added during planning]
+
+---
+
 ### 🚧 v1.1 Outlook Calendar Sync (In Progress)
 
 **Milestone Goal:** Two-way calendar sync between GTD and Outlook so the user sees work commitments in GTD and GTD tasks appear on their Outlook calendar.
@@ -371,7 +425,7 @@ Plans:
 
 ## Progress
 
-**Execution Order:** Phases execute in numeric order: 08.1 → 08.2 → 08.3 → 08.4 → 08.5 → 08.6 → 9 → 10 → 11 → 12 → 13
+**Execution Order:** Phases execute in numeric order: 08.1 → 08.2 → 08.3 → 08.4 → 08.5 → 08.6 → 08.7 → 08.8 → 9 → 10 → 11 → 12 → 13
 
 | Phase | Milestone | Plans Complete | Status | Completed |
 |-------|-----------|----------------|--------|-----------|
@@ -389,6 +443,8 @@ Plans:
 | 08.4 Mobile Responsive Pass | v1.0+ | 7/7 | Complete | 2026-01-31 |
 | 08.5 Device Sync | v1.0+ | 6/6 | Complete | 2026-01-31 |
 | 08.6 Backend/Frontend/Integration Tests | v1.0+ | 0/6 | Not started | - |
+| 08.7 Site Analytics & Usage Metrics | v1.0+ | 0/3 | Not started | - |
+| 08.8 User Feedback & Bug Reports | v1.0+ | 0/TBD | Not started | - |
 | 9. OAuth Foundation | v1.1 | 0/TBD | Not started | - |
 | 10. Read Calendar | v1.1 | 0/TBD | Not started | - |
 | 11. Two-Way Sync | v1.1 | 0/TBD | Not started | - |
