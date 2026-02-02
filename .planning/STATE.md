@@ -11,11 +11,11 @@ See: .planning/PROJECT.md (updated 2026-01-31)
 ## Current Position
 
 Phase: 09 of 12 (Read Calendar)
-Plan: 09-04 of 4 complete
-Status: Phase complete
-Last activity: 2026-02-02 — Completed 09-04-PLAN.md (Event UI Visual Distinction)
+Plan: 09-03 of 4 complete
+Status: In progress
+Last activity: 2026-02-02 — Completed 09-03-PLAN.md (Calendar Sync Service - TDD)
 
-Progress: [█████████████░░░░░░] 77% (77/100 plans complete across all phases)
+Progress: [█████████████░░░░░░] 76% (76/100 plans complete across all phases)
 
 ## Performance Metrics
 
@@ -39,7 +39,7 @@ Progress: [█████████████░░░░░░] 77% (77/10
 
 **v1.1 Progress:**
 - Phases: 0/4 complete
-- Plans: 2/TBD complete (09-01, 09-02)
+- Plans: 3/TBD complete (09-01, 09-02, 09-03)
 - Estimated duration: 8-13 days (from research)
 
 ## Accumulated Context
@@ -189,6 +189,12 @@ Recent decisions affecting current work:
 - 09-02: 401 token refresh triggers once per request, then returns error if still failing
 - 09-02: Auth store disconnect clears all Outlook calendar events and syncMeta
 - 09-02: OutlookAuthButton uses $effect to call authState.init() on mount (SSR-safe)
+- 09-03: All-day events use local midnight without timezone conversion (matches Graph API semantics)
+- 09-03: Body preview truncated to 500 chars to avoid database bloat
+- 09-03: @removed annotation returns null from mapper (deletion marker for sync logic)
+- 09-03: 6-month back, 12-month forward date range for initial sync (covers typical planning horizon)
+- 09-03: Soft-delete for removed events (preserves history, supports tombstone pattern)
+- 09-03: Node.js test environment for Graph service tests (mocks Dexie, no browser overhead)
 - 09-04: Outlook events use Microsoft blue (#0078d4) as default color
 - 09-04: Read-only enforcement via editable: false at event level, not calendar-wide
 - 09-04: Empty outlookCalendarsEnabled Set shows all events (no filter until user configures)
@@ -224,6 +230,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-02-02 05:34 UTC
-Stopped at: Completed 09-04-PLAN.md (Event UI Visual Distinction) - Phase 09 complete
+Last session: 2026-02-02 15:37 UTC
+Stopped at: Completed 09-03-PLAN.md (Calendar Sync Service - TDD)
 Resume file: None
