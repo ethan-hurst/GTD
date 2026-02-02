@@ -8,9 +8,11 @@ export default defineConfig({
 		// Globals for describe/it/expect
 		globals: true,
 
-		// Include pattern for Node.js tests (Netlify Functions)
-		// Tests live in tests/netlify-functions/ directory
-		include: ['tests/netlify-functions/**/*.test.ts'],
+		// Include pattern for Node.js tests (Netlify Functions + Graph service tests)
+		include: [
+			'tests/netlify-functions/**/*.test.ts',
+			'src/lib/services/graph/**/*.test.ts'
+		],
 
 		// Coverage configuration
 		coverage: {
