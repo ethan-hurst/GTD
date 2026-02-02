@@ -294,9 +294,9 @@ Plans:
 
 Plans:
 - [x] 08.8-01-PLAN.md — Feedback form foundation: Dexie schema, FeedbackModal component, navigation wiring
-- [ ] 08.8-02-PLAN.md — Netlify Functions: feedback-submit, feedback-query, feedback-update (Blobs storage)
-- [ ] 08.8-03-PLAN.md — Endpoint migration: update FeedbackModal, feedback-queue, service worker to new JSON API + cleanup Netlify Forms artifacts
-- [ ] 08.8-04-PLAN.md — Admin dashboard at /admin/feedback: password auth, list/detail views, status management
+- [x] 08.8-02-PLAN.md — Netlify Functions: feedback-submit, feedback-query, feedback-update (Blobs storage)
+- [x] 08.8-03-PLAN.md — Endpoint migration: update FeedbackModal, feedback-queue, service worker to new JSON API + cleanup Netlify Forms artifacts
+- [x] 08.8-04-PLAN.md — Admin dashboard at /admin/feedback: password auth, list/detail views, status management
 
 **Details:**
 - Netlify Blobs for submission storage (replaced Netlify Forms approach)
@@ -482,7 +482,7 @@ Plans:
 | 08.5 Device Sync | v1.0+ | 6/6 | Complete | 2026-01-31 |
 | 08.6 Backend/Frontend/Integration Tests | v1.0+ | 6/6 | Complete | 2026-02-01 |
 | 08.7 Site Analytics & Usage Metrics | v1.0+ | 4/4 | Complete | 2026-02-02 |
-| 08.8 User Feedback & Bug Reports | v1.0+ | 1/4 | In progress | - |
+| 08.8 User Feedback & Bug Reports | v1.0+ | 4/4 | Complete | 2026-02-02 |
 | 08.8.1 Test Suite Improvement | v1.0+ | 4/4 | Complete | 2026-02-02 |
 | 9. OAuth Foundation | v1.1 | 0/TBD | Not started | - |
 | 10. Read Calendar | v1.1 | 0/TBD | Not started | - |
