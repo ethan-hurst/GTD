@@ -1,6 +1,7 @@
 <script lang="ts">
-	let password = $state('');
-	let authenticated = $state(false);
+	import { onMount } from 'svelte';
+	import { adminStore } from '$lib/stores/admin.svelte';
+
 	let loading = $state(false);
 	let error = $state('');
 	let items = $state<any[]>([]);
@@ -24,15 +25,13 @@
 				`/.netlify/functions/feedback-query?${params.toString()}`,
 				{
 					headers: {
-						Authorization: `Basic ${btoa(`admin:${password}`)}`
+						Authorization: adminStore.getAuthHeader()
 					}
 				}
 			);
 
 			if (response.status === 401) {
-				error = 'Invalid password';
-				authenticated = false;
-				loading = false;
+				adminStore.signOut();
 				return;
 			}
 			if (response.status === 503) {
@@ -49,7 +48,6 @@
 			const data = await response.json();
 			items = data.items;
 			total = data.total;
-			authenticated = true;
 		} catch (err) {
 			error = 'Network error. Please try again.';
 		} finally {
@@ -68,7 +66,7 @@
 					`/.netlify/functions/feedback-query?id=${item.id}&screenshot=true`,
 					{
 						headers: {
-							Authorization: `Basic ${btoa(`admin:${password}`)}`
+							Authorization: adminStore.getAuthHeader()
 						}
 					}
 				);
@@ -91,10 +89,15 @@
 				method: 'PATCH',
 				headers: {
 					'Content-Type': 'application/json',
-					Authorization: `Basic ${btoa(`admin:${password}`)}`
+					Authorization: adminStore.getAuthHeader()
 				},
 				body: JSON.stringify({ id: itemId, status: newStatus })
 			});
+
+			if (response.status === 401) {
+				adminStore.signOut();
+				return;
+			}
 
 			if (response.ok) {
 				items = items.map((item) =>
@@ -115,11 +118,6 @@
 		} finally {
 			updatingStatus = '';
 		}
-	}
-
-	function handleSubmit(e: Event) {
-		e.preventDefault();
-		fetchFeedback();
 	}
 
 	function changeFilter(newStatusFilter: string, newTypeFilter: string) {
@@ -153,180 +151,158 @@
 			? 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-300'
 			: 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-300';
 	}
+
+	onMount(() => {
+		fetchFeedback();
+	});
 </script>
 
-<div class="min-h-screen bg-gray-50 dark:bg-gray-900">
-	{#if !authenticated}
-		<!-- Password prompt -->
-		<div class="flex items-center justify-center min-h-screen p-4">
-			<div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 w-full max-w-md">
-				<h1 class="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-4">
-					Feedback Dashboard
-				</h1>
-				<p class="text-gray-600 dark:text-gray-400 mb-6">
-					Enter the admin password to view feedback.
-				</p>
+{#if selectedItem}
+	<!-- Detail view -->
+	<div class="p-6 max-w-4xl mx-auto">
+		<button
+			onclick={backToList}
+			class="mb-6 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors duration-150"
+		>
+			← Back to list
+		</button>
 
-				<form onsubmit={handleSubmit}>
-					<input
-						type="password"
-						bind:value={password}
-						placeholder="Admin password"
-						class="w-full px-4 py-2.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-40 mb-4"
-						disabled={loading}
-					/>
-
-					{#if error}
-						<p class="text-red-600 dark:text-red-400 text-sm mb-4">{error}</p>
-					{/if}
-
-					<button
-						type="submit"
-						disabled={loading || !password}
-						class="w-full px-4 py-2.5 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-medium rounded-lg transition-colors duration-150"
-					>
-						{loading ? 'Loading...' : 'View Feedback'}
-					</button>
-				</form>
+		<div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6">
+			<!-- Header with badges -->
+			<div class="flex flex-wrap gap-2 mb-4">
+				<span
+					class="px-3 py-1 text-xs font-medium rounded-full {getTypeBadgeClass(
+						selectedItem.type
+					)}"
+				>
+					{selectedItem.type === 'bug' ? 'Bug' : 'Feature'}
+				</span>
+				<span
+					class="px-3 py-1 text-xs font-medium rounded-full {getStatusBadgeClass(
+						selectedItem.status
+					)}"
+				>
+					{selectedItem.status}
+				</span>
 			</div>
-		</div>
-	{:else if selectedItem}
-		<!-- Detail view -->
-		<div class="p-6 max-w-4xl mx-auto">
-			<button
-				onclick={backToList}
-				class="mb-6 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors duration-150"
-			>
-				← Back to list
-			</button>
 
-			<div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6">
-				<!-- Header with badges -->
-				<div class="flex flex-wrap gap-2 mb-4">
-					<span
-						class="px-3 py-1 text-xs font-medium rounded-full {getTypeBadgeClass(
-							selectedItem.type
-						)}"
-					>
-						{selectedItem.type === 'bug' ? 'Bug' : 'Feature'}
-					</span>
-					<span
-						class="px-3 py-1 text-xs font-medium rounded-full {getStatusBadgeClass(
-							selectedItem.status
-						)}"
-					>
-						{selectedItem.status}
-					</span>
-				</div>
+			<!-- Description -->
+			<h2 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-4">Description</h2>
+			<p class="text-gray-700 dark:text-gray-300 mb-6 whitespace-pre-wrap">
+				{selectedItem.description}
+			</p>
 
-				<!-- Description -->
-				<h2 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-4">Description</h2>
-				<p class="text-gray-700 dark:text-gray-300 mb-6 whitespace-pre-wrap">
-					{selectedItem.description}
-				</p>
-
-				<!-- Contact info -->
-				{#if selectedItem.email}
-					<div class="mb-6">
-						<h3 class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Contact</h3>
-						<a
-							href="mailto:{selectedItem.email}"
-							class="text-blue-600 dark:text-blue-400 hover:underline"
-						>
-							{selectedItem.email}
-						</a>
-					</div>
-				{/if}
-
-				<!-- User agent -->
+			<!-- Contact info -->
+			{#if selectedItem.email}
 				<div class="mb-6">
-					<h3 class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">User Agent</h3>
-					<p class="text-xs text-gray-600 dark:text-gray-400 font-mono">
-						{selectedItem.userAgent || 'Not available'}
+					<h3 class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Contact</h3>
+					<a
+						href="mailto:{selectedItem.email}"
+						class="text-blue-600 dark:text-blue-400 hover:underline"
+					>
+						{selectedItem.email}
+					</a>
+				</div>
+			{/if}
+
+			<!-- User agent -->
+			<div class="mb-6">
+				<h3 class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">User Agent</h3>
+				<p class="text-xs text-gray-600 dark:text-gray-400 font-mono">
+					{selectedItem.userAgent || 'Not available'}
+				</p>
+			</div>
+
+			<!-- Timestamps -->
+			<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+				<div>
+					<h3 class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Submitted</h3>
+					<p class="text-sm text-gray-700 dark:text-gray-300">
+						{new Date(selectedItem.submittedAt).toLocaleString()}
 					</p>
 				</div>
-
-				<!-- Timestamps -->
-				<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+				{#if selectedItem.reviewedAt}
 					<div>
-						<h3 class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Submitted</h3>
+						<h3 class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Reviewed</h3>
 						<p class="text-sm text-gray-700 dark:text-gray-300">
-							{new Date(selectedItem.submittedAt).toLocaleString()}
+							{new Date(selectedItem.reviewedAt).toLocaleString()}
 						</p>
 					</div>
-					{#if selectedItem.reviewedAt}
-						<div>
-							<h3 class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Reviewed</h3>
-							<p class="text-sm text-gray-700 dark:text-gray-300">
-								{new Date(selectedItem.reviewedAt).toLocaleString()}
-							</p>
-						</div>
-					{/if}
-				</div>
-
-				<!-- Screenshot -->
-				{#if selectedItem.hasScreenshot}
-					<div class="mb-6">
-						<h3 class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2">Screenshot</h3>
-						{#if loadingScreenshot}
-							<div class="flex items-center justify-center h-48 bg-gray-100 dark:bg-gray-700 rounded">
-								<p class="text-gray-500 dark:text-gray-400">Loading screenshot...</p>
-							</div>
-						{:else if screenshot}
-							<img
-								src={screenshot}
-								alt="Feedback screenshot"
-								class="max-w-full h-auto rounded border border-gray-300 dark:border-gray-600"
-							/>
-						{:else}
-							<p class="text-gray-500 dark:text-gray-400 text-sm">Screenshot not available</p>
-						{/if}
-					</div>
 				{/if}
+			</div>
 
-				<!-- Status actions -->
-				<div class="flex flex-wrap gap-3">
-					{#if selectedItem.status === 'new'}
-						<button
-							onclick={() => updateStatus(selectedItem.id, 'reviewed')}
-							disabled={updatingStatus === selectedItem.id}
-							class="px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-medium rounded-lg transition-colors duration-150"
-						>
-							{updatingStatus === selectedItem.id ? 'Updating...' : 'Mark Reviewed'}
-						</button>
-					{/if}
-					{#if selectedItem.status === 'reviewed'}
-						<button
-							onclick={() => updateStatus(selectedItem.id, 'resolved')}
-							disabled={updatingStatus === selectedItem.id}
-							class="px-4 py-2 bg-green-600 hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-medium rounded-lg transition-colors duration-150"
-						>
-							{updatingStatus === selectedItem.id ? 'Updating...' : 'Mark Resolved'}
-						</button>
-					{/if}
-					{#if selectedItem.status !== 'archived'}
-						<button
-							onclick={() => updateStatus(selectedItem.id, 'archived')}
-							disabled={updatingStatus === selectedItem.id}
-							class="px-4 py-2 bg-gray-600 hover:bg-gray-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-medium rounded-lg transition-colors duration-150"
-						>
-							{updatingStatus === selectedItem.id ? 'Updating...' : 'Archive'}
-						</button>
+			<!-- Screenshot -->
+			{#if selectedItem.hasScreenshot}
+				<div class="mb-6">
+					<h3 class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2">Screenshot</h3>
+					{#if loadingScreenshot}
+						<div class="flex items-center justify-center h-48 bg-gray-100 dark:bg-gray-700 rounded">
+							<p class="text-gray-500 dark:text-gray-400">Loading screenshot...</p>
+						</div>
+					{:else if screenshot}
+						<img
+							src={screenshot}
+							alt="Feedback screenshot"
+							class="max-w-full h-auto rounded border border-gray-300 dark:border-gray-600"
+						/>
+					{:else}
+						<p class="text-gray-500 dark:text-gray-400 text-sm">Screenshot not available</p>
 					{/if}
 				</div>
+			{/if}
+
+			<!-- Status actions -->
+			<div class="flex flex-wrap gap-3">
+				{#if selectedItem.status === 'new'}
+					<button
+						onclick={() => updateStatus(selectedItem.id, 'reviewed')}
+						disabled={updatingStatus === selectedItem.id}
+						class="px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-medium rounded-lg transition-colors duration-150"
+					>
+						{updatingStatus === selectedItem.id ? 'Updating...' : 'Mark Reviewed'}
+					</button>
+				{/if}
+				{#if selectedItem.status === 'reviewed'}
+					<button
+						onclick={() => updateStatus(selectedItem.id, 'resolved')}
+						disabled={updatingStatus === selectedItem.id}
+						class="px-4 py-2 bg-green-600 hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-medium rounded-lg transition-colors duration-150"
+					>
+						{updatingStatus === selectedItem.id ? 'Updating...' : 'Mark Resolved'}
+					</button>
+				{/if}
+				{#if selectedItem.status !== 'archived'}
+					<button
+						onclick={() => updateStatus(selectedItem.id, 'archived')}
+						disabled={updatingStatus === selectedItem.id}
+						class="px-4 py-2 bg-gray-600 hover:bg-gray-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-medium rounded-lg transition-colors duration-150"
+					>
+						{updatingStatus === selectedItem.id ? 'Updating...' : 'Archive'}
+					</button>
+				{/if}
 			</div>
 		</div>
-	{:else}
-		<!-- Dashboard -->
-		<div class="p-6 max-w-7xl mx-auto">
-			<!-- Header -->
-			<div class="mb-6">
-				<h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100">Feedback Dashboard</h1>
-				<p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
-					{total} {total === 1 ? 'item' : 'items'} total
-				</p>
-			</div>
+	</div>
+{:else}
+	<!-- Dashboard -->
+	<div class="p-6 max-w-7xl mx-auto">
+		<!-- Header -->
+		<div class="mb-6">
+			<h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100">Feedback Dashboard</h1>
+			<p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
+				{total} {total === 1 ? 'item' : 'items'} total
+			</p>
+		</div>
 
+		{#if loading && items.length === 0}
+			<div class="flex items-center justify-center py-12">
+				<p class="text-gray-500 dark:text-gray-400">Loading feedback...</p>
+			</div>
+		{:else if error}
+			<div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6">
+				<p class="text-red-600 dark:text-red-400">{error}</p>
+			</div>
+		{:else}
 			<!-- Filters -->
 			<div class="mb-6 space-y-3">
 				<!-- Status filter -->
@@ -466,7 +442,7 @@
 									<span
 										class="px-3 py-1 text-xs font-medium rounded-full bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300"
 									>
-										📸 Screenshot
+										Screenshot
 									</span>
 								{/if}
 							</div>
@@ -489,6 +465,6 @@
 					<p class="text-gray-500 dark:text-gray-400">No feedback items found</p>
 				</div>
 			{/if}
-		</div>
-	{/if}
-</div>
+		{/if}
+	</div>
+{/if}

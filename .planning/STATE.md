@@ -182,6 +182,7 @@ Recent decisions affecting current work:
 - Phase 08.6 inserted after Phase 08.5: Backend, frontend & integration tests — establish test infrastructure before Outlook sync (URGENT)
 - Phase 08.7 inserted after Phase 08.6: Site analytics & usage metrics — no way to track users/usage over time, need visibility into signups and engagement (URGENT). Plausible approach reverted — re-planning with self-built Netlify Blobs approach (no external service)
 - Phase 08.8 inserted after Phase 08.7: User feedback & bug reports — anonymous way to submit bugs and request features from within the app (URGENT)
+- Phase 08.8.1 inserted after Phase 08.8: Test suite improvement — improve test coverage for regression confidence before Outlook sync (URGENT)
 
 ### Pending Todos
 

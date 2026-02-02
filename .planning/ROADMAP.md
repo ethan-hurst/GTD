@@ -310,6 +310,30 @@ Plans:
 
 ---
 
+### Phase 08.8.1: Test Suite Improvement (INSERTED)
+
+**Goal:** Improve test coverage to catch regressions before adding Outlook sync — targeting critical untested business logic, stores, and Netlify functions
+
+**Depends on:** Phase 08.8
+
+**Coverage Assessment (current):**
+- DB operations: Good | Sync merge/crypto: Good
+- Sync orchestration (sync.ts, 299 lines): NONE — data loss risk
+- Pairing (pair.ts, 118 lines): NONE — security risk
+- Recurrence/ICS (215 lines): NONE — scheduling bug risk
+- Stores: 0 of 13 tested
+- Components: 3 of 27 (render-only)
+- Netlify Functions: 3 of 9 (sync only)
+- Analytics/Feedback functions: NONE (6 functions)
+- E2E: Smoke tests only
+
+**Plans:** TBD (run /gsd:plan-phase 08.8.1 to break down)
+
+Plans:
+- [ ] TBD
+
+---
+
 ### v1.1 Outlook Calendar Sync (In Progress)
 
 **Milestone Goal:** Two-way calendar sync between GTD and Outlook so the user sees work commitments in GTD and GTD tasks appear on their Outlook calendar.
@@ -436,7 +460,7 @@ Plans:
 
 ## Progress
 
-**Execution Order:** Phases execute in numeric order: 08.1 -> 08.2 -> 08.3 -> 08.4 -> 08.5 -> 08.6 -> 08.7 -> 08.8 -> 9 -> 10 -> 11 -> 12 -> 13
+**Execution Order:** Phases execute in numeric order: 08.1 -> 08.2 -> 08.3 -> 08.4 -> 08.5 -> 08.6 -> 08.7 -> 08.8 -> 08.8.1 -> 9 -> 10 -> 11 -> 12 -> 13
 
 | Phase | Milestone | Plans Complete | Status | Completed |
 |-------|-----------|----------------|--------|-----------|
@@ -456,6 +480,7 @@ Plans:
 | 08.6 Backend/Frontend/Integration Tests | v1.0+ | 6/6 | Complete | 2026-02-01 |
 | 08.7 Site Analytics & Usage Metrics | v1.0+ | 4/4 | Complete | 2026-02-02 |
 | 08.8 User Feedback & Bug Reports | v1.0+ | 1/4 | In progress | - |
+| 08.8.1 Test Suite Improvement | v1.0+ | 0/TBD | Not started | - |
 | 9. OAuth Foundation | v1.1 | 0/TBD | Not started | - |
 | 10. Read Calendar | v1.1 | 0/TBD | Not started | - |
 | 11. Two-Way Sync | v1.1 | 0/TBD | Not started | - |
