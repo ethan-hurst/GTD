@@ -11,11 +11,11 @@ See: .planning/PROJECT.md (updated 2026-01-31)
 ## Current Position
 
 Phase: 09 of 12 (Read Calendar)
-Plan: 09-02 of 4 complete
-Status: In progress
-Last activity: 2026-02-02 — Completed 09-02-PLAN.md (Graph Client & Auth UI)
+Plan: 09-04 of 4 complete
+Status: Phase complete
+Last activity: 2026-02-02 — Completed 09-04-PLAN.md (Event UI Visual Distinction)
 
-Progress: [█████████████░░░░░░] 75% (75/100 plans complete across all phases)
+Progress: [█████████████░░░░░░] 77% (77/100 plans complete across all phases)
 
 ## Performance Metrics
 
@@ -189,6 +189,10 @@ Recent decisions affecting current work:
 - 09-02: 401 token refresh triggers once per request, then returns error if still failing
 - 09-02: Auth store disconnect clears all Outlook calendar events and syncMeta
 - 09-02: OutlookAuthButton uses $effect to call authState.init() on mount (SSR-safe)
+- 09-04: Outlook events use Microsoft blue (#0078d4) as default color
+- 09-04: Read-only enforcement via editable: false at event level, not calendar-wide
+- 09-04: Empty outlookCalendarsEnabled Set shows all events (no filter until user configures)
+- 09-04: Bulk operations use ETag comparison to skip unchanged events
 
 ### Roadmap Evolution
 
@@ -220,6 +224,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-02-02 05:29 UTC
-Stopped at: Completed 09-02-PLAN.md (Graph Client & Auth UI)
+Last session: 2026-02-02 05:34 UTC
+Stopped at: Completed 09-04-PLAN.md (Event UI Visual Distinction) - Phase 09 complete
 Resume file: None
