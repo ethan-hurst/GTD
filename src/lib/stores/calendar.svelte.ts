@@ -12,8 +12,23 @@ class CalendarState {
 	currentView = $state<'dayGridMonth' | 'timeGridWeek' | 'timeGridDay'>('timeGridDay');
 	currentDate = $state<Date>(new Date());
 	isLoading = $state(false);
+	outlookCalendarsEnabled = $state<Set<string>>(new Set());
 
 	eventCount = $derived(this.events.length);
+
+	// Filter events by enabled Outlook calendars
+	filteredEvents = $derived(() => {
+		if (this.outlookCalendarsEnabled.size === 0) {
+			// No filter configured - show all events
+			return this.events;
+		}
+		return this.events.filter(event => {
+			// Show non-Outlook events
+			if (event.syncSource !== 'outlook') return true;
+			// Show Outlook events only if their calendar is enabled
+			return event.outlookCalendarId && this.outlookCalendarsEnabled.has(event.outlookCalendarId);
+		});
+	});
 
 	async loadEvents() {
 		this.isLoading = true;
@@ -61,6 +76,16 @@ class CalendarState {
 
 	setDate(date: Date) {
 		this.currentDate = date;
+	}
+
+	toggleOutlookCalendar(calendarId: string, enabled: boolean) {
+		if (enabled) {
+			this.outlookCalendarsEnabled.add(calendarId);
+		} else {
+			this.outlookCalendarsEnabled.delete(calendarId);
+		}
+		// Trigger reactivity by reassigning the Set
+		this.outlookCalendarsEnabled = new Set(this.outlookCalendarsEnabled);
 	}
 }
 

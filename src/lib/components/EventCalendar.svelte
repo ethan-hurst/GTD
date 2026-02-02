@@ -25,24 +25,30 @@
 
 	// Map CalendarEvent[] to EventCalendar's event format
 	const ecEvents = $derived(
-		events.map((e) => ({
-			id: String(e.id),
-			title: e.title,
-			start: e.startTime,
-			end: e.endTime,
-			allDay: e.allDay || false,
-			backgroundColor: e.color,
-			extendedProps: {
-				location: e.location,
-				notes: e.notes,
-				projectId: e.projectId,
-				source: e.source,
-				rrule: e.rrule,
-				recurrenceId: e.recurrenceId,
-				exceptionDates: e.exceptionDates,
-				originalEvent: e
-			}
-		}))
+		events.map((e) => {
+			const isOutlook = e.syncSource === 'outlook';
+			return {
+				id: String(e.id),
+				title: e.title,
+				start: e.startTime,
+				end: e.endTime,
+				allDay: e.allDay || false,
+				backgroundColor: isOutlook ? (e.color || '#0078d4') : e.color,
+				editable: !isOutlook,
+				classNames: isOutlook ? ['outlook-event'] : [],
+				extendedProps: {
+					location: e.location,
+					notes: e.notes,
+					projectId: e.projectId,
+					source: e.source,
+					syncSource: e.syncSource,
+					rrule: e.rrule,
+					recurrenceId: e.recurrenceId,
+					exceptionDates: e.exceptionDates,
+					originalEvent: e
+				}
+			};
+		})
 	);
 
 	const plugins = [TimeGrid, DayGrid, Interaction];
@@ -121,5 +127,15 @@
 		--ec-today-bg-color: rgb(243 244 246);
 		--ec-event-bg-color: rgb(59 130 246);
 		--ec-event-text-color: rgb(255 255 255);
+	}
+
+	/* Outlook event styling - visually distinct and read-only */
+	.event-calendar-wrapper :global(.outlook-event) {
+		opacity: 0.85;
+		border-left: 3px solid #0078d4 !important;
+	}
+
+	:global(.dark) .event-calendar-wrapper :global(.outlook-event) {
+		opacity: 0.8;
 	}
 </style>
