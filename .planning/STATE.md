@@ -6,7 +6,7 @@ See: .planning/PROJECT.md (updated 2026-01-31)
 
 **Core value:** Nothing falls through the cracks — every commitment is captured, clarified, and surfaced at the right time so the user always knows what to do next.
 
-**Current focus:** Phase 08.8.1 (Test Suite Improvement)
+**Current focus:** Phase 08.8.1 complete — next: complete Phase 08.8 or start Phase 9
 
 ## Current Position
 

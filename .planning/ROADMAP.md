@@ -330,10 +330,10 @@ Plans:
 **Plans:** 4 plans
 
 Plans:
-- [ ] 08.8.1-01-PLAN.md — Sync pairing + orchestration tests (pair.ts, sync.ts -- HIGH risk business logic)
-- [ ] 08.8.1-02-PLAN.md — Recurrence expansion + ICS parser tests (pure utility functions)
-- [ ] 08.8.1-03-PLAN.md — Fix vitest.node.config.ts + analytics Netlify Functions tests
-- [ ] 08.8.1-04-PLAN.md — Feedback Netlify Functions tests (submit, query, update)
+- [x] 08.8.1-01-PLAN.md — Sync pairing + orchestration tests (pair.ts, sync.ts -- HIGH risk business logic)
+- [x] 08.8.1-02-PLAN.md — Recurrence expansion + ICS parser tests (pure utility functions)
+- [x] 08.8.1-03-PLAN.md — Fix vitest.node.config.ts + analytics Netlify Functions tests
+- [x] 08.8.1-04-PLAN.md — Feedback Netlify Functions tests (submit, query, update)
 
 ---
 
@@ -483,7 +483,7 @@ Plans:
 | 08.6 Backend/Frontend/Integration Tests | v1.0+ | 6/6 | Complete | 2026-02-01 |
 | 08.7 Site Analytics & Usage Metrics | v1.0+ | 4/4 | Complete | 2026-02-02 |
 | 08.8 User Feedback & Bug Reports | v1.0+ | 1/4 | In progress | - |
-| 08.8.1 Test Suite Improvement | v1.0+ | 0/4 | Not started | - |
+| 08.8.1 Test Suite Improvement | v1.0+ | 4/4 | Complete | 2026-02-02 |
 | 9. OAuth Foundation | v1.1 | 0/TBD | Not started | - |
 | 10. Read Calendar | v1.1 | 0/TBD | Not started | - |
 | 11. Two-Way Sync | v1.1 | 0/TBD | Not started | - |
