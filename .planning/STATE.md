@@ -11,11 +11,11 @@ See: .planning/PROJECT.md (updated 2026-01-31)
 ## Current Position
 
 Phase: 09 of 12 (Read Calendar)
-Plan: 09-01 of 4 complete
+Plan: 09-02 of 4 complete
 Status: In progress
-Last activity: 2026-02-02 — Completed 09-01-PLAN.md (Schema & Auth Foundation)
+Last activity: 2026-02-02 — Completed 09-02-PLAN.md (Graph Client & Auth UI)
 
-Progress: [█████████████░░░░░░] 74% (74/100 plans complete across all phases)
+Progress: [█████████████░░░░░░] 75% (75/100 plans complete across all phases)
 
 ## Performance Metrics
 
@@ -39,7 +39,7 @@ Progress: [█████████████░░░░░░] 74% (74/10
 
 **v1.1 Progress:**
 - Phases: 0/4 complete
-- Plans: 1/TBD complete (09-01)
+- Plans: 2/TBD complete (09-01, 09-02)
 - Estimated duration: 8-13 days (from research)
 
 ## Accumulated Context
@@ -184,6 +184,11 @@ Recent decisions affecting current work:
 - 09-01: Pin MSAL to 4.x range (v5.x has peer dependency conflicts until Q1/Q2 2026)
 - 09-01: Session storage for MSAL cache (cleared on tab close) instead of localStorage for security
 - 09-01: Silent token acquisition with redirect fallback for seamless UX
+- 09-02: Graph client handles full URLs (nextLink/deltaLink) by checking for https:// prefix
+- 09-02: 429 throttling respects Retry-After header with exponential backoff fallback
+- 09-02: 401 token refresh triggers once per request, then returns error if still failing
+- 09-02: Auth store disconnect clears all Outlook calendar events and syncMeta
+- 09-02: OutlookAuthButton uses $effect to call authState.init() on mount (SSR-safe)
 
 ### Roadmap Evolution
 
@@ -215,6 +220,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-02-02 05:23 UTC
-Stopped at: Completed 09-01-PLAN.md (Outlook Sync Schema & Auth Foundation)
+Last session: 2026-02-02 05:29 UTC
+Stopped at: Completed 09-02-PLAN.md (Graph Client & Auth UI)
 Resume file: None
