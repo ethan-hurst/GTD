@@ -26,8 +26,10 @@ class SyncStore {
 	lastError = $state<string | null>(null);
 	deviceId = $state<string | null>(null);
 
-	// Private - pairing code held in memory only (not persisted)
+	// Private - pairing code held in memory and sessionStorage
+	// sessionStorage survives page refresh but is cleared on tab close (good security balance)
 	private pairingCode: string | null = null;
+	private readonly PAIRING_CODE_SESSION_KEY = 'gtd-sync-pairing-code';
 
 	// Polling state
 	private lastKnownHash: string | null = null;
@@ -77,6 +79,19 @@ class SyncStore {
 				this.deviceId = pairingInfo.deviceId;
 			}
 
+			// Restore pairing code from sessionStorage (if available)
+			// This allows sync to work after page refresh or PWA backgrounding
+			if (typeof sessionStorage !== 'undefined') {
+				const storedCode = sessionStorage.getItem(this.PAIRING_CODE_SESSION_KEY);
+				if (storedCode) {
+					this.pairingCode = storedCode;
+					// Re-initialize IV counter needed for encryption
+					if (this.deviceId) {
+						await initIVCounter(this.deviceId);
+					}
+				}
+			}
+
 			// Load last sync time
 			const lastSyncStr = await getSetting('sync-last-sync-time');
 			if (lastSyncStr) {
@@ -118,9 +133,14 @@ class SyncStore {
 				return false;
 			}
 
-			// Normalize and store in memory
+			// Normalize and store in memory and sessionStorage
 			const normalized = normalizePairingCode(pairingCode);
 			this.pairingCode = normalized;
+
+			// Persist to sessionStorage (survives page refresh but not tab close)
+			if (typeof sessionStorage !== 'undefined') {
+				sessionStorage.setItem(this.PAIRING_CODE_SESSION_KEY, normalized);
+			}
 
 			// Generate deviceId from hash
 			const deviceId = await hashPairingCode(normalized);
@@ -169,6 +189,11 @@ class SyncStore {
 		// Clear IV counter
 		await setSetting('sync-iv-counter', null);
 
+		// Clear pairing code from sessionStorage
+		if (typeof sessionStorage !== 'undefined') {
+			sessionStorage.removeItem(this.PAIRING_CODE_SESSION_KEY);
+		}
+
 		// Reset all state
 		this.isPaired = false;
 		this.deviceId = null;
@@ -191,6 +216,11 @@ class SyncStore {
 			const normalized = normalizePairingCode(code);
 			this.pairingCode = normalized;
 			this.lastError = null;
+
+			// Persist to sessionStorage
+			if (typeof sessionStorage !== 'undefined') {
+				sessionStorage.setItem(this.PAIRING_CODE_SESSION_KEY, normalized);
+			}
 
 			// Re-initialize IV counter (needed for encryption during sync)
 			if (this.deviceId) {
