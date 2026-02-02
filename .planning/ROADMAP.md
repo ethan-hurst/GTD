@@ -357,11 +357,16 @@ Plans:
 5. Events display correctly in user's local timezone regardless of event timezone
 6. Events deleted in Outlook are removed from GTD calendar after sync
 
-**Plans**: TBD
+**Plans**: 7 plans
 
 Plans:
-- [ ] 09-01: TBD
-- [ ] 09-02: TBD
+- [ ] 09-01-PLAN.md — Schema migration (Outlook fields + syncMeta table) + MSAL auth service
+- [ ] 09-02-PLAN.md — Graph API client + auth store + OutlookAuthButton component
+- [ ] 09-03-PLAN.md — Calendar sync service with TDD (delta queries, event mapping, deletion handling)
+- [ ] 09-04-PLAN.md — Outlook event visual distinction + DB operations for sync
+- [ ] 09-05-PLAN.md — Outlook sync store + Sync Now button + status indicator
+- [ ] 09-06-PLAN.md — Calendar picker (show/hide calendars) + Settings page integration
+- [ ] 09-07-PLAN.md — Full integration wiring + human verification
 
 ---
 
@@ -461,7 +466,7 @@ Plans:
 | 08.7 Site Analytics & Usage Metrics | v1.0+ | 4/4 | Complete | 2026-02-02 |
 | 08.8 User Feedback & Bug Reports | v1.0+ | 4/4 | Complete | 2026-02-02 |
 | 08.8.1 Test Suite Improvement | v1.0+ | 4/4 | Complete | 2026-02-02 |
-| 9. Read Calendar | v1.1 | 0/TBD | Not started | - |
+| 9. Read Calendar | v1.1 | 0/7 | Planned | - |
 | 10. Two-Way Sync | v1.1 | 0/TBD | Not started | - |
 | 11. Offline Queue | v1.1 | 0/TBD | Not started | - |
 | 12. Real-Time Sync | v1.1 | 0/TBD | Not started | - |
