@@ -111,6 +111,22 @@ function parseDateTime(dateTime: string, timeZone: string): Date {
 }
 
 /**
+ * Build initial sync URL for calendar delta query.
+ * Date range: 6 months back, 12 months forward.
+ */
+function buildInitialSyncUrl(calendarId: string): string {
+	const startDate = new Date();
+	startDate.setMonth(startDate.getMonth() - 6);
+	const endDate = new Date();
+	endDate.setMonth(endDate.getMonth() + 12);
+
+	const startDateTime = startDate.toISOString();
+	const endDateTime = endDate.toISOString();
+
+	return `/me/calendars/${calendarId}/calendarView/delta?startDateTime=${startDateTime}&endDateTime=${endDateTime}`;
+}
+
+/**
  * Fetch user's Outlook calendars.
  */
 export async function fetchCalendars(): Promise<OutlookCalendar[]> {
@@ -133,23 +149,7 @@ export async function syncCalendarEvents(
 	existingDeltaLink?: string
 ): Promise<SyncResult> {
 	// Build URL for delta query
-	let url: string;
-
-	if (existingDeltaLink) {
-		// Use existing delta link for incremental sync
-		url = existingDeltaLink;
-	} else {
-		// Initial sync: Use calendarView with date range (6 months back, 12 months forward)
-		const startDate = new Date();
-		startDate.setMonth(startDate.getMonth() - 6);
-		const endDate = new Date();
-		endDate.setMonth(endDate.getMonth() + 12);
-
-		const startDateTime = startDate.toISOString();
-		const endDateTime = endDate.toISOString();
-
-		url = `/me/calendars/${calendarId}/calendarView/delta?startDateTime=${startDateTime}&endDateTime=${endDateTime}`;
-	}
+	const url = existingDeltaLink || buildInitialSyncUrl(calendarId);
 
 	// Fetch all pages
 	let response = await graphFetchAll<OutlookEvent>(url);
@@ -157,18 +157,7 @@ export async function syncCalendarEvents(
 	// Handle syncStateNotFound error - fall back to full sync
 	if (!response.ok && response.error === 'syncStateNotFound') {
 		console.warn('Delta link expired, falling back to full sync');
-
-		// Retry with initial sync URL
-		const startDate = new Date();
-		startDate.setMonth(startDate.getMonth() - 6);
-		const endDate = new Date();
-		endDate.setMonth(endDate.getMonth() + 12);
-
-		const startDateTime = startDate.toISOString();
-		const endDateTime = endDate.toISOString();
-
-		url = `/me/calendars/${calendarId}/calendarView/delta?startDateTime=${startDateTime}&endDateTime=${endDateTime}`;
-		response = await graphFetchAll<OutlookEvent>(url);
+		response = await graphFetchAll<OutlookEvent>(buildInitialSyncUrl(calendarId));
 	}
 
 	// Check for failure
