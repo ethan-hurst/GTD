@@ -4,8 +4,12 @@
 	import IcsImport from '$lib/components/IcsImport.svelte';
 	import EventForm from '$lib/components/EventForm.svelte';
 	import CalendarSidePanel from '$lib/components/CalendarSidePanel.svelte';
+	import OutlookSyncButton from '$lib/components/OutlookSyncButton.svelte';
+	import SyncStatusIndicator from '$lib/components/SyncStatusIndicator.svelte';
 	import { calendarState } from '$lib/stores/calendar.svelte';
 	import { mobileState } from '$lib/stores/mobile.svelte';
+	import { authState } from '$lib/stores/auth.svelte';
+	import { outlookSyncState } from '$lib/stores/outlook-sync.svelte';
 	import { expandAllRecurrences } from '$lib/utils/recurrence';
 	import { useSwipe, type SwipeCustomEvent } from 'svelte-gestures';
 	import toast from 'svelte-5-french-toast';
@@ -15,6 +19,14 @@
 
 	onMount(async () => {
 		await calendarState.loadEvents();
+
+		// Auto-sync on calendar page mount when connected
+		if (authState.isAuthenticated) {
+			await outlookSyncState.loadSyncMeta();
+			if (outlookSyncState.calendars.length === 0) {
+				await outlookSyncState.discoverCalendars();
+			}
+		}
 
 		// Default to Day view on mobile (only on first load)
 		if (mobileState.isMobile && !hasInitializedView) {
@@ -121,7 +133,22 @@
 	// Expand recurring events for the visible range
 	const displayEvents = $derived.by(() => {
 		const range = visibleRange;
-		return expandAllRecurrences(calendarState.events, range.start, range.end);
+		let events = expandAllRecurrences(calendarState.events, range.start, range.end);
+
+		// Filter Outlook events by enabled calendars
+		if (outlookSyncState.calendars.length > 0) {
+			const enabledCalendarIds = new Set(
+				outlookSyncState.calendars
+					.filter(c => c.enabled)
+					.map(c => c.calendarId)
+			);
+			events = events.filter(e => {
+				if (e.syncSource !== 'outlook') return true;
+				return e.outlookCalendarId ? enabledCalendarIds.has(e.outlookCalendarId) : true;
+			});
+		}
+
+		return events;
 	});
 
 	// Format date label based on current view
@@ -177,6 +204,14 @@
 
 	// Event handlers
 	function handleEventClick(event: CalendarEvent) {
+		// Show read-only info for Outlook events
+		if (event.syncSource === 'outlook') {
+			toast.success(`${event.title}${event.location ? ' — ' + event.location : ''}`, {
+				duration: 3000
+			});
+			return;
+		}
+
 		editingEvent = event;
 		initialDate = undefined;
 		showForm = true;
@@ -326,6 +361,12 @@
 					</svg>
 					<span class="hidden phablet:inline">New Event</span>
 				</button>
+
+				<!-- Outlook Sync Controls (when authenticated) -->
+				{#if authState.isAuthenticated}
+					<OutlookSyncButton />
+					<SyncStatusIndicator />
+				{/if}
 
 				<!-- Import button -->
 				<button

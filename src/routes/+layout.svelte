@@ -21,6 +21,7 @@
 	import { syncState } from '$lib/stores/sync.svelte';
 	import { compactTombstones } from '$lib/db/operations';
 	import { trackPageView } from '$lib/analytics/client';
+	import { authState } from '$lib/stores/auth.svelte';
 
 	const { children } = $props();
 	let searchBarRef: any;
@@ -183,6 +184,11 @@
 			if (shouldShow) {
 				onboardingState.startOnboarding();
 			}
+		})();
+
+		// Initialize Outlook auth (non-blocking)
+		(async () => {
+			await authState.init();
 		})();
 
 		// Initialize sync state (non-blocking)
