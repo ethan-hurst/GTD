@@ -3,7 +3,7 @@
 ## Milestones
 
 - ✅ **v1.0 MVP** - Phases 1-8 (shipped 2026-01-31)
-- 🚧 **v1.1 Outlook Calendar Sync** - Phases 9-13 (in progress)
+- 🚧 **v1.1 Outlook Calendar Sync** - Phases 9-12 (in progress)
 
 ## Phases
 
@@ -341,36 +341,13 @@ Plans:
 
 **Milestone Goal:** Two-way calendar sync between GTD and Outlook so the user sees work commitments in GTD and GTD tasks appear on their Outlook calendar.
 
-#### Phase 9: OAuth Foundation
-
-**Goal**: Users can securely connect to Microsoft 365 and maintain authenticated sessions
-
-**Depends on**: Phase 8 (v1.0 foundation)
-
-**Requirements**: AUTH-01, AUTH-02, AUTH-03, AUTH-04, AUTH-05
-
-**Success Criteria** (what must be TRUE):
-1. User can click "Connect to Outlook" button and complete OAuth flow via Microsoft login
-2. User sees connected account profile and can disconnect at any time
-3. Access tokens refresh automatically without requiring re-login during active sessions
-4. Auth works in corporate environments with admin consent and Conditional Access policies
-5. Disconnecting Outlook integration removes all cached Outlook data from IndexedDB
-
-**Plans**: TBD
-
-Plans:
-- [ ] 09-01: TBD
-- [ ] 09-02: TBD
-
----
-
-#### Phase 10: Read Calendar
+#### Phase 9: Read Calendar
 
 **Goal**: Users can view Outlook calendar events in GTD calendar view with incremental sync
 
-**Depends on**: Phase 9 (OAuth required for Graph API calls)
+**Depends on**: Phase 8 (v1.0 foundation)
 
-**Requirements**: READ-01, READ-02, READ-03, READ-04, READ-05, SYNC-01, SYNC-02, SYNC-09
+**Requirements**: AUTH-01, AUTH-02, AUTH-03, AUTH-04, AUTH-05, READ-01, READ-02, READ-03, READ-04, READ-05, SYNC-01, SYNC-02, SYNC-09
 
 **Success Criteria** (what must be TRUE):
 1. User can view all Outlook calendar events in GTD's day/week/month calendar views
@@ -383,16 +360,16 @@ Plans:
 **Plans**: TBD
 
 Plans:
-- [ ] 10-01: TBD
-- [ ] 10-02: TBD
+- [ ] 09-01: TBD
+- [ ] 09-02: TBD
 
 ---
 
-#### Phase 11: Two-Way Sync
+#### Phase 10: Two-Way Sync
 
 **Goal**: Users can push GTD tasks to Outlook calendar and changes in Outlook update GTD tasks
 
-**Depends on**: Phase 10 (read sync must work before adding write complexity)
+**Depends on**: Phase 9 (read sync must work before adding write complexity)
 
 **Requirements**: WRITE-01, WRITE-02, WRITE-03, WRITE-04, WRITE-05, WRITE-06, WRITE-07, SYNC-03, SYNC-08, SYNC-10
 
@@ -410,17 +387,17 @@ Plans:
 **Plans**: TBD
 
 Plans:
-- [ ] 11-01: TBD
-- [ ] 11-02: TBD
-- [ ] 11-03: TBD
+- [ ] 10-01: TBD
+- [ ] 10-02: TBD
+- [ ] 10-03: TBD
 
 ---
 
-#### Phase 12: Offline Queue
+#### Phase 11: Offline Queue
 
 **Goal**: Users can make calendar changes while offline and they sync when connection returns
 
-**Depends on**: Phase 11 (online two-way sync must work before adding offline complexity)
+**Depends on**: Phase 10 (online two-way sync must work before adding offline complexity)
 
 **Requirements**: SYNC-04, SYNC-07
 
@@ -434,16 +411,16 @@ Plans:
 **Plans**: TBD
 
 Plans:
-- [ ] 12-01: TBD
-- [ ] 12-02: TBD
+- [ ] 11-01: TBD
+- [ ] 11-02: TBD
 
 ---
 
-#### Phase 13: Real-Time Sync
+#### Phase 12: Real-Time Sync
 
 **Goal**: Users see Outlook calendar changes appear in GTD within 1 minute via webhooks
 
-**Depends on**: Phase 12 (webhook implementation builds on offline queue foundation)
+**Depends on**: Phase 11 (webhook implementation builds on offline queue foundation)
 
 **Requirements**: SYNC-05, SYNC-06
 
@@ -456,14 +433,14 @@ Plans:
 **Plans**: TBD
 
 Plans:
-- [ ] 13-01: TBD
-- [ ] 13-02: TBD
+- [ ] 12-01: TBD
+- [ ] 12-02: TBD
 
 ---
 
 ## Progress
 
-**Execution Order:** Phases execute in numeric order: 08.1 -> 08.2 -> 08.3 -> 08.4 -> 08.5 -> 08.6 -> 08.7 -> 08.8 -> 08.8.1 -> 9 -> 10 -> 11 -> 12 -> 13
+**Execution Order:** Phases execute in numeric order: 08.1 -> 08.2 -> 08.3 -> 08.4 -> 08.5 -> 08.6 -> 08.7 -> 08.8 -> 08.8.1 -> 9 -> 10 -> 11 -> 12
 
 | Phase | Milestone | Plans Complete | Status | Completed |
 |-------|-----------|----------------|--------|-----------|
@@ -484,8 +461,7 @@ Plans:
 | 08.7 Site Analytics & Usage Metrics | v1.0+ | 4/4 | Complete | 2026-02-02 |
 | 08.8 User Feedback & Bug Reports | v1.0+ | 4/4 | Complete | 2026-02-02 |
 | 08.8.1 Test Suite Improvement | v1.0+ | 4/4 | Complete | 2026-02-02 |
-| 9. OAuth Foundation | v1.1 | 0/TBD | Not started | - |
-| 10. Read Calendar | v1.1 | 0/TBD | Not started | - |
-| 11. Two-Way Sync | v1.1 | 0/TBD | Not started | - |
-| 12. Offline Queue | v1.1 | 0/TBD | Not started | - |
-| 13. Real-Time Sync | v1.1 | 0/TBD | Not started | - |
+| 9. Read Calendar | v1.1 | 0/TBD | Not started | - |
+| 10. Two-Way Sync | v1.1 | 0/TBD | Not started | - |
+| 11. Offline Queue | v1.1 | 0/TBD | Not started | - |
+| 12. Real-Time Sync | v1.1 | 0/TBD | Not started | - |

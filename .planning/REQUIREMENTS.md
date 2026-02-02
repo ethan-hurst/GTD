@@ -90,28 +90,28 @@ Which phases cover which requirements. Updated during roadmap creation.
 | AUTH-03 | Phase 9 | Pending |
 | AUTH-04 | Phase 9 | Pending |
 | AUTH-05 | Phase 9 | Pending |
-| READ-01 | Phase 10 | Pending |
-| READ-02 | Phase 10 | Pending |
-| READ-03 | Phase 10 | Pending |
-| READ-04 | Phase 10 | Pending |
-| READ-05 | Phase 10 | Pending |
-| WRITE-01 | Phase 11 | Pending |
-| WRITE-02 | Phase 11 | Pending |
-| WRITE-03 | Phase 11 | Pending |
-| WRITE-04 | Phase 11 | Pending |
-| WRITE-05 | Phase 11 | Pending |
-| WRITE-06 | Phase 11 | Pending |
-| WRITE-07 | Phase 11 | Pending |
-| SYNC-01 | Phase 10 | Pending |
-| SYNC-02 | Phase 10 | Pending |
-| SYNC-03 | Phase 11 | Pending |
-| SYNC-04 | Phase 12 | Pending |
-| SYNC-05 | Phase 13 | Pending |
-| SYNC-06 | Phase 13 | Pending |
-| SYNC-07 | Phase 12 | Pending |
-| SYNC-08 | Phase 11 | Pending |
-| SYNC-09 | Phase 10 | Pending |
-| SYNC-10 | Phase 11 | Pending |
+| READ-01 | Phase 9 | Pending |
+| READ-02 | Phase 9 | Pending |
+| READ-03 | Phase 9 | Pending |
+| READ-04 | Phase 9 | Pending |
+| READ-05 | Phase 9 | Pending |
+| WRITE-01 | Phase 10 | Pending |
+| WRITE-02 | Phase 10 | Pending |
+| WRITE-03 | Phase 10 | Pending |
+| WRITE-04 | Phase 10 | Pending |
+| WRITE-05 | Phase 10 | Pending |
+| WRITE-06 | Phase 10 | Pending |
+| WRITE-07 | Phase 10 | Pending |
+| SYNC-01 | Phase 9 | Pending |
+| SYNC-02 | Phase 9 | Pending |
+| SYNC-03 | Phase 10 | Pending |
+| SYNC-04 | Phase 11 | Pending |
+| SYNC-05 | Phase 12 | Pending |
+| SYNC-06 | Phase 12 | Pending |
+| SYNC-07 | Phase 11 | Pending |
+| SYNC-08 | Phase 10 | Pending |
+| SYNC-09 | Phase 9 | Pending |
+| SYNC-10 | Phase 10 | Pending |
 
 **Coverage:**
 - v1.1 requirements: 27 total
@@ -119,11 +119,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 - Unmapped: 0 ✓
 
 **Coverage by phase:**
-- Phase 9 (OAuth Foundation): 5 requirements
-- Phase 10 (Read Calendar): 8 requirements
-- Phase 11 (Two-Way Sync): 10 requirements
-- Phase 12 (Offline Queue): 2 requirements
-- Phase 13 (Real-Time Sync): 2 requirements
+- Phase 9 (Read Calendar): 13 requirements
+- Phase 10 (Two-Way Sync): 10 requirements
+- Phase 11 (Offline Queue): 2 requirements
+- Phase 12 (Real-Time Sync): 2 requirements
 
 ---
 *Requirements defined: 2026-01-31*

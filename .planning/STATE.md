@@ -6,7 +6,7 @@ See: .planning/PROJECT.md (updated 2026-01-31)
 
 **Core value:** Nothing falls through the cracks — every commitment is captured, clarified, and surfaced at the right time so the user always knows what to do next.
 
-**Current focus:** Phase 08.8 and 08.8.1 complete — next: start Phase 9 (OAuth Foundation)
+**Current focus:** Phase 08.8 and 08.8.1 complete — next: start Phase 9 (Read Calendar)
 
 ## Current Position
 
@@ -38,7 +38,7 @@ Progress: [█████████████░░░░░░] 73% (73/TB
 | 8. Onboarding & Polish | 6 | Complete |
 
 **v1.1 Progress:**
-- Phases: 0/5 complete
+- Phases: 0/4 complete
 - Plans: 0/TBD complete
 - Estimated duration: 8-13 days (from research)
 
@@ -201,7 +201,7 @@ None yet.
 ### Blockers/Concerns
 
 **Research Flags:**
-- Phase 13 (Real-Time Sync): Webhook implementation requires server endpoint. Research focused on delta query (pull). May need phase-specific research during planning if implementing beyond delta query.
+- Phase 12 (Real-Time Sync): Webhook implementation requires server endpoint. Research focused on delta query (pull). May need phase-specific research during planning if implementing beyond delta query.
 - Corporate IT approval: Required permissions (Calendars.ReadWrite, User.Read, offline_access) need admin consent in corporate M365 tenants. Timeline unknown.
 
 **Known Risks:**
