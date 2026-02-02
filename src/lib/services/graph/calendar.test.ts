@@ -9,23 +9,32 @@ vi.mock('./client', () => ({
 	graphFetchAll: vi.fn(),
 }));
 
-// Mock Dexie database
-const mockDb = {
-	events: {
-		where: vi.fn().mockReturnThis(),
-		anyOf: vi.fn().mockResolvedValue([]),
-		bulkPut: vi.fn().mockResolvedValue(undefined),
-		update: vi.fn().mockResolvedValue(1),
-	},
-	syncMeta: {
-		get: vi.fn(),
-		put: vi.fn(),
-	},
-};
-
-vi.mock('$lib/db/schema', () => ({
-	db: mockDb,
+// Mock UUID generation
+vi.mock('$lib/utils/uuid', () => ({
+	generateUUID: vi.fn(() => 'mock-uuid-' + Math.random().toString(36).substring(2, 9)),
 }));
+
+// Mock Dexie database with factory function to avoid hoisting issues
+vi.mock('$lib/db/schema', () => ({
+	db: {
+		events: {
+			where: vi.fn(() => ({
+				anyOf: vi.fn(() => ({
+					toArray: vi.fn().mockResolvedValue([]),
+				})),
+			})),
+			bulkPut: vi.fn().mockResolvedValue(undefined),
+			update: vi.fn().mockResolvedValue(1),
+		},
+		syncMeta: {
+			get: vi.fn(),
+			put: vi.fn(),
+		},
+	},
+}));
+
+// Import the mocked db for test assertions
+import { db } from '$lib/db/schema';
 
 beforeEach(() => {
 	vi.clearAllMocks();
@@ -92,12 +101,12 @@ describe('mapOutlookEvent', () => {
 		expect(result?.endTime).toBeInstanceOf(Date);
 
 		// All-day events should use local midnight
-		const startDate = result!.startTime;
-		const endDate = result!.endTime;
-		expect(startDate.getHours()).toBe(0);
-		expect(startDate.getMinutes()).toBe(0);
-		expect(endDate.getHours()).toBe(0);
-		expect(endDate.getMinutes()).toBe(0);
+		const startDate = result?.startTime;
+		const endDate = result?.endTime;
+		expect(startDate?.getHours()).toBe(0);
+		expect(startDate?.getMinutes()).toBe(0);
+		expect(endDate?.getHours()).toBe(0);
+		expect(endDate?.getMinutes()).toBe(0);
 	});
 
 	it('handles missing location', () => {
@@ -271,7 +280,7 @@ describe('syncCalendarEvents', () => {
 		expect(result.deltaLink).toBe('https://graph.microsoft.com/v1.0/delta-link-123');
 
 		// Verify bulk put was called
-		expect(mockDb.events.bulkPut).toHaveBeenCalled();
+		expect(db.events.bulkPut).toHaveBeenCalled();
 	});
 
 	it('performs delta sync with existing deltaLink', async () => {
@@ -287,7 +296,7 @@ describe('syncCalendarEvents', () => {
 		];
 
 		// Mock existing event in database
-		mockDb.events.where().anyOf.mockResolvedValue([
+		const mockToArray = vi.fn().mockResolvedValue([
 			{
 				id: 'local-uuid-1',
 				outlookId: 'evt-1',
@@ -297,6 +306,9 @@ describe('syncCalendarEvents', () => {
 				endTime: new Date('2026-02-03T11:00:00Z'),
 			},
 		]);
+		const mockAnyOf = vi.fn(() => ({ toArray: mockToArray }));
+		const mockWhere = db.events.where as any;
+		mockWhere.mockReturnValue({ anyOf: mockAnyOf });
 
 		vi.mocked(client.graphFetchAll).mockResolvedValue({
 			ok: true,
@@ -334,13 +346,16 @@ describe('syncCalendarEvents', () => {
 		];
 
 		// Mock existing event to delete
-		mockDb.events.where().anyOf.mockResolvedValue([
+		const mockToArray = vi.fn().mockResolvedValue([
 			{
 				id: 'local-uuid-deleted',
 				outlookId: 'evt-deleted',
 				title: 'Deleted Event',
 			},
 		]);
+		const mockAnyOf = vi.fn(() => ({ toArray: mockToArray }));
+		const mockWhere = db.events.where as any;
+		mockWhere.mockReturnValue({ anyOf: mockAnyOf });
 
 		vi.mocked(client.graphFetchAll).mockResolvedValue({
 			ok: true,
@@ -356,7 +371,7 @@ describe('syncCalendarEvents', () => {
 		expect(result.eventsDeleted).toBe(1);
 
 		// Verify update was called to soft-delete
-		expect(mockDb.events.update).toHaveBeenCalledWith('local-uuid-deleted', {
+		expect(db.events.update).toHaveBeenCalledWith('local-uuid-deleted', {
 			deleted: true,
 			deletedAt: expect.any(Date),
 		});
