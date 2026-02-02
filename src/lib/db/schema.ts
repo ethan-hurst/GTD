@@ -64,6 +64,12 @@ export interface CalendarEvent {
 	modified: Date;
 	deleted?: boolean;
 	deletedAt?: Date;
+	// Outlook sync fields
+	outlookId?: string;         // Microsoft Graph event ID
+	outlookETag?: string;       // ETag for conflict detection
+	syncSource?: 'manual' | 'ics-import' | 'outlook';  // Where this event originated
+	lastSyncedAt?: Date;        // When this event was last synced from Outlook
+	outlookCalendarId?: string; // Which Outlook calendar this belongs to
 }
 
 export interface QueuedFeedback {
@@ -76,6 +82,16 @@ export interface QueuedFeedback {
 	retryCount: number;
 }
 
+export interface SyncMeta {
+	id: string;          // UUID
+	calendarId: string;  // Outlook calendar ID
+	calendarName: string; // Display name
+	deltaLink?: string;  // Last delta link URL for incremental sync
+	lastSyncAt?: Date;   // When this calendar was last synced
+	enabled: boolean;    // Whether user wants to see this calendar
+	color?: string;      // Color override for events from this calendar
+}
+
 export const db = new Dexie("GTDDatabase") as Dexie & {
 	items: EntityTable<GTDItem, "id">;
 	lists: EntityTable<GTDList, "id">;
@@ -83,6 +99,7 @@ export const db = new Dexie("GTDDatabase") as Dexie & {
 	settings: EntityTable<AppSettings, "id">;
 	events: EntityTable<CalendarEvent, "id">;
 	feedbackQueue: EntityTable<QueuedFeedback, "id">;
+	syncMeta: EntityTable<SyncMeta, "id">;
 };
 
 db.version(1).stores({
@@ -277,6 +294,17 @@ db.version(12).stores({
 	settings: "++id, &key, updatedAt",
 	events: "id, startTime, endTime, projectId, source, recurrenceId, deleted",
 	feedbackQueue: "++id, timestamp, retryCount"
+});
+
+// Version 13: Add syncMeta table and Outlook sync indexes
+db.version(13).stores({
+	items: "id, type, created, modified, *searchWords, context, projectId, sortOrder, completedAt, followUpDate, category, deleted",
+	lists: "id, name, type",
+	contexts: "id, name, sortOrder",
+	settings: "++id, &key, updatedAt",
+	events: "id, startTime, endTime, projectId, source, recurrenceId, deleted, outlookId, syncSource",
+	feedbackQueue: "++id, timestamp, retryCount",
+	syncMeta: "id, calendarId, enabled"
 });
 
 // Hooks for automatic searchWords population
