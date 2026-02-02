@@ -1,4 +1,4 @@
-import { db, type GTDItem, type Context, type AppSettings, type CalendarEvent } from './schema';
+import { db, type GTDItem, type Context, type AppSettings, type CalendarEvent, type SyncMeta } from './schema';
 import { generateUUID } from '../utils/uuid';
 
 // Sync notification callback - set by sync store to avoid circular imports
@@ -536,6 +536,108 @@ export async function getAllEvents(): Promise<CalendarEvent[]> {
 	return await db.events
 		.filter(e => !e.deleted)
 		.toArray();
+}
+
+// ============================================================================
+// Outlook Event Operations
+// ============================================================================
+
+export async function getEventsByOutlookIds(outlookIds: string[]): Promise<CalendarEvent[]> {
+	return await db.events
+		.where('outlookId')
+		.anyOf(outlookIds)
+		.toArray();
+}
+
+export async function upsertOutlookEvent(event: CalendarEvent): Promise<void> {
+	const existing = await db.events.where('outlookId').equals(event.outlookId!).first();
+	if (existing) {
+		await db.events.update(existing.id, {
+			...event,
+			id: existing.id,
+			modified: new Date()
+		});
+	} else {
+		await db.events.add(event);
+	}
+}
+
+export async function bulkUpsertOutlookEvents(events: CalendarEvent[]): Promise<{ added: number; updated: number }> {
+	const outlookIds = events.map(e => e.outlookId!).filter(Boolean);
+	const existing = await db.events.where('outlookId').anyOf(outlookIds).toArray();
+	const existingMap = new Map(existing.map(e => [e.outlookId!, e]));
+
+	let added = 0;
+	let updated = 0;
+
+	await db.transaction('rw', db.events, async () => {
+		for (const event of events) {
+			const match = existingMap.get(event.outlookId!);
+			if (match) {
+				if (match.outlookETag !== event.outlookETag) {
+					await db.events.update(match.id, {
+						...event,
+						id: match.id,
+						modified: new Date()
+					});
+					updated++;
+				}
+			} else {
+				await db.events.add(event);
+				added++;
+			}
+		}
+	});
+
+	return { added, updated };
+}
+
+export async function deleteOutlookEventsByIds(outlookIds: string[]): Promise<number> {
+	const now = new Date();
+	const existing = await db.events.where('outlookId').anyOf(outlookIds).toArray();
+	await db.transaction('rw', db.events, async () => {
+		for (const event of existing) {
+			await db.events.update(event.id, {
+				deleted: true,
+				deletedAt: now,
+				modified: now
+			});
+		}
+	});
+	return existing.length;
+}
+
+export async function clearOutlookEvents(): Promise<void> {
+	const outlookEvents = await db.events
+		.where('syncSource')
+		.equals('outlook')
+		.toArray();
+	await db.events.bulkDelete(outlookEvents.map(e => e.id));
+}
+
+// ============================================================================
+// SyncMeta Operations
+// ============================================================================
+
+export async function getSyncMeta(calendarId: string): Promise<SyncMeta | undefined> {
+	return await db.syncMeta.where('calendarId').equals(calendarId).first();
+}
+
+export async function upsertSyncMeta(meta: SyncMeta): Promise<void> {
+	const existing = await db.syncMeta.where('calendarId').equals(meta.calendarId).first();
+	if (existing) {
+		await db.syncMeta.update(existing.id, meta);
+	} else {
+		await db.syncMeta.add(meta);
+	}
+}
+
+export async function getAllSyncMeta(): Promise<SyncMeta[]> {
+	return await db.syncMeta.toArray();
+}
+
+export async function clearAllSyncMeta(): Promise<void> {
+	await db.syncMeta.clear();
 }
 
 // ============================================================================
