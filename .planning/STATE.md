@@ -6,16 +6,16 @@ See: .planning/PROJECT.md (updated 2026-01-31)
 
 **Core value:** Nothing falls through the cracks — every commitment is captured, clarified, and surfaced at the right time so the user always knows what to do next.
 
-**Current focus:** Phase 08.8 (User Feedback & Bug Reports)
+**Current focus:** Phase 08.8.1 (Test Suite Improvement)
 
 ## Current Position
 
-Phase: 08.8 (User Feedback & Bug Reports)
-Plan: 3 of 4 in current phase
+Phase: 08.8.1 (Test Suite Improvement)
+Plan: 1 of 4 in current phase
 Status: In progress
-Last activity: 2026-02-02 — Completed 08.8-03-PLAN.md (frontend feedback migration)
+Last activity: 2026-02-02 — Completed 08.8.1-01-PLAN.md (sync & pairing test coverage)
 
-Progress: [████████████░░░░░░░] 68% (68/TBD plans complete across all phases)
+Progress: [████████████░░░░░░░] 69% (69/TBD plans complete across all phases)
 
 ## Performance Metrics
 
@@ -171,6 +171,9 @@ Recent decisions affecting current work:
 - 08.8-02: Honeypot field silently accepts but doesn't store bot submissions (UX-friendly anti-spam)
 - 08.8-02: CORS headers on all endpoints to support admin dashboard from different path
 - 08.8-02: Blobs metadata values must be strings (use 'true'/'false' not boolean true/false)
+- 08.8.1-01: Actual PAIRING_CHARS includes L (only excludes 0, O, 1, I) -- tests match implementation
+- 08.8.1-01: importFromSync throws on unknown table names (Dexie InvalidTableError) -- not graceful skip
+- 08.8.1-01: performSync deferred from testing due to complex multi-module mocking requirements
 
 ### Roadmap Evolution
 
@@ -203,5 +206,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-02
-Stopped at: Completed 08.8-03 (frontend feedback migration)
+Stopped at: Completed 08.8.1-01-PLAN.md (sync & pairing test coverage)
 Resume file: None
