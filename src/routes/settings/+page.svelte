@@ -6,6 +6,12 @@
 	import { syncState } from '$lib/stores/sync.svelte';
 	import { generatePairingCode, formatPairingCode, validatePairingCode, normalizePairingCode } from '$lib/sync/pair';
 	import { toast } from 'svelte-5-french-toast';
+	import OutlookAuthButton from '$lib/components/OutlookAuthButton.svelte';
+	import OutlookCalendarPicker from '$lib/components/OutlookCalendarPicker.svelte';
+	import OutlookSyncButton from '$lib/components/OutlookSyncButton.svelte';
+	import SyncStatusIndicator from '$lib/components/SyncStatusIndicator.svelte';
+	import { authState } from '$lib/stores/auth.svelte';
+	import { outlookSyncState } from '$lib/stores/outlook-sync.svelte';
 
 	let isExporting = $state(false);
 	let isImporting = $state(false);
@@ -309,6 +315,9 @@
 	}
 
 	onMount(async () => {
+		// Initialize auth state
+		authState.init();
+
 		// Check persistence status on mount
 		storageStatus.checkPersistence();
 		storageStatus.updateQuota();
@@ -371,6 +380,42 @@
 				{isImporting ? 'Importing...' : 'Import Data'}
 			</button>
 		</div>
+	</div>
+
+	<!-- Outlook Calendar Section (full width) -->
+	<div class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200 p-4 tablet:p-6 mt-4">
+		<!-- Header with icon -->
+		<div class="flex items-center gap-2 mb-2">
+			<!-- Microsoft/Calendar icon -->
+			<svg class="w-5 h-5 text-gray-900 dark:text-gray-100" fill="currentColor" viewBox="0 0 24 24">
+				<path d="M11.4 24H0V12.6h11.4V24zM24 24H12.6V12.6H24V24zM11.4 11.4H0V0h11.4v11.4zm12.6 0H12.6V0H24v11.4z"/>
+			</svg>
+			<h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Outlook Calendar</h2>
+		</div>
+
+		<p class="text-sm text-gray-600 dark:text-gray-400 mb-4">
+			Connect your Microsoft account to see Outlook events in your GTD calendar.
+		</p>
+
+		<!-- Auth Button -->
+		<OutlookAuthButton />
+
+		<!-- When authenticated, show calendar picker and sync controls -->
+		{#if authState.isAuthenticated}
+			<!-- Divider -->
+			<div class="border-t border-gray-200 dark:border-gray-700 my-6"></div>
+
+			<!-- Calendar Picker -->
+			<div class="mb-6">
+				<OutlookCalendarPicker />
+			</div>
+
+			<!-- Sync Controls -->
+			<div class="flex flex-col phablet:flex-row items-start phablet:items-center gap-3">
+				<SyncStatusIndicator />
+				<OutlookSyncButton />
+			</div>
+		{/if}
 	</div>
 
 	<!-- Storage Section (full width) -->
