@@ -11,11 +11,11 @@ See: .planning/PROJECT.md (updated 2026-01-31)
 ## Current Position
 
 Phase: 09 of 12 (Read Calendar)
-Plan: 09-05 of 5 complete
+Plan: 09-06 of 6 complete
 Status: In progress
-Last activity: 2026-02-02 — Completed 09-05-PLAN.md (Outlook Sync UI)
+Last activity: 2026-02-02 — Completed 09-06-PLAN.md (Outlook Calendar Picker & Settings UI)
 
-Progress: [█████████████░░░░░░] 78% (78/100 plans complete across all phases)
+Progress: [█████████████░░░░░░] 79% (79/100 plans complete across all phases)
 
 ## Performance Metrics
 
@@ -39,7 +39,7 @@ Progress: [█████████████░░░░░░] 78% (78/10
 
 **v1.1 Progress:**
 - Phases: 0/4 complete
-- Plans: 5/TBD complete (09-01, 09-02, 09-03, 09-04, 09-05)
+- Plans: 6/TBD complete (09-01, 09-02, 09-03, 09-04, 09-05, 09-06)
 - Estimated duration: 8-13 days (from research)
 
 ## Accumulated Context
@@ -203,6 +203,9 @@ Recent decisions affecting current work:
 - 09-05: Track sync progress as current/total for multi-calendar visibility
 - 09-05: Store delta links per calendar to support incremental sync
 - 09-05: Refresh calendar view after sync completes to show new events
+- 09-06: Toggle switches for calendar enable/disable (familiar mobile OS pattern, touch-friendly)
+- 09-06: Empty state prompts user to sync (calendar list populated after first sync)
+- 09-06: Outlook section positioned before Storage in Settings (full-width card pattern)
 
 ### Roadmap Evolution
 
@@ -234,6 +237,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-02-02 05:44 UTC
-Stopped at: Completed 09-05-PLAN.md (Outlook Sync UI)
+Last session: 2026-02-02 05:45 UTC
+Stopped at: Completed 09-06-PLAN.md (Outlook Calendar Picker & Settings UI)
 Resume file: None
