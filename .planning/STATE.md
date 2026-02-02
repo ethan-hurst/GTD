@@ -6,16 +6,16 @@ See: .planning/PROJECT.md (updated 2026-01-31)
 
 **Core value:** Nothing falls through the cracks — every commitment is captured, clarified, and surfaced at the right time so the user always knows what to do next.
 
-**Current focus:** Phase 08.8 and 08.8.1 complete — next: start Phase 9 (Read Calendar)
+**Current focus:** Phase 09 (Read Calendar) — Outlook sync foundation complete
 
 ## Current Position
 
-Phase: 08.8 (User Feedback & Bug Reports) + 08.8.1 (Test Suite Improvement)
-Plan: All plans complete in both phases
-Status: Both phases verified and complete
-Last activity: 2026-02-02 — Phase 08.8 verified (7/7 must-haves), 08.8.1 UAT passed (8/8 tests)
+Phase: 09 of 12 (Read Calendar)
+Plan: 09-01 of 4 complete
+Status: In progress
+Last activity: 2026-02-02 — Completed 09-01-PLAN.md (Schema & Auth Foundation)
 
-Progress: [█████████████░░░░░░] 73% (73/TBD plans complete across all phases)
+Progress: [█████████████░░░░░░] 74% (74/100 plans complete across all phases)
 
 ## Performance Metrics
 
@@ -39,7 +39,7 @@ Progress: [█████████████░░░░░░] 73% (73/TB
 
 **v1.1 Progress:**
 - Phases: 0/4 complete
-- Plans: 0/TBD complete
+- Plans: 1/TBD complete (09-01)
 - Estimated duration: 8-13 days (from research)
 
 ## Accumulated Context
@@ -181,6 +181,9 @@ Recent decisions affecting current work:
 - 08.8.1-04: URL constructor + searchParams for query param testing (cleaner than string concatenation)
 - 08.8.1-04: Shared authHeader helper pattern across admin endpoint test files
 - 08.8.1-04: Honeypot tested as separate describe block (both response and non-storage assertions)
+- 09-01: Pin MSAL to 4.x range (v5.x has peer dependency conflicts until Q1/Q2 2026)
+- 09-01: Session storage for MSAL cache (cleared on tab close) instead of localStorage for security
+- 09-01: Silent token acquisition with redirect fallback for seamless UX
 
 ### Roadmap Evolution
 
@@ -212,6 +215,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-02-02
-Stopped at: Phase 08.8 verified + 08.8.1 UAT passed — all pre-v1.1 phases complete
+Last session: 2026-02-02 05:23 UTC
+Stopped at: Completed 09-01-PLAN.md (Outlook Sync Schema & Auth Foundation)
 Resume file: None
