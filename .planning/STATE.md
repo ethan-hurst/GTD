@@ -11,11 +11,11 @@ See: .planning/PROJECT.md (updated 2026-01-31)
 ## Current Position
 
 Phase: 08.8.1 (Test Suite Improvement)
-Plan: 1 of 4 in current phase
+Plan: 3 of 4 in current phase
 Status: In progress
-Last activity: 2026-02-02 — Completed 08.8.1-01-PLAN.md (sync & pairing test coverage)
+Last activity: 2026-02-02 — Completed 08.8.1-03-PLAN.md (analytics function tests)
 
-Progress: [████████████░░░░░░░] 69% (69/TBD plans complete across all phases)
+Progress: [████████████░░░░░░░] 71% (71/TBD plans complete across all phases)
 
 ## Performance Metrics
 
@@ -174,6 +174,8 @@ Recent decisions affecting current work:
 - 08.8.1-01: Actual PAIRING_CHARS includes L (only excludes 0, O, 1, I) -- tests match implementation
 - 08.8.1-01: importFromSync throws on unknown table names (Dexie InvalidTableError) -- not graceful skip
 - 08.8.1-01: performSync deferred from testing due to complex multi-module mocking requirements
+- 08.8.1-03: Mock analytics-utils at module level for handler tests (isolates handler logic from utility internals)
+- 08.8.1-03: Top-level mock function references in utils tests for direct store method assertions
 
 ### Roadmap Evolution
 
@@ -206,5 +208,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-02
-Stopped at: Completed 08.8.1-01-PLAN.md (sync & pairing test coverage)
+Stopped at: Completed 08.8.1-03-PLAN.md (analytics function tests)
 Resume file: None
