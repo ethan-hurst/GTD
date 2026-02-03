@@ -10,12 +10,12 @@ See: .planning/PROJECT.md (updated 2026-01-31)
 
 ## Current Position
 
-Phase: 09 of 12 (Read Calendar)
-Plan: 09-06 of 6 complete
-Status: In progress
-Last activity: 2026-02-02 — Completed 09-06-PLAN.md (Outlook Calendar Picker & Settings UI)
+Phase: 10 of 12 (User-Facing Changelog)
+Plan: 10-01 of 1 complete
+Status: Phase complete
+Last activity: 2026-02-03 — Completed 10-01-PLAN.md (Changelog Data & Page)
 
-Progress: [█████████████░░░░░░] 79% (79/100 plans complete across all phases)
+Progress: [█████████████░░░░░░] 80% (80/100 plans complete across all phases)
 
 ## Performance Metrics
 
@@ -38,8 +38,8 @@ Progress: [█████████████░░░░░░] 79% (79/10
 | 8. Onboarding & Polish | 6 | Complete |
 
 **v1.1 Progress:**
-- Phases: 0/4 complete
-- Plans: 6/TBD complete (09-01, 09-02, 09-03, 09-04, 09-05, 09-06)
+- Phases: 2/4 complete (09-read-calendar, 10-user-facing-changelog)
+- Plans: 7/TBD complete (09-01, 09-02, 09-03, 09-04, 09-05, 09-06, 10-01)
 - Estimated duration: 8-13 days (from research)
 
 ## Accumulated Context
@@ -206,6 +206,10 @@ Recent decisions affecting current work:
 - 09-06: Toggle switches for calendar enable/disable (familiar mobile OS pattern, touch-friendly)
 - 09-06: Empty state prompts user to sync (calendar list populated after first sync)
 - 09-06: Outlook section positioned before Storage in Settings (full-width card pattern)
+- 10-01: Date-based IDs (YYYY-MM-DD format) for changelog last-seen tracking instead of version numbers
+- 10-01: 2-second delay before marking entries as seen (allows user to read without immediate state change)
+- 10-01: Category colors follow existing app patterns (green=added, blue=improved, orange=fixed)
+- 10-01: STORAGE_KEY exported as constant for future nav integration
 
 ### Roadmap Evolution
 
@@ -237,6 +241,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-02-02 05:45 UTC
-Stopped at: Completed 09-06-PLAN.md (Outlook Calendar Picker & Settings UI)
+Last session: 2026-02-03 07:42 UTC
+Stopped at: Completed 10-01-PLAN.md (Changelog Data & Page)
 Resume file: None
