@@ -370,31 +370,26 @@ Plans:
 
 ---
 
-#### Phase 10: Two-Way Sync
+#### Phase 10: User-Facing Changelog
 
-**Goal**: Users can push GTD tasks to Outlook calendar and changes in Outlook update GTD tasks
+**Goal**: Users can view a changelog showing what's been improved, fixed, or added — accessible via a subtle link in the left navigation bar, updated with every improvement
 
-**Depends on**: Phase 9 (read sync must work before adding write complexity)
-
-**Requirements**: WRITE-01, WRITE-02, WRITE-03, WRITE-04, WRITE-05, WRITE-06, WRITE-07, SYNC-03, SYNC-08, SYNC-10
+**Depends on**: Phase 9 (not blocking, but follows execution order)
 
 **Success Criteria** (what must be TRUE):
-1. User can push GTD task with scheduled time and duration to Outlook as calendar event
-2. Tasks have duration field in GTD UI (required for calendar blocking)
-3. Synced events show as "Busy" in Outlook calendar (blocks time for other meetings)
-4. When user reschedules event in Outlook, GTD task time updates after next sync
-5. When user deletes synced event in Outlook, GTD task is unscheduled but remains in GTD
-6. Synced events display task title with "(GTD)" indicator in Outlook
-7. Task metadata (project, context) syncs to Outlook via extended properties
-8. User sees warning when scheduling task that conflicts with existing calendar event
-9. Correlation IDs prevent infinite sync loops (GTD -> Outlook -> webhook -> GTD)
+1. Changelog page exists at /changelog with a clean, scannable list of changes
+2. Subtle "Changelog" or "What's New" link in the left sidebar navigation (not prominent — secondary to main GTD nav)
+3. Entries are organized by date with clear categories (New, Improved, Fixed)
+4. Changelog data is easy to update (simple data file or markdown, not hardcoded)
+5. Page follows existing app design patterns (consistent styling, dark mode support)
+6. Mobile-responsive — works in mobile nav drawer as well
+7. Most recent changes appear first (reverse chronological)
 
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 10-01: TBD
-- [ ] 10-02: TBD
-- [ ] 10-03: TBD
+- [ ] 10-01-PLAN.md — Changelog data file + changelog page at /changelog
+- [ ] 10-02-PLAN.md — Navigation wiring: Sidebar + MobileNav "What's New" link with badge
 
 ---
 
@@ -467,6 +462,6 @@ Plans:
 | 08.8 User Feedback & Bug Reports | v1.0+ | 4/4 | Complete | 2026-02-02 |
 | 08.8.1 Test Suite Improvement | v1.0+ | 4/4 | Complete | 2026-02-02 |
 | 9. Read Calendar | v1.1 | 0/7 | Planned | - |
-| 10. Two-Way Sync | v1.1 | 0/TBD | Not started | - |
+| 10. User-Facing Changelog | v1.1 | 0/2 | Planned | - |
 | 11. Offline Queue | v1.1 | 0/TBD | Not started | - |
 | 12. Real-Time Sync | v1.1 | 0/TBD | Not started | - |
