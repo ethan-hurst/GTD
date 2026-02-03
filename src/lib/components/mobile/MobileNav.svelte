@@ -5,8 +5,11 @@
 	import { projectState } from '$lib/stores/projects.svelte';
 	import { weeklyReviewState } from '$lib/stores/review.svelte';
 	import { syncState } from '$lib/stores/sync.svelte';
+	import { changelog, STORAGE_KEY } from '$lib/data/changelog';
 
 	let { isOpen = $bindable(false) } = $props();
+
+	let lastSeenChangelogId = $state('');
 
 	// Derive overdue status
 	let isOverdue = $derived(() => {
@@ -40,11 +43,29 @@
 		}
 	});
 
+	// Check for unseen changelog entries
+	function hasUnseenChangelog(): boolean {
+		if (changelog.length === 0) return false;
+		if (!lastSeenChangelogId) return true;
+		return changelog[0].id !== lastSeenChangelogId;
+	}
+
+	// React to changelog-seen events
+	$effect(() => {
+		if (typeof window === 'undefined') return;
+		const handler = () => {
+			lastSeenChangelogId = localStorage.getItem(STORAGE_KEY) || '';
+		};
+		window.addEventListener('changelog-seen', handler);
+		return () => window.removeEventListener('changelog-seen', handler);
+	});
+
 	onMount(async () => {
 		// Load states for badges
 		await inboxState.loadItems();
 		await projectState.loadProjects();
 		await weeklyReviewState.loadLastReview();
+		lastSeenChangelogId = localStorage.getItem(STORAGE_KEY) || '';
 	});
 </script>
 
@@ -195,6 +216,23 @@
 					<!-- Error: red dot -->
 					<span class="w-2 h-2 rounded-full bg-red-500"></span>
 				{/if}
+			{/if}
+		</a>
+
+		<!-- What's New link -->
+		<a
+			href="/changelog"
+			onclick={closeDrawer}
+			class="flex items-center justify-between px-4 py-3 transition-colors duration-150 {$page.url.pathname === '/changelog' ? 'bg-white dark:bg-gray-800 shadow-sm font-semibold text-gray-900 dark:text-gray-100' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800'}"
+		>
+			<div class="flex items-center gap-3">
+				<svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+				</svg>
+				<span>What's New</span>
+			</div>
+			{#if hasUnseenChangelog()}
+				<span class="w-2 h-2 bg-blue-500 rounded-full"></span>
 			{/if}
 		</a>
 
