@@ -357,22 +357,29 @@
 				Which project does this belong to?
 			</p>
 			<div class="flex flex-col gap-2">
-				{#each projects as proj (proj.id)}
-					<button
-						onclick={() => { selectedProjectId = proj.id; afterContext = 'project'; step = 'assign-context'; }}
-						class="w-full px-4 py-3 min-h-11 text-base font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 rounded-md active:scale-[0.98] transition-all text-left focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800"
-					>
-						{proj.title}
-					</button>
-				{/each}
-
 				{#if projects.length > 0}
+					<p class="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+						Existing projects
+					</p>
+					{#each projects as proj (proj.id)}
+						<button
+							onclick={() => { selectedProjectId = proj.id; afterContext = 'project'; step = 'assign-context'; }}
+							class="w-full px-4 py-3 min-h-11 text-base font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-300 dark:hover:border-blue-700 rounded-md active:scale-[0.98] transition-all text-left focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800"
+						>
+							{proj.title}
+						</button>
+					{/each}
+
 					<div class="border-t border-gray-100 dark:border-gray-700/50 my-2"></div>
+				{:else}
+					<div class="px-4 py-3 text-sm text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-800 rounded-md border border-gray-200 dark:border-gray-700">
+						No existing projects yet. Create one below, or skip to save as a standalone action.
+					</div>
 				{/if}
 
 				<div class="space-y-2">
 					<p class="text-sm font-medium text-gray-700 dark:text-gray-300">
-						Create new project:
+						Or create a new project:
 					</p>
 					<input
 						type="text"
