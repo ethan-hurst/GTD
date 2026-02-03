@@ -10,12 +10,16 @@
 	import { sidebarState } from '$lib/stores/sidebar.svelte';
 	import { theme } from '$lib/stores/theme.svelte';
 	import { syncState } from '$lib/stores/sync.svelte';
+	import { changelog, STORAGE_KEY } from '$lib/data/changelog';
+
+	let lastSeenChangelogId = $state('');
 
 	onMount(async () => {
 		sidebarState.init();
 		await inboxState.loadItems();
 		await projectState.loadProjects();
 		await weeklyReviewState.loadLastReview();
+		lastSeenChangelogId = localStorage.getItem(STORAGE_KEY) || '';
 	});
 
 	// Derive overdue status
@@ -25,6 +29,23 @@
 			(Date.now() - weeklyReviewState.lastReviewDate.getTime()) / (1000 * 60 * 60 * 24)
 		);
 		return daysSince > 7;
+	});
+
+	// Check for unseen changelog entries
+	function hasUnseenChangelog() {
+		if (changelog.length === 0) return false;
+		if (!lastSeenChangelogId) return true;
+		return changelog[0].id !== lastSeenChangelogId;
+	}
+
+	// React to changelog-seen events
+	$effect(() => {
+		if (typeof window === 'undefined') return;
+		const handler = () => {
+			lastSeenChangelogId = localStorage.getItem(STORAGE_KEY) || '';
+		};
+		window.addEventListener('changelog-seen', handler);
+		return () => window.removeEventListener('changelog-seen', handler);
 	});
 
 	// Theme cycling for collapsed mode
@@ -155,6 +176,15 @@
 				<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
 				</svg>
+			</a>
+
+			<a href="/changelog" class="relative flex items-center justify-center p-2 rounded-md transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-blue-500/40 {$page.url.pathname === '/changelog' ? 'bg-white dark:bg-gray-800 shadow-sm text-gray-900 dark:text-gray-100' : 'text-gray-500 dark:text-gray-400 hover:bg-gray-100/70 dark:hover:bg-gray-800/70 hover:text-gray-700 dark:hover:text-gray-200'}" title="What's New">
+				<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+				</svg>
+				{#if hasUnseenChangelog()}
+					<span class="absolute -top-1 -right-1 w-2 h-2 bg-blue-500 rounded-full"></span>
+				{/if}
 			</a>
 			</div>
 		{:else}
@@ -317,6 +347,22 @@
 		{:else}
 			<!-- Expanded mode: icon + text -->
 			<div class="flex flex-col gap-2">
+				<!-- What's New link -->
+				<a
+					href="/changelog"
+					class="w-full flex items-center justify-between px-2 py-1.5 text-sm text-gray-600 dark:text-gray-400 hover:bg-gray-100/70 dark:hover:bg-gray-800/70 rounded-md transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-blue-500/40 {$page.url.pathname === '/changelog' ? 'bg-gray-100/70 dark:bg-gray-800/70 font-medium' : ''}"
+				>
+					<div class="flex items-center gap-2">
+						<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+						</svg>
+						<span>What's New</span>
+					</div>
+					{#if hasUnseenChangelog()}
+						<span class="w-2 h-2 bg-blue-500 rounded-full"></span>
+					{/if}
+				</a>
+
 				<!-- Feedback button -->
 				<button
 					onclick={() => window.dispatchEvent(new CustomEvent('open-feedback-modal'))}

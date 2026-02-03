@@ -63,6 +63,8 @@
 				if (typeof localStorage !== 'undefined') {
 					localStorage.setItem(STORAGE_KEY, changelog[0].id);
 					lastSeenId = changelog[0].id;
+					// Notify other components (e.g., Sidebar) that changelog was seen
+					window.dispatchEvent(new CustomEvent('changelog-seen'));
 				}
 			}, 2000);
 		}
